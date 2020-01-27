@@ -1,12 +1,11 @@
 package com.yogurt.scfish.dto;
 
 import com.yogurt.scfish.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.beans.BeanUtils;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
@@ -17,6 +16,11 @@ public class UserDTO {
 
   public User convert() {
     User user = new User();
+    BeanUtils.copyProperties(this, user);
+    return user;
+  }
+
+  public User convert(User user) {
     BeanUtils.copyProperties(this, user);
     return user;
   }

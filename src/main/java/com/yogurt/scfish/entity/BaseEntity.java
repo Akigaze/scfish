@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity implements Serializable {
   @CreatedDate
-  @Column(name = "creation_time_utc")
+  @Column(name = "creation_time_utc", updatable = false)
   private LocalDateTime creationTime;
 
   @LastModifiedDate
