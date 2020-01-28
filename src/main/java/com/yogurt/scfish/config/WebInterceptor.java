@@ -1,5 +1,7 @@
 package com.yogurt.scfish.config;
 
+import com.yogurt.scfish.contstant.SessionAttribute;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -7,12 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+@Slf4j
 public class WebInterceptor implements HandlerInterceptor {
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-    System.out.println("--- preHandle ---");
     HttpSession session = request.getSession(true);
-    if (session.getAttribute("user-id") == null){
+    if (session.getAttribute(SessionAttribute.USER_TOKEN) == null) {
+      log.warn("--- request of {} was filtered ---", request.getRequestURI());
       response.sendRedirect("/login");
       return false;
     }

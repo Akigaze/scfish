@@ -11,3 +11,6 @@ spring:
     locations: classpath:db/migration
     enabled: true
 
+scfish:
+  mvc:
+    exclude-path-patterns: /login,/register,/scfish/** # /scfish/** 也应该在登录后草能正常访问

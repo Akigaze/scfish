@@ -20,17 +20,17 @@ public class UserController {
   private UserService userService;
 
   @GetMapping()
-  public List<User> getUserList(){
+  public List<User> getUserList() {
     return this.userService.getAllUsers();
   }
 
   @GetMapping("/{id}")
-  public User getUserById(@PathVariable("id") String id){
+  public User getUserById(@PathVariable("id") String id) {
     return this.userService.getUserById(id);
   }
 
   @PostMapping()
-  public ResponseEntity<User> addUser(@RequestBody UserDTO userDTO){
+  public ResponseEntity<User> addUser(@RequestBody UserDTO userDTO) {
     try {
       User saved = this.userService.addUser(userDTO);
       return ResponseEntity.accepted().body(saved);
@@ -40,7 +40,7 @@ public class UserController {
   }
 
   @PutMapping()
-  public ResponseEntity<User> updateUser(@RequestBody UserDTO userDTO){
+  public ResponseEntity<User> updateUser(@RequestBody UserDTO userDTO) {
     try {
       User updated = this.userService.updateUser(userDTO);
       return ResponseEntity.accepted().body(updated);
@@ -52,7 +52,7 @@ public class UserController {
   @PutMapping("/{id}")
   public ResponseEntity<User> updateUserStatus(
       @PathVariable("id") String id,
-      @RequestParam(value = "enabled", required = false) Boolean enabled){
+      @RequestParam(value = "enabled", required = false) Boolean enabled) {
     try {
       User frozen = this.userService.updateUserStatus(id, enabled);
       return ResponseEntity.accepted().body(frozen);
@@ -63,7 +63,7 @@ public class UserController {
 
   // 一般不使用delete的接口
   @DeleteMapping("/{id}")
-  public ResponseEntity deleteUser(@PathVariable("id") String id){
+  public ResponseEntity deleteUser(@PathVariable("id") String id) {
     try {
       this.userService.deleteUserById(id);
       return ResponseEntity.noContent().build();
