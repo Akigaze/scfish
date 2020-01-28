@@ -21,6 +21,7 @@ public class User extends BaseEntity {
   @Id
   private String id;
   private String name;
+  private String password;
   private boolean enabled;
 
 }
