@@ -24,9 +24,9 @@ public class UserController {
     return this.userService.getAllUsers();
   }
 
-  @GetMapping("/{userId}")
-  public User getUserById(@PathVariable("userId") String userId){
-    return this.userService.getUserById(userId);
+  @GetMapping("/{id}")
+  public User getUserById(@PathVariable("id") String id){
+    return this.userService.getUserById(id);
   }
 
   @PostMapping()
@@ -49,12 +49,12 @@ public class UserController {
     }
   }
 
-  @PutMapping("/{userId}")
+  @PutMapping("/{id}")
   public ResponseEntity<User> updateUserStatus(
-      @PathVariable("userId") String userId,
+      @PathVariable("id") String id,
       @RequestParam(value = "enabled", required = false) Boolean enabled){
     try {
-      User frozen = this.userService.updateUserStatus(userId, enabled);
+      User frozen = this.userService.updateUserStatus(id, enabled);
       return ResponseEntity.accepted().body(frozen);
     } catch (NotFoundException e) {
       return ResponseEntity.notFound().build();
@@ -62,10 +62,10 @@ public class UserController {
   }
 
   // 一般不使用delete的接口
-  @DeleteMapping("/{userId}")
-  public ResponseEntity deleteUser(@PathVariable("userId") String userId){
+  @DeleteMapping("/{id}")
+  public ResponseEntity deleteUser(@PathVariable("id") String id){
     try {
-      this.userService.deleteUserById(userId);
+      this.userService.deleteUserById(id);
       return ResponseEntity.noContent().build();
     } catch (NotFoundException e) {
       return ResponseEntity.notFound().build();

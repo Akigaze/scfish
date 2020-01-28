@@ -21,13 +21,12 @@ public class UserService {
     return this.userRepository.findAll();
   }
 
-  public User getUserById(String userId) {
-    return this.userRepository.findByUserId(userId);
+  public User getUserById(String id) {
+    return this.userRepository.findById(id).orElse(null);
   }
 
   public User addUser(UserDTO userDTO) throws DuplicatedException {
-    User found = this.userRepository.findByUserId(userDTO.getUserId());
-    if (found != null){
+    if (this.userRepository.existsById(userDTO.getId())) {
       throw new DuplicatedException();
     }
     User user = userDTO.convert();
@@ -35,27 +34,18 @@ public class UserService {
   }
 
   public User updateUser(UserDTO userDTO) throws NotFoundException {
-    User found = this.userRepository.findByUserId(userDTO.getUserId());
-    if (found == null){
-      throw new NotFoundException();
-    }
+    User found = this.userRepository.findById(userDTO.getId()).orElseThrow(NotFoundException::new);
     User user = userDTO.convert(found);
     return this.userRepository.save(user);
   }
 
-  public void deleteUserById(String userId) throws NotFoundException {
-    User found = this.userRepository.findByUserId(userId);
-    if (found == null){
-      throw new NotFoundException();
-    }
+  public void deleteUserById(String id) throws NotFoundException {
+    User found = this.userRepository.findById(id).orElseThrow(NotFoundException::new);
     this.userRepository.delete(found);
   }
 
-  public User updateUserStatus(String userId, Boolean enabled) throws NotFoundException {
-    User found = this.userRepository.findByUserId(userId);
-    if (found == null){
-      throw new NotFoundException();
-    }
+  public User updateUserStatus(String id, Boolean enabled) throws NotFoundException {
+    User found = this.userRepository.findById(id).orElseThrow(NotFoundException::new);
     found.setEnabled(enabled == null ? !found.isEnabled() : enabled);
     return this.userRepository.save(found);
   }

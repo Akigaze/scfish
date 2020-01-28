@@ -9,15 +9,14 @@ import org.springframework.beans.BeanUtils;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
-  private String userId;
-  private String userName;
+  private String id;
+  private String name;
   private String password;
   private boolean enabled = true;
 
   public User convert() {
     User user = new User();
-    BeanUtils.copyProperties(this, user);
-    return user;
+    return this.convert(user);
   }
 
   public User convert(User user) {

@@ -19,10 +19,8 @@ import javax.persistence.*;
 @DynamicUpdate
 public class User extends BaseEntity {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
-  private String userId;
-  private String userName;
+  private String id;
+  private String name;
   private boolean enabled;
 
 }
