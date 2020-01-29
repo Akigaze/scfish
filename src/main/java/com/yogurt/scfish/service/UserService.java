@@ -50,8 +50,4 @@ public class UserService {
     return this.userRepository.save(found);
   }
 
-  public boolean validate(String id, String password) {
-    User user = this.userRepository.findByIdAndPassword(id, password);
-    return user != null;
-  }
 }

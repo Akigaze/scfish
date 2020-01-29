@@ -1,15 +1,17 @@
 package com.yogurt.scfish.service;
 
+import com.yogurt.scfish.contstant.SessionAttribute;
 import com.yogurt.scfish.dto.UserDTO;
 import com.yogurt.scfish.entity.User;
 import com.yogurt.scfish.exception.DuplicatedException;
-import com.yogurt.scfish.exception.NotFoundException;
 import com.yogurt.scfish.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -29,4 +31,11 @@ public class AdminService {
     User user = this.userRepository.findByIdAndPassword(id, password);
     return user != null;
   }
+
+  public void authorize(HttpServletRequest request, String id) {
+    HttpSession session = request.getSession(true);
+    session.setAttribute(SessionAttribute.USER_TOKEN, DigestUtils.md5DigestAsHex(id.getBytes()));
+    session.setAttribute(SessionAttribute.USER_ID, id);
+  }
+
 }

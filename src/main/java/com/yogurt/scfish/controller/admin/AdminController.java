@@ -27,9 +27,7 @@ public class AdminController {
       @RequestParam("id") String id,
       @RequestParam("password") String password) {
     if (adminService.validate(id, password)) {
-      HttpSession session = request.getSession(true);
-      session.setAttribute(SessionAttribute.USER_TOKEN, id);
-      session.setAttribute(SessionAttribute.USER_ID, id);
+      adminService.authorize(request, id);
       return new ModelAndView("redirect:/");
     }
     ModelAndView redirectView = new ModelAndView("redirect:/login");
