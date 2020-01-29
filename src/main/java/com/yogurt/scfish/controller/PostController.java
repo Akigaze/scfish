@@ -5,14 +5,14 @@ import com.yogurt.scfish.dto.PostDTO;
 import com.yogurt.scfish.service.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 
 @RestController
 @RequestMapping("/scfish/v1/post")
@@ -27,5 +27,12 @@ public class PostController {
     postDTO.setUserId(session.getAttribute(SessionAttribute.USER_ID).toString());
     this.postService.addPost(postDTO);
     return new ModelAndView("redirect:/");
+  }
+
+  @GetMapping()
+  public String getPosts(@RequestParam(value = "page") String page,RedirectAttributes redirectAttributes){
+    Page postPage = this.postService.getPosts(Integer.valueOf(page));
+    redirectAttributes.addFlashAttribute("postPage",postPage);
+    return "redirect:/";
   }
 }

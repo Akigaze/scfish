@@ -1,6 +1,5 @@
 package com.yogurt.scfish.controller.admin;
 
-
 import com.yogurt.scfish.contstant.SessionAttribute;
 import com.yogurt.scfish.dto.UserDTO;
 import com.yogurt.scfish.exception.DuplicatedException;
@@ -10,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -22,34 +22,34 @@ public class AdminController {
   private AdminService adminService;
 
   @PostMapping("/login")
-  public ModelAndView login(
-      HttpServletRequest request,
-      @RequestParam("id") String id,
-      @RequestParam("password") String password) {
+  public String login(
+          HttpServletRequest request,
+          @RequestParam("id") String id,
+          @RequestParam("password") String password,
+          RedirectAttributes redirectAttributes) {
     if (adminService.validate(id, password)) {
       HttpSession session = request.getSession(true);
       session.setAttribute(SessionAttribute.USER_TOKEN, id);
       session.setAttribute(SessionAttribute.USER_ID, id);
-      return new ModelAndView("redirect:/");
+      return "redirect:/";
     }
-    ModelAndView redirectView = new ModelAndView("redirect:/login");
-    redirectView.addObject("message", "账号或密码错误");
-    return redirectView;
+    redirectAttributes.addFlashAttribute("message", "账号或密码错误");
+    return "redirect:/login";
   }
 
   @PostMapping(value = "/register")
-  public ModelAndView register(
+  public String register(
       @RequestParam("id") String id,
       @RequestParam("name") String name,
-      @RequestParam("password") String password) {
+      @RequestParam("password") String password,
+      RedirectAttributes redirectAttributes) {
     try {
       UserDTO userDTO = new UserDTO(id, name, password, true);
       this.adminService.addUser(userDTO);
-      return new ModelAndView("redirect:/login");
+      return "redirect:/login";
     } catch (DuplicatedException e) {
-      ModelAndView redirectView = new ModelAndView("redirect:/register");
-      redirectView.addObject("message", "用户名已被注册");
-      return redirectView;
+      redirectAttributes.addFlashAttribute("message", "用户名已被注册");
+      return "redirect:/register";
     }
   }
 

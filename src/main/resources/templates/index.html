@@ -1,11 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <script type="text/javascript" src="js/index.js"></script>
     <title>Title</title>
 </head>
 <body>
 <a href="/scfish/admin/v1/logout">注销当前账号</a>
 <a href="publish">发布帖子</a>
+<table>
+    <tr th:each="post:${postPage}">
+        <td th:text="${post.title}"></td>
+        <td th:text="${post.content}"></td>
+    </tr>
+</table>
 </body>
 </html>

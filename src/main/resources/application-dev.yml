@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:mysql:///scfish?serverTimezone=UTC&charset=UTF-8&useSSL=false
-    username: akigaze
-    password: akigaze
+    username: root
+    password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     database: mysql
@@ -10,7 +10,6 @@ spring:
   flyway:
     locations: classpath:db/migration
     enabled: true
-
 scfish:
   mvc:
     exclude-path-patterns: /login,/register,/scfish/** # /scfish/** 也应该在登录后草能正常访问
