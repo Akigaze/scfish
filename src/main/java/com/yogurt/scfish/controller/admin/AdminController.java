@@ -31,7 +31,7 @@ public class AdminController {
       HttpSession session = request.getSession(true);
       session.setAttribute(SessionAttribute.USER_TOKEN, id);
       session.setAttribute(SessionAttribute.USER_ID, id);
-      return "redirect:/";
+      return "redirect:/scfish/v1/post/get?page=1";
     }
     redirectAttributes.addFlashAttribute("message", "账号或密码错误");
     return "redirect:/login";

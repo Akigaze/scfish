@@ -8,9 +8,10 @@
 <body>
 <a href="/scfish/admin/v1/logout">注销当前账号</a>
 <a href="publish">发布帖子</a>
+<p th:text="${message}"></p>
 <table>
     <tr th:each="post:${postPage}">
-        <td th:text="${post.title}"></td>
+        <td th:text="${post.getTitle()}"></td>
         <td th:text="${post.content}"></td>
     </tr>
 </table>
