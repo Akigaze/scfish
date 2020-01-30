@@ -1,6 +1,6 @@
 package com.yogurt.scfish.service;
 
-import com.yogurt.scfish.dto.PostDTO;
+import com.yogurt.scfish.dto.param.PostParam;
 import com.yogurt.scfish.entity.Post;
 import com.yogurt.scfish.repository.PostRepository;
 import lombok.AllArgsConstructor;
@@ -14,8 +14,8 @@ public class PostService {
 
   private PostRepository postRepository;
 
-  public void addPost(PostDTO postDTO) {
-    Post post = postDTO.convert();
+  public void addPost(PostParam postParam) {
+    Post post = postParam.convertTo();
     postRepository.save(post);
   }
 

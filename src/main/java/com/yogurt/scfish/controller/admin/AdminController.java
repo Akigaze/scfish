@@ -1,8 +1,7 @@
 package com.yogurt.scfish.controller.admin;
 
 
-import com.yogurt.scfish.contstant.SessionAttribute;
-import com.yogurt.scfish.dto.UserDTO;
+import com.yogurt.scfish.dto.param.UserParam;
 import com.yogurt.scfish.exception.DuplicatedException;
 import com.yogurt.scfish.service.AdminService;
 import lombok.AllArgsConstructor;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/scfish/admin/v1")
@@ -41,8 +39,8 @@ public class AdminController {
       @RequestParam("name") String name,
       @RequestParam("password") String password) {
     try {
-      UserDTO userDTO = new UserDTO(id, name, password, true);
-      this.adminService.addUser(userDTO);
+      UserParam userParam = new UserParam(id, name, password, true);
+      this.adminService.addUser(userParam);
       return new ModelAndView("redirect:/login");
     } catch (DuplicatedException e) {
       ModelAndView redirectView = new ModelAndView("redirect:/register");

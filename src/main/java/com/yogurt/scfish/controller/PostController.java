@@ -1,7 +1,7 @@
 package com.yogurt.scfish.controller;
 
 import com.yogurt.scfish.contstant.SessionAttribute;
-import com.yogurt.scfish.dto.PostDTO;
+import com.yogurt.scfish.dto.param.PostParam;
 import com.yogurt.scfish.entity.Post;
 import com.yogurt.scfish.service.PostService;
 import lombok.AllArgsConstructor;
@@ -23,12 +23,11 @@ public class PostController {
 
   private PostService postService;
 
-
   @PostMapping()
-  public ModelAndView publish(HttpServletRequest request, @ModelAttribute PostDTO postDTO) {
+  public ModelAndView publish(HttpServletRequest request, @ModelAttribute PostParam postParam) {
     HttpSession session = request.getSession();
-    postDTO.setUserId(session.getAttribute(SessionAttribute.USER_ID).toString());
-    this.postService.addPost(postDTO);
+    postParam.setUserId(session.getAttribute(SessionAttribute.USER_ID).toString());
+    this.postService.addPost(postParam);
     return new ModelAndView("redirect:/");
   }
 

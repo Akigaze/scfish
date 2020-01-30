@@ -1,7 +1,7 @@
 package com.yogurt.scfish.service;
 
 import com.yogurt.scfish.contstant.SessionAttribute;
-import com.yogurt.scfish.dto.UserDTO;
+import com.yogurt.scfish.dto.param.UserParam;
 import com.yogurt.scfish.entity.User;
 import com.yogurt.scfish.exception.DuplicatedException;
 import com.yogurt.scfish.repository.UserRepository;
@@ -19,11 +19,11 @@ public class AdminService {
 
   private UserRepository userRepository;
 
-  public User addUser(UserDTO userDTO) throws DuplicatedException {
-    if (this.userRepository.existsById(userDTO.getId())) {
+  public User addUser(UserParam userParam) throws DuplicatedException {
+    if (this.userRepository.existsById(userParam.getId())) {
       throw new DuplicatedException();
     }
-    User user = userDTO.convert();
+    User user = userParam.convertTo();
     return this.userRepository.save(user);
   }
 
