@@ -21,7 +21,13 @@ public class PostService {
 
   public Page<Post> getPosts(int page) {
     int size = 5;
-    Pageable pageable = PageRequest.of(page, size, new Sort(Sort.Direction.ASC, "updatedTime"));
+    Pageable pageable = PageRequest.of(page, size, new Sort(Sort.Direction.DESC, "updatedTime"));
     return postRepository.findAll(pageable);
+  }
+
+  public void deletePost(String userId,Integer postId){
+    if(postRepository.findByUserIdAndId(userId,postId)!=null){
+      this.postRepository.deleteById(postId);
+    }
   }
 }

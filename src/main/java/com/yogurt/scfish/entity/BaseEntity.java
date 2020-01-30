@@ -25,5 +25,5 @@ public class BaseEntity implements Serializable {
 
   @LastModifiedDate
   @Column(name = "updated_time")
-  private LocalDateTime updateTime;
+  private LocalDateTime updatedTime;
 }
