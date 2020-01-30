@@ -20,10 +20,10 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity implements Serializable {
   @CreatedDate
-  @Column(name = "creation_time_utc", updatable = false)
+  @Column(name = "created_time", updatable = false)
   private LocalDateTime creationTime;
 
   @LastModifiedDate
-  @Column(name = "update_time_utc")
+  @Column(name = "updated_time")
   private LocalDateTime updateTime;
 }

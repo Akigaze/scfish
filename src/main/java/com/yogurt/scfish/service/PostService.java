@@ -19,10 +19,9 @@ public class PostService {
     postRepository.save(post);
   }
 
-  public Page<Post> getPosts(int page){
+  public Page<Post> getPosts(int page) {
     int size = 5;
-    PageRequest pageRequest = PageRequest.of(page,size,
-            new Sort(Sort.Direction.ASC,"updateTime"));
-    return postRepository.findAll(pageRequest);
+    Pageable pageable = PageRequest.of(page, size, new Sort(Sort.Direction.ASC, "updatedTime"));
+    return postRepository.findAll(pageable);
   }
 }
