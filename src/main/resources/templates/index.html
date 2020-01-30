@@ -6,14 +6,18 @@
     <title>Title</title>
 </head>
 <body>
+<p th:text="'hello,'+${session.get('user').getName()}">hello</p>
 <a href="/scfish/admin/v1/logout">注销当前账号</a>
 <a href="publish">发布帖子</a>
-<p th:text="${message}"></p>
 <table>
     <tr th:each="post:${postPage}">
         <td th:text="${post.getTitle()}"></td>
-        <td th:text="${post.content}"></td>
+        <td th:text="${post.getContent()}"></td>
+        <td><a th:href="'/scfish/v1/post/deletePost?id='+${post.getId()}">delete</a></td>
     </tr>
 </table>
+<pre>
+</pre>
+<button id="get-next-post">next</button>
 </body>
 </html>
