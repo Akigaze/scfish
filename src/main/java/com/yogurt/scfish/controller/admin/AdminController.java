@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 
+@CrossOrigin
 @Controller
 @RequestMapping("/scfish/admin/v1")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
