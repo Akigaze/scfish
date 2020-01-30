@@ -26,7 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
   // 配置资源文件的映射路径
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    // registry.addResourceHandler("/demo/**").addResourceLocations("classpath:/");
+     registry.addResourceHandler("/**").addResourceLocations("classpath:/dist/");
   }
 
   // 配置请求拦截器
