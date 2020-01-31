@@ -11,12 +11,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.jws.WebParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @Controller
 @RequestMapping("/scfish/v1/post")
@@ -25,16 +22,8 @@ public class PostController {
 
     private PostService postService;
 
-    @PostMapping()
-    public ModelAndView publish(HttpServletRequest request, @ModelAttribute PostParam postParam){
-        HttpSession session = request.getSession();
-        postParam.setUserId(session.getAttribute(SessionAttribute.USER_ID).toString());
-        this.postService.addPost(postParam);
-        return new ModelAndView("redirect:/");
-    }
-
     @GetMapping("/getPosts")
-    public ModelAndView getPosts(RedirectAttributes redirectAttributes) {
+    public ModelAndView getPosts() {
         Page<Post> postPage = this.postService.getPosts(0);
         ModelAndView modelAndView = new ModelAndView("/index");
         modelAndView.addObject("postPage",postPage);
@@ -42,19 +31,27 @@ public class PostController {
     }
 
     @GetMapping("/getNextPosts")
-    public ModelAndView getNextPosts(@RequestParam Integer page,RedirectAttributes redirectAttributes){
+    public ModelAndView getNextPosts(@RequestParam Integer page){
         Page<Post> postPage = this.postService.getPosts(page);
         ModelAndView modelAndView = new ModelAndView("/index");
         modelAndView.addObject("postPage",postPage);
         return modelAndView;
     }
 
+    @PostMapping()
+    public ModelAndView publish(HttpServletRequest request, @ModelAttribute PostParam postParam){
+        HttpSession session = request.getSession();
+        postParam.setUserId(session.getAttribute(SessionAttribute.USER_ID).toString());
+        this.postService.addPost(postParam);
+        return getPosts();
+    }
+
     @GetMapping("/deletePost")
-    public String deletePost(HttpServletRequest request,@RequestParam Integer postId){
+    public ModelAndView deletePost(HttpServletRequest request,@RequestParam Integer postId){
         User user = (User) request.getSession().getAttribute("user");
         String userId = user.getId();
         this.postService.deletePost(userId,postId);
-        return "redirect:/";
+        return getPosts();
     }
 
 }

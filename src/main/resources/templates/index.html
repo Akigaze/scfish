@@ -8,7 +8,7 @@
 <body>
 <p th:text="'hello,'+${session.get('user').getName()}">hello</p>
 <a href="/scfish/admin/v1/logout">注销当前账号</a>
-<a href="publish">发布帖子</a>
+<a href="/publish">发布帖子</a>
 <table>
     <tr th:each="post:${postPage}">
         <td th:text="${post.getTitle()}"></td>

@@ -35,6 +35,7 @@ public class AdminService {
   public void authorize(HttpServletRequest request, String id) {
     HttpSession session = request.getSession(true);
     session.setAttribute(SessionAttribute.USER_TOKEN, DigestUtils.md5DigestAsHex(id.getBytes()));
+    session.setAttribute(SessionAttribute.USER_ID,id);
     session.setAttribute("user",this.userRepository.findById(id).get());
   }
 
