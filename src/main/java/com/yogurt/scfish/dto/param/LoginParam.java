@@ -2,16 +2,17 @@ package com.yogurt.scfish.dto.param;
 
 import com.yogurt.scfish.dto.base.InputConverter;
 import com.yogurt.scfish.entity.User;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserParam implements InputConverter<User> {
-  private String id;
-  private String name;
+public class LoginParam implements InputConverter<User> {
+  private String username;
   private String password;
-  private boolean enabled = true;
 
 }

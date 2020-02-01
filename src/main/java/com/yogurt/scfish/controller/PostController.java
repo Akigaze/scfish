@@ -23,6 +23,14 @@ public class PostController {
 
     private PostService postService;
 
+    @PostMapping()
+    public ModelAndView publish(HttpServletRequest request, @ModelAttribute PostParam postParam){
+        HttpSession session = request.getSession();
+        postParam.setUsername(session.getAttribute(SessionAttribute.USER_ID).toString());
+        this.postService.addPost(postParam);
+        return new ModelAndView("redirect:/");
+    }
+
     @GetMapping("/getPosts")
     public ModelAndView getPosts() {
         Page<Post> postPage = this.postService.getPosts(0);
@@ -50,8 +58,8 @@ public class PostController {
     @GetMapping("/deletePost")
     public ModelAndView deletePost(HttpServletRequest request,@RequestParam Integer postId){
         User user = (User) request.getSession().getAttribute("user");
-        String userId = user.getId();
-        this.postService.deletePost(userId,postId);
+        String username = user.getUsername();
+        this.postService.deletePost(username, postId);
         return getPosts();
     }
 

@@ -1,6 +1,5 @@
-package com.yogurt.scfish.dto;
+package com.yogurt.scfish.dto.param;
 
-import com.yogurt.scfish.dto.param.PostParam;
 import com.yogurt.scfish.entity.Post;
 import org.junit.Test;
 
@@ -16,7 +15,7 @@ public class PostParamTest {
     Post post = postParam.convertTo();
 
     assertThat(post.getId(), is(100));
-    assertThat(post.getUserId(), is("test_user"));
+    assertThat(post.getUsername(), is("test_user"));
     assertThat(post.getTitle(), is("First Post"));
     assertThat(post.getContent(), is("Today was ..."));
   }
@@ -30,7 +29,7 @@ public class PostParamTest {
     postParam.update(post);
 
     assertThat(post.getId(), is(100));
-    assertThat(post.getUserId(), is("test_user"));
+    assertThat(post.getUsername(), is("test_user"));
     assertThat(post.getTitle(), is("First Post"));
     assertThat(post.getContent(), is("Today was ..."));
   }

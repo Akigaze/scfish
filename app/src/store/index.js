@@ -1,10 +1,12 @@
-import {createStore, combineReducers} from "redux"
+import {createStore, applyMiddleware, combineReducers} from "redux"
+import thunk from "redux-thunk"
 import user from "./module/user";
+import app from "./module/app";
 import getters from "./getters";
 
-const reducers = combineReducers({user});
+const reducers = combineReducers({user, app});
 
-const store = createStore(reducers)
+const store = createStore(reducers, applyMiddleware(thunk))
 
 store.getters = new Proxy(getters, {
   get: (target, key) => {

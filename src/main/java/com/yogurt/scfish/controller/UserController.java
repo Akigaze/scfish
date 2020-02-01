@@ -1,6 +1,6 @@
 package com.yogurt.scfish.controller;
 
-import com.yogurt.scfish.dto.param.UserParam;
+import com.yogurt.scfish.dto.param.RegisterParam;
 import com.yogurt.scfish.entity.User;
 import com.yogurt.scfish.exception.DuplicatedException;
 import com.yogurt.scfish.exception.NotFoundException;
@@ -30,7 +30,7 @@ public class UserController {
   }
 
   @PostMapping()
-  public ResponseEntity<User> addUser(@RequestBody UserParam userParam) {
+  public ResponseEntity<User> addUser(@RequestBody RegisterParam userParam) {
     try {
       User saved = this.userService.addUser(userParam);
       return ResponseEntity.accepted().body(saved);
@@ -40,7 +40,7 @@ public class UserController {
   }
 
   @PutMapping()
-  public ResponseEntity<User> updateUser(@RequestBody UserParam userParam) {
+  public ResponseEntity<User> updateUser(@RequestBody RegisterParam userParam) {
     try {
       User updated = this.userService.updateUser(userParam);
       return ResponseEntity.accepted().body(updated);

@@ -2,8 +2,8 @@ spring:
   datasource:
     url: jdbc:mysql:///scfish?serverTimezone=UTC&charset=UTF-8&useSSL=false
     # just change username and password in your local environment, don't commit it
-    username: your-username
-    password: your-password
+    username: akigaze
+    password: akigaze
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     database: mysql

@@ -29,8 +29,8 @@ public class PostService {
     return postRepository.findAll(pageable);
   }
 
-  public void deletePost(String userId,Integer postId){
-    if(postRepository.findByUserIdAndId(userId,postId)!=null){
+  public void deletePost(String username,Integer postId){
+    if(postRepository.findByUsernameAndId(username,postId)!=null){
       this.postRepository.deleteById(postId);
     }
   }

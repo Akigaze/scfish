@@ -1,18 +1,16 @@
 package com.yogurt.scfish.dto.param;
 
 import com.yogurt.scfish.dto.base.InputConverter;
-import com.yogurt.scfish.entity.Post;
+import com.yogurt.scfish.entity.User;
 import lombok.*;
 
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostParam implements InputConverter<Post> {
-  private Integer id;
+public class RegisterParam implements InputConverter<User> {
   private String username;
-  private String title;
-  private String content;
+  private String nickname;
+  private String password;
 
 }

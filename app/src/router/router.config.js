@@ -3,14 +3,11 @@ import {Login} from "../view/user/Login";
 import {ExceptionPage} from "../view/exception/404";
 import {Register} from "../view/user/Register";
 import {PostList} from "../view/post/PostList";
-import authorize from "../utils/permission";
 
 export const adminRouterConfig = [
   {
     path: "/",
     name: "Index",
-    home: "/post",
-    auth: authorize,
     redirect: "/login",
     component: BasicLayout,
     children: [

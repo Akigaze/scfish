@@ -1,6 +1,6 @@
 package com.yogurt.scfish.service;
 
-import com.yogurt.scfish.dto.param.UserParam;
+import com.yogurt.scfish.dto.param.RegisterParam;
 import com.yogurt.scfish.entity.User;
 import com.yogurt.scfish.exception.DuplicatedException;
 import com.yogurt.scfish.exception.NotFoundException;
@@ -25,16 +25,16 @@ public class UserService {
     return this.userRepository.findById(id).orElse(null);
   }
 
-  public User addUser(UserParam userParam) throws DuplicatedException {
-    if (this.userRepository.existsById(userParam.getId())) {
+  public User addUser(RegisterParam userParam) throws DuplicatedException {
+    if (this.userRepository.existsById(userParam.getUsername())) {
       throw new DuplicatedException();
     }
     User user = userParam.convertTo();
     return this.userRepository.save(user);
   }
 
-  public User updateUser(UserParam userParam) throws NotFoundException {
-    User found = this.userRepository.findById(userParam.getId()).orElseThrow(NotFoundException::new);
+  public User updateUser(RegisterParam userParam) throws NotFoundException {
+    User found = this.userRepository.findById(userParam.getUsername()).orElseThrow(NotFoundException::new);
     userParam.update(found);
     return this.userRepository.save(found);
   }
@@ -46,7 +46,7 @@ public class UserService {
 
   public User updateUserStatus(String id, Boolean enabled) throws NotFoundException {
     User found = this.userRepository.findById(id).orElseThrow(NotFoundException::new);
-    found.setEnabled(enabled == null ? !found.isEnabled() : enabled);
+    found.setDeleted(enabled == null ? !found.isDeleted() : enabled);
     return this.userRepository.save(found);
   }
 }

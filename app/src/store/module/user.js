@@ -1,15 +1,19 @@
+import {user} from "../../action/actionType";
+
 const initialState = {
-  user: {},
+  profile: {},
   token: null
 }
 
 const reducer = (state = initialState, action) => {
-
   switch (action.type) {
+    case user.SET_TOKEN:
+      return {...state, token: action.token}
+    case user.SET_PROFILE:
+      return {...state, profile: action.profile}
     default:
       return state
   }
-
 }
 
 export default reducer

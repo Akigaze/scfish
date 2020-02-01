@@ -19,9 +19,9 @@ import javax.persistence.*;
 @DynamicUpdate
 public class User extends BaseEntity {
   @Id
-  private String id;
-  private String name;
+  private String username;
+  private String nickname;
   private String password;
-  private boolean enabled;
+  private boolean deleted;
 
 }
