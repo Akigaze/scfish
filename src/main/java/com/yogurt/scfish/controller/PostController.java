@@ -4,6 +4,7 @@ import com.yogurt.scfish.contstant.SessionAttribute;
 import com.yogurt.scfish.dto.param.PostParam;
 import com.yogurt.scfish.entity.Post;
 import com.yogurt.scfish.entity.User;
+import com.yogurt.scfish.service.CommentService;
 import com.yogurt.scfish.service.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,9 +56,9 @@ public class PostController {
     }
 
     @GetMapping("/enterPost")
-    public ModelAndView clickPost(@RequestParam Integer postId){
-        ModelAndView modelAndView = new ModelAndView("/postContent");
-        modelAndView.addObject("post",this.postService.getPost(postId));
+    public ModelAndView clickPost(@RequestParam Integer postId,HttpServletRequest request){
+        ModelAndView modelAndView = new ModelAndView("redirect:/scfish/v1/comment/get?postId="+postId);
+        request.getSession().setAttribute("post",this.postService.getPost(postId));
         return modelAndView;
     }
 }

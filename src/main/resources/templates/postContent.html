@@ -5,8 +5,23 @@
     <title>Title</title>
 </head>
 <body>
-<p th:text="'标题：'+${post.getTitle()}"></p>
-<p th:text="'内容：'+${post.getContent()}"></p>
-<p th:text="'发布时间：'+${post.getCreationTime()}"></p>
+<p th:text="'标题：'+${session.get('post').getTitle()}"></p>
+<p th:text="'内容：'+${session.get('post').getContent()}"></p>
+<p th:text="'发布时间：'+${session.get('post').getCreationTime()}"></p>
+
+-------回复------
+<div th:each="comment:${commentPage}">
+    <div>
+        <p th:text="${comment.getCommentContent()}"></p>
+    </div>
+</div>
+
+
+<form action="/scfish/v1/comment" method="post">
+    <input type="hidden" name="postId" th:value="${session.get('post').getId()}">
+    <input type="hidden" name="userId" th:value="${session.get('user').getId()}">
+    <input type="text" name="commentContent">
+    <input type="submit" value="publish">
+</form>
 </body>
 </html>

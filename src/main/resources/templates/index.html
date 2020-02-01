@@ -9,6 +9,7 @@
 <p th:text="'hello,'+${session.get('user').getName()}">hello</p>
 <a href="/scfish/admin/v1/logout">注销当前账号</a>
 <a href="/publish">发布帖子</a>
+
 <div th:each="post:${postPage}">
     <a th:href="'/scfish/v1/post/enterPost?postId='+${post.getId()}">
         <div>
