@@ -19,7 +19,11 @@ public class PostService {
     postRepository.save(post);
   }
 
-  public Page<Post> getPosts(int page) {
+  public Post getPost(Integer postId){
+    return postRepository.findById(postId).get();
+  }
+
+  public Page<Post> getPosts(Integer page) {
     int size = 5;
     Pageable pageable = PageRequest.of(page, size, new Sort(Sort.Direction.DESC, "updatedTime"));
     return postRepository.findAll(pageable);

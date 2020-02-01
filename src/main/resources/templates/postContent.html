@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p th:text="'标题：'+${post.getTitle()}"></p>
+<p th:text="'内容：'+${post.getContent()}"></p>
+<p th:text="'发布时间：'+${post.getCreationTime()}"></p>
+</body>
+</html>

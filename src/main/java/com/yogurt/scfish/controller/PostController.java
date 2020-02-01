@@ -54,5 +54,11 @@ public class PostController {
         return getPosts();
     }
 
+    @GetMapping("/enterPost")
+    public ModelAndView clickPost(@RequestParam Integer postId){
+        ModelAndView modelAndView = new ModelAndView("/postContent");
+        modelAndView.addObject("post",this.postService.getPost(postId));
+        return modelAndView;
+    }
 }
 
