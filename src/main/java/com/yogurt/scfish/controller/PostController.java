@@ -23,14 +23,6 @@ public class PostController {
 
     private PostService postService;
 
-    @PostMapping()
-    public ModelAndView publish(HttpServletRequest request, @ModelAttribute PostParam postParam){
-        HttpSession session = request.getSession();
-        postParam.setUsername(session.getAttribute(SessionAttribute.USER_ID).toString());
-        this.postService.addPost(postParam);
-        return new ModelAndView("redirect:/");
-    }
-
     @GetMapping("/getPosts")
     public ModelAndView getPosts() {
         Page<Post> postPage = this.postService.getPosts(0);
@@ -50,7 +42,7 @@ public class PostController {
     @PostMapping()
     public ModelAndView publish(HttpServletRequest request, @ModelAttribute PostParam postParam){
         HttpSession session = request.getSession();
-        postParam.setUserId(session.getAttribute(SessionAttribute.USER_ID).toString());
+        postParam.setUsername(session.getAttribute(SessionAttribute.USER_ID).toString());
         this.postService.addPost(postParam);
         return getPosts();
     }

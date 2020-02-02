@@ -31,7 +31,7 @@ service.interceptors.response.use(
       return resp
     },
     error => {
-      return error
+      return Promise.reject(error)
     }
 )
 
