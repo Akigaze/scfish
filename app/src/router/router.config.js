@@ -6,17 +6,10 @@ import {PostList} from "../view/post/PostList";
 
 export const adminRouterConfig = [
   {
-    path: "/",
-    name: "Index",
-    redirect: "/login",
-    component: BasicLayout,
-    children: [
-      {
-        path: "/post",
-        name: "PostList",
-        component: PostList
-      }
-    ]
+    path: "/post",
+    name: "PostList",
+    layout: BasicLayout,
+    component: PostList
   }
 ]
 
@@ -41,3 +34,5 @@ export const publicRouterConfig = [
     component: ExceptionPage
   }
 ]
+
+export const whitePaths = publicRouterConfig.map(route => route.path)

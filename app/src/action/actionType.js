@@ -4,5 +4,5 @@ export const app = {
 
 export const user = {
   SET_TOKEN: "SET_TOKEN",
-  SET_PROFILE: "SET_PROFILE"
+  SET_USER: "SET_USER"
 }

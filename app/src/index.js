@@ -1,10 +1,12 @@
 import React from 'react';
-import store from "./store";
 import ReactDOM from 'react-dom';
 import {Provider} from "react-redux"
+import store from "./store";
 import App from './App';
 import './asset/css/index.css';
 import * as serviceWorker from './serviceWorker';
+
+import "./core/use"
 
 const app = <Provider store={store}><App/></Provider>;
 ReactDOM.render(app, document.getElementById('root'));

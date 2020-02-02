@@ -38,6 +38,7 @@ public class AdminService {
   @NonNull
   public String authorize(HttpServletRequest request, @NonNull User user) {
     HttpSession session = request.getSession(true);
+    // TODO token should have expired time
     String token = DigestUtils.md5DigestAsHex(user.getUsername().getBytes());
     session.setAttribute(SessionAttribute.USER_TOKEN, token);
     session.setAttribute(SessionAttribute.USER, user);
