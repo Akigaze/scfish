@@ -21,6 +21,7 @@ public class WebConfig implements WebMvcConfigurer {
     registry.addViewController("/login").setViewName("login");
     registry.addViewController("/register").setViewName("register");
     registry.addViewController("/publish").setViewName("publish");
+    registry.addViewController("/postContent").setViewName("postContent");
   }
 
   // 配置资源文件的映射路径
@@ -36,4 +37,6 @@ public class WebConfig implements WebMvcConfigurer {
         .addPathPatterns("/**", "/")
         .excludePathPatterns(excludePathPatterns);
   }
+
+
 }

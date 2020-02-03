@@ -55,16 +55,14 @@ public class AdminController {
     return ResponseEntity.ok(accessToken);
   }
 
-  @PostMapping(value = "/register")
-  public String register(
-      @ModelAttribute @NonNull RegisterParam registerParam,
-      RedirectAttributes redirectAttributes) {
+  @PostMapping("/register")
+  public ResponseEntity<String> register(
+          @RequestBody @NonNull RegisterParam registerParam) {
     try {
       this.adminService.addUser(registerParam);
-      return "redirect:/login";
+      return ResponseEntity.ok().body("registered successfully");
     } catch (DuplicatedException e) {
-      redirectAttributes.addFlashAttribute("message", "用户名已被注册");
-      return "redirect:/register";
+      return ResponseEntity.badRequest().body("This username has been registered");
     }
   }
 

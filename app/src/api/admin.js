@@ -24,4 +24,17 @@ adminApi.access = (token) => {
   })
 }
 
+adminApi.register = (username,nickname,password) => {
+  return service({
+    method: "post",
+    url: `${baseURL}/register`,
+    data: {
+      username: username,
+      nickname: nickname,
+      password: password
+    }
+  })
+}
+
+
 export default adminApi

@@ -58,3 +58,25 @@
 .login-form > div.-sign-up-link > a {
   color: white;
 }
+
+.register-form {
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.register-form > div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 8px 0;
+}
+
+.register-form > div.-action {
+  justify-content: space-between;
+}
+
+.register-form > div.-sign-up-link > a {
+  color: white;
+}
