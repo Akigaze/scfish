@@ -28,11 +28,9 @@ export class Routes extends Component {
             adminRouterConfig.map(route => {
               const Layout = route.layout || Fragment
               return (
-                  <Route key={route.name} path={route.path}>
-                    <Layout>
-                      <route.component/>
-                    </Layout>
-                  </Route>
+                  <Route key={route.name} path={route.path} component={() => <Layout>
+                    <route.component/>
+                  </Layout>}/>
               )
             })
           }

@@ -10,7 +10,8 @@ const service = axios.create({
 function setTokenToHeader(config) {
   let token = store.getters.token();
   if (token){
-    config.headers["Scfish-Authorization"] = token
+    config.headers["Scfish-Authorization"] = token.sessionToken
+    config.headers["Access-Authorization"] = token.accessToken
   }
 }
 

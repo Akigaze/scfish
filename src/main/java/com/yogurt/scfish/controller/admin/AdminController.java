@@ -7,6 +7,7 @@ import com.yogurt.scfish.dto.param.LoginParam;
 import com.yogurt.scfish.dto.param.RegisterParam;
 import com.yogurt.scfish.entity.User;
 import com.yogurt.scfish.exception.DuplicatedException;
+import com.yogurt.scfish.security.AuthToken;
 import com.yogurt.scfish.service.AdminService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,21 @@ public class AdminController {
       return ResponseEntity.badRequest().build();
     }
     User user = optionalUser.get();
-    String token = adminService.authorize(request, user);
-    return ResponseEntity.accepted().body(new AuthorizationDTO(token, new UserDTO().convertFrom(user)));
+    AuthToken authToken = adminService.authorize(request, user);
+    AuthorizationDTO authDTO = new AuthorizationDTO().convertFrom(authToken);
+    authDTO.setProfile(new UserDTO().convertFrom(user));
+    return ResponseEntity.accepted().body(authDTO);
+  }
+
+  @PostMapping("/access")
+  public ResponseEntity<String> login(
+      HttpServletRequest request,
+      @RequestBody @NonNull String sessionToken) {
+    if (!adminService.validate(request, sessionToken)){
+      return ResponseEntity.badRequest().body("Invalid token or token expired");
+    }
+    String accessToken =  adminService.access(request);
+    return ResponseEntity.ok(accessToken);
   }
 
   @PostMapping(value = "/register")

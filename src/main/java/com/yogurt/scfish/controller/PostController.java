@@ -4,7 +4,6 @@ import com.yogurt.scfish.contstant.SessionAttribute;
 import com.yogurt.scfish.dto.param.PostParam;
 import com.yogurt.scfish.entity.Post;
 import com.yogurt.scfish.entity.User;
-import com.yogurt.scfish.service.CommentService;
 import com.yogurt.scfish.service.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +41,7 @@ public class PostController {
     @PostMapping()
     public ModelAndView publish(HttpServletRequest request, @ModelAttribute PostParam postParam){
         HttpSession session = request.getSession();
-        postParam.setUsername(session.getAttribute(SessionAttribute.USER_ID).toString());
+        postParam.setUsername(session.getAttribute(SessionAttribute.USER_NAME).toString());
         this.postService.addPost(postParam);
         return getPosts();
     }

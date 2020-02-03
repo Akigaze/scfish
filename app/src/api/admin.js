@@ -1,4 +1,5 @@
 import service from "../utils/service";
+
 const adminApi = {}
 
 const baseURL = "/scfish/admin/v1"
@@ -11,6 +12,15 @@ adminApi.login = (username, password) => {
       username: username,
       password: password
     }
+  })
+}
+
+adminApi.access = (token) => {
+  return service({
+    method: "post",
+    url: `${baseURL}/access`,
+    data: token,
+    headers: {"Content-Type" : "text/plain"}
   })
 }
 

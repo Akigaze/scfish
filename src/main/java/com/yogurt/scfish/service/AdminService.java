@@ -6,14 +6,17 @@ import com.yogurt.scfish.dto.param.RegisterParam;
 import com.yogurt.scfish.entity.User;
 import com.yogurt.scfish.exception.DuplicatedException;
 import com.yogurt.scfish.repository.UserRepository;
+import com.yogurt.scfish.security.AuthToken;
+import com.yogurt.scfish.util.AuthUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.time.Instant;
 import java.util.Optional;
 
 @Service
@@ -35,15 +38,34 @@ public class AdminService {
     return this.userRepository.findByUsernameAndPassword(loginParam.getUsername(), loginParam.getPassword());
   }
 
+  // TODO is it reasonable to set token in session, maybe better to use customized Context?
   @NonNull
-  public String authorize(HttpServletRequest request, @NonNull User user) {
+  public AuthToken authorize(HttpServletRequest request, @NonNull User user) {
     HttpSession session = request.getSession(true);
-    // TODO token should have expired time
-    String token = DigestUtils.md5DigestAsHex(user.getUsername().getBytes());
-    session.setAttribute(SessionAttribute.USER_TOKEN, token);
     session.setAttribute(SessionAttribute.USER, user);
-    session.setAttribute(SessionAttribute.USER_ID, user.getUsername());
-    return token;
+    session.setAttribute(SessionAttribute.USER_NAME, user.getUsername());
+
+    String sessionToken = AuthUtil.randomUUIDWithoutDash();
+    Instant tokenExpiredInstant = Instant.now().plusSeconds(AuthUtil.TOKEN_EXPIRED_SECONDS);
+    AuthToken authToken = new AuthToken(sessionToken, null, tokenExpiredInstant.getEpochSecond());
+    session.setAttribute(SessionAttribute.USER_SESSION_TOKEN, authToken);
+
+    return authToken;
   }
 
+  public boolean validate(HttpServletRequest request, @Nullable String sessionToken) {
+    if (sessionToken == null || sessionToken.isEmpty()) {
+      return false;
+    }
+    HttpSession session = request.getSession(true);
+    AuthToken authToken = (AuthToken) session.getAttribute(SessionAttribute.USER_SESSION_TOKEN);
+    return sessionToken.equals(authToken.getSessionToken()) && !AuthUtil.isTokenExpired(authToken);
+  }
+
+  public String access(HttpServletRequest request) {
+    String accessToken = AuthUtil.randomUUIDWithoutDash();
+    HttpSession session = request.getSession(true);
+    session.setAttribute(SessionAttribute.USER_ACCESS_TOKEN, accessToken);
+    return accessToken;
+  }
 }

@@ -3,12 +3,13 @@ import {Login} from "../view/user/Login";
 import {ExceptionPage} from "../view/exception/404";
 import {Register} from "../view/user/Register";
 import {PostList} from "../view/post/PostList";
+import AdminLayout from "../layout/AdminLayout";
 
 export const adminRouterConfig = [
   {
     path: "/post",
     name: "PostList",
-    layout: BasicLayout,
+    layout: AdminLayout,
     component: PostList
   }
 ]

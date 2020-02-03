@@ -6,7 +6,13 @@ const STORAGE_KEY = {
 };
 
 function getItem(key) {
-  return localStorage.getItem(STORAGE_PREFIX + key)
+  let item = localStorage.getItem(STORAGE_PREFIX + key)
+  try {
+    return item ? JSON.parse(item) : item
+  }catch (e) {
+    console.error(e)
+    return item
+  }
 }
 
 function setItem(key, value = "") {
@@ -23,9 +29,13 @@ const getters = {
 
 const setters = {
   user: (value) => setItem(STORAGE_KEY.USER, value),
-  token: (value) => setItem(STORAGE_KEY.TOKEN, value),
+  token: ({sessionToken, expiredTime}) => setItem(STORAGE_KEY.TOKEN, {sessionToken, expiredTime}),
 }
 
-const storage = {getters, setters}
+const clear = () => {
+  localStorage.clear()
+}
+
+const storage = {getters, setters, clear}
 
 export default storage

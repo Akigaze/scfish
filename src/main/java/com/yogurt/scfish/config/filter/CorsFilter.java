@@ -16,7 +16,12 @@ import com.yogurt.scfish.contstant.ScfishConstant;
 
 public class CorsFilter extends GenericFilterBean {
 
-  private final static String ALLOW_HEADERS = String.join(",", HttpHeaders.CONTENT_TYPE, ScfishConstant.TOKEN_HEADER_NAME);
+  private final static String ALLOW_HEADERS = String.join(
+      ",",
+      HttpHeaders.CONTENT_TYPE,
+      ScfishConstant.SCFISH_TOKEN_HEADER_NAME,
+      ScfishConstant.ACCESS_TOKEN_HEADER_NAME
+  );
 
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
