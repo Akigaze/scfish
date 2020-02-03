@@ -3,18 +3,23 @@ import {user} from "./actionType"
 import storage from "../core/storage";
 
 export const login = (username, password) => {
-    return async (dispatch) =>
+  return async (dispatch) => {
+    return new Promise((resolve, reject) =>
         adminApi.login(username, password)
             .then(resp => {
-                const {sessionToken, expiredTime, profile} = resp.data
-                dispatch({type: user.SET_TOKEN, token: {sessionToken, expiredTime}})
-                dispatch({type: user.SET_USER, profile})
-                storage.setters.token({sessionToken, expiredTime})
-                storage.setters.user(profile)
+              const {sessionToken, expiredTime, profile} = resp.data
+              dispatch({type: user.SET_TOKEN, token: {sessionToken, expiredTime}})
+              dispatch({type: user.SET_USER, profile})
+              storage.setters.token({sessionToken, expiredTime})
+              storage.setters.user(profile)
+              resolve(resp)
             })
             .catch(error => {
-                console.log(error);
+              console.log(error);
+              reject(error)
             })
+    )
+  }
 }
 
 export const getAccess = () => {

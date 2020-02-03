@@ -12,12 +12,16 @@ export class LoginForm extends Component {
     this.passwordRef = React.createRef()
   }
 
+  loginSuccess(){
+    this.props.history.push("/post")
+  }
+
   clickLogin = () => {
     const username = this.usernameRef.current.value
     const password = this.passwordRef.current.value
     if (username && password) {
       this.props.login(username, password)
-          .then(() => this.props.history.push("/post"))
+          .then((resp) => this.loginSuccess(resp))
     }
   }
 
