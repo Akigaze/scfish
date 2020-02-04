@@ -1,14 +1,18 @@
 package com.yogurt.scfish.service;
 
+import com.yogurt.scfish.cache.StringCacheStore;
 import com.yogurt.scfish.contstant.SessionAttribute;
 import com.yogurt.scfish.dto.param.LoginParam;
 import com.yogurt.scfish.dto.param.RegisterParam;
 import com.yogurt.scfish.entity.User;
+import com.yogurt.scfish.exception.BadRequestException;
 import com.yogurt.scfish.exception.DuplicatedException;
+import com.yogurt.scfish.exception.NotFoundException;
 import com.yogurt.scfish.repository.UserRepository;
 import com.yogurt.scfish.security.token.AuthToken;
 import com.yogurt.scfish.util.AuthUtil;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -19,11 +23,19 @@ import javax.servlet.http.HttpSession;
 import java.time.Instant;
 import java.util.Optional;
 
+import static com.yogurt.scfish.contstant.TokenEnum.ACCESS_TOKEN;
+import static com.yogurt.scfish.contstant.TokenEnum.REFRESH_TOKEN;
+
+@Slf4j
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class AdminService {
 
   private UserRepository userRepository;
+
+  private UserService userService;
+
+  private final StringCacheStore cacheStore;
 
   public void addUser(@NonNull RegisterParam registerParam) {
     if (this.userRepository.existsById(registerParam.getUsername())) {
@@ -67,5 +79,35 @@ public class AdminService {
     HttpSession session = request.getSession(true);
     session.setAttribute(SessionAttribute.USER_ACCESS_TOKEN, accessToken);
     return accessToken;
+  }
+
+  public AuthToken authorize(@NonNull LoginParam loginParam) {
+    String username = loginParam.getUsername();
+    final User user;
+    try {
+      user = userService.getByUsernameOfNonNull(username);
+    }catch (NotFoundException e){
+      log.warn("Could not find by username [{}]", username);
+      throw new BadRequestException("incorrect user name or password", e);
+    }
+    userService.mustBeActive(user);
+    if(!userService.isPasswordMatched(user, loginParam.getPassword())){
+      throw new BadRequestException("incorrect user name or password");
+    }
+    return buildAuthTokenFor(user);
+  }
+
+  private AuthToken buildAuthTokenFor(@NonNull User user) {
+    String accessToken = AuthUtil.randomUUIDWithoutDash();
+    String refreshToken = AuthUtil.randomUUIDWithoutDash();
+
+    AuthToken authToken = new AuthToken();
+    authToken.setAccessToken(accessToken);
+    authToken.setRefreshToken(refreshToken);
+
+    cacheStore.put(accessToken, user.getUsername(), ACCESS_TOKEN.getDuration(), ACCESS_TOKEN.getTimeUnit());
+    cacheStore.put(refreshToken, user.getUsername(), REFRESH_TOKEN.getDuration(), REFRESH_TOKEN.getTimeUnit());
+
+    return authToken;
   }
 }

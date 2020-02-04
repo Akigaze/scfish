@@ -3,10 +3,12 @@ package com.yogurt.scfish.service;
 import com.yogurt.scfish.dto.param.RegisterParam;
 import com.yogurt.scfish.entity.User;
 import com.yogurt.scfish.exception.DuplicatedException;
+import com.yogurt.scfish.exception.ForbiddenException;
 import com.yogurt.scfish.exception.NotFoundException;
 import com.yogurt.scfish.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,5 +50,21 @@ public class UserService {
     User found = this.userRepository.findById(id).orElseThrow(() -> new NotFoundException("user not found").setErrorData(id));
     found.setDeleted(enabled == null ? !found.isDeleted() : enabled);
     return this.userRepository.save(found);
+  }
+
+  @NonNull
+  public User getByUsernameOfNonNull(String username) throws NotFoundException {
+    return userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException("user name is not existed").setErrorData(username));
+  }
+
+  public void mustBeActive(@NonNull User user) {
+    if (user.isDeleted()) {
+      throw new ForbiddenException("The user has been forbidden").setErrorData(user.getUsername());
+    }
+  }
+
+  @NonNull
+  public boolean isPasswordMatched(@NonNull User user, @NonNull String password) {
+    return user.getPassword().equals(password);
   }
 }
