@@ -23,6 +23,7 @@ public class AdminController {
 
   private AdminService adminService;
 
+  // TODO 处理重复登录
   @PostMapping("/login")
   public AuthToken login(@RequestBody @NonNull LoginParam loginParam) {
     return adminService.authorize(loginParam);

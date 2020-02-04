@@ -1,17 +1,18 @@
 import React, {Component} from 'react';
-import {BrowserRouter, Switch} from 'react-router-dom';
+import {Router, Switch} from 'react-router-dom';
 import './asset/css/App.css';
 import Routes from "./router/Routes";
+import history from "./router/history";
 
 class App extends Component {
 
   render() {
     return (
-        <BrowserRouter>
+        <Router history={history}>
           <Switch>
             <Routes/>
           </Switch>
-        </BrowserRouter>
+        </Router>
     );
   }
 }

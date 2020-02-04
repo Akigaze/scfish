@@ -7,12 +7,16 @@ const STORAGE_KEY = {
 
 function getItem(key) {
   let item = localStorage.getItem(STORAGE_PREFIX + key)
-  try {
-    return item ? JSON.parse(item)["value"] : item
-  }catch (e) {
-    console.error(e)
-    return item
+  if(item){
+    try {
+      item = JSON.parse(item)["value"]
+    }catch (e) {
+      console.error(e)
+    }
   }
+  console.log(`get [{${key} : ${item}] from localstorage`)
+  return item
+
 }
 
 function setItem(key, value) {
@@ -21,6 +25,7 @@ function setItem(key, value) {
     expiredTime: 0
   }
   localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(item))
+  console.log(`set [{${key} : ${value}] into localstorage`)
 }
 
 const getters = {

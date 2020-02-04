@@ -6,6 +6,7 @@ import {adminRouterConfig, publicRouterConfig, whitePaths} from "./router.config
 export class Routes extends Component {
 
   // TODO should refactor
+  // TODO 登录后是否可以重新打开登录页面
   render() {
     return (
         <Fragment>

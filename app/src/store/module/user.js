@@ -2,7 +2,7 @@ import {user} from "../../action/actionType";
 import storage from "../../core/storage";
 
 const initialState = {
-  profile: {},
+  profile: null,
   token: null
 }
 
@@ -15,6 +15,10 @@ const reducer = (state = initialState, action) => {
     case user.SET_PROFILE:{
       storage.setters.profile(action.profile)
       return {...state, profile: action.profile}
+    }
+    case user.CLEAR_TOKEN: {
+      storage.clear()
+      return {...state, token: null}
     }
     default:
       return state
