@@ -15,12 +15,10 @@ adminApi.login = (username, password) => {
   })
 }
 
-adminApi.profile = (token) => {
+adminApi.refresh = (token) => {
   return service({
     method: "post",
-    url: `${baseURL}/access`,
-    data: token,
-    headers: {"Content-Type" : "text/plain"}
+    url: `${baseURL}/refresh/${token}`
   })
 }
 

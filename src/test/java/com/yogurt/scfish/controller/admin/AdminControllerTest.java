@@ -64,4 +64,24 @@ public class AdminControllerTest {
         .andExpect(content().json(objectMapper.writeValueAsString(authToken)));
   }
 
+  @Test
+  public void should_get_AuthToken_when_execute_refresh() throws Exception {
+    String refreshToken = "test-refreshToken";
+
+    AuthToken authToken = new AuthToken();
+    authToken.setAccessToken("new-access-token");
+    authToken.setRefreshToken("new-refresh-token");
+
+    when(adminService.refreshToken(refreshToken)).thenReturn(authToken);
+
+    MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+        .post("/scfish/admin/v1/refresh/" + refreshToken);
+
+    ResultActions resultActions = mockMvc.perform(request);
+
+    resultActions
+        .andExpect(status().isOk())
+        .andExpect(content().json(objectMapper.writeValueAsString(authToken)));
+  }
+
 }

@@ -42,7 +42,7 @@ public class ScfishConfiguration {
     filter.addExcludePathPatterns(
         "/scfish/admin/*/login",
         "/scfish/admin/*/register",
-        "/scfish/admin/*/refresh"
+        "/scfish/admin/*/refresh/*"
     );
 
     FilterRegistrationBean<AdminAuthorizationFilter> registrationBean = new FilterRegistrationBean<>();

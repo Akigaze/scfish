@@ -28,15 +28,9 @@ public class AdminController {
     return adminService.authorize(loginParam);
   }
 
-  @PostMapping("/access")
-  public ResponseEntity<String> login(
-      HttpServletRequest request,
-      @RequestBody @NonNull String sessionToken) {
-    if (!adminService.validate(request, sessionToken)) {
-      return ResponseEntity.badRequest().body("Invalid token or token expired");
-    }
-    String accessToken = adminService.access(request);
-    return ResponseEntity.ok(accessToken);
+  @PostMapping("/refresh/{refreshToken}")
+  public AuthToken refresh(@PathVariable @NonNull String refreshToken) {
+    return adminService.refreshToken(refreshToken);
   }
 
   @PostMapping("/register")

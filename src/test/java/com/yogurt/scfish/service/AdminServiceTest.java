@@ -14,6 +14,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Optional;
+
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -117,5 +119,39 @@ public class AdminServiceTest {
     } catch (BadRequestException e) {
       assertThat(e.getMessage(), is("incorrect user name or password"));
     }
+  }
+
+  @Test
+  public void should_return_AuthToken_if_could_not_find_username_from_cacheStore_by_refresh_token_when_do_refreshToken() {
+    String refreshToken = "test-refresh-token";
+
+    when(cacheStore.get(refreshToken)).thenReturn(Optional.empty());
+
+    try {
+      AuthToken authToken = adminService.refreshToken(refreshToken);
+      fail("don't throw BadRequestException when username not found");
+    }catch (BadRequestException e){
+      assertThat(e.getMessage(), is("Login status is invalid, please login again"));
+      assertThat(e.getErrorData(), is(refreshToken));
+    }
+  }
+
+  @Test
+  public void should_throw_BadRequestException_if_username_can_be_found_from_cacheStore_by_refresh_token_when_do_refreshToken() {
+    String refreshToken = "test-refresh-token";
+
+    User user = new User();
+    user.setUsername("test-username");
+    user.setPassword("test-password");
+    user.setDeleted(false);
+    user.setNickname("Test Nickname");
+
+    when(cacheStore.get(refreshToken)).thenReturn(Optional.of("test-username"));
+    when(userService.getByUsernameOfNonNull("test-username")).thenReturn(user);
+
+    AuthToken authToken = adminService.refreshToken(refreshToken);
+
+    assertThat(authToken.getAccessToken(), not(isEmptyOrNullString()));
+    assertThat(authToken.getRefreshToken(), not(isEmptyOrNullString()));
   }
 }

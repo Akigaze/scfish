@@ -10,7 +10,7 @@ export class AdminLayout extends Component {
     return (
         <div className="App">
           <div className="admin-header">
-            <div className="user-portrait" title={profile.nickname}></div>
+            <div className="user-portrait" title={profile && profile.nickname}></div>
           </div>
             {this.props.children}
         </div>

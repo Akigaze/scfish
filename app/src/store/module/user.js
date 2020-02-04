@@ -12,8 +12,10 @@ const reducer = (state = initialState, action) => {
       storage.setters.token(action.token)
       return {...state, token: action.token}
     }
-    case user.SET_PROFILE:
+    case user.SET_PROFILE:{
+      storage.setters.profile(action.profile)
       return {...state, profile: action.profile}
+    }
     default:
       return state
   }

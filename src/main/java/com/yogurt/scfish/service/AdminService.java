@@ -74,13 +74,6 @@ public class AdminService {
     return sessionToken.equals(authToken.getRefreshToken()) && !AuthUtil.isTokenExpired(authToken);
   }
 
-  public String access(HttpServletRequest request) {
-    String accessToken = AuthUtil.randomUUIDWithoutDash();
-    HttpSession session = request.getSession(true);
-    session.setAttribute(SessionAttribute.USER_ACCESS_TOKEN, accessToken);
-    return accessToken;
-  }
-
   public AuthToken authorize(@NonNull LoginParam loginParam) {
     String username = loginParam.getUsername();
     final User user;
@@ -110,5 +103,11 @@ public class AdminService {
     cacheStore.put(refreshToken, user.getUsername(), REFRESH_TOKEN.getDuration(), REFRESH_TOKEN.getTimeUnit());
 
     return authToken;
+  }
+
+  public AuthToken refreshToken(@NonNull String refreshToken) {
+    String username = cacheStore.get(refreshToken).orElseThrow(() -> new BadRequestException("Login status is invalid, please login again").setErrorData(refreshToken));
+    User user = userService.getByUsernameOfNonNull(username);
+    return buildAuthTokenFor(user);
   }
 }
