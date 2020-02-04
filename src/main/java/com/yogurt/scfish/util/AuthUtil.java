@@ -1,8 +1,7 @@
 package com.yogurt.scfish.util;
 
-import com.yogurt.scfish.security.AuthToken;
+import com.yogurt.scfish.security.token.AuthToken;
 import org.springframework.lang.NonNull;
-import org.springframework.util.DigestUtils;
 
 import java.time.Instant;
 import java.util.UUID;

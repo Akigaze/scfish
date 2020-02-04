@@ -7,8 +7,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class AuthToken {
-  private String sessionToken;
   private String accessToken;
   private long expiredTime;
+  private String refreshToken;
 
 }

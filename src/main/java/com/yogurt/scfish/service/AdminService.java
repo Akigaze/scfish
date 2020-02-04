@@ -47,7 +47,7 @@ public class AdminService {
 
     String sessionToken = AuthUtil.randomUUIDWithoutDash();
     Instant tokenExpiredInstant = Instant.now().plusSeconds(AuthUtil.TOKEN_EXPIRED_SECONDS);
-    AuthToken authToken = new AuthToken(sessionToken, null, tokenExpiredInstant.getEpochSecond());
+    AuthToken authToken = new AuthToken(sessionToken, tokenExpiredInstant.getEpochSecond(), null);
     session.setAttribute(SessionAttribute.USER_SESSION_TOKEN, authToken);
 
     return authToken;
@@ -59,7 +59,7 @@ public class AdminService {
     }
     HttpSession session = request.getSession(true);
     AuthToken authToken = (AuthToken) session.getAttribute(SessionAttribute.USER_SESSION_TOKEN);
-    return sessionToken.equals(authToken.getSessionToken()) && !AuthUtil.isTokenExpired(authToken);
+    return sessionToken.equals(authToken.getRefreshToken()) && !AuthUtil.isTokenExpired(authToken);
   }
 
   public String access(HttpServletRequest request) {
