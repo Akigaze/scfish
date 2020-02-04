@@ -1,4 +1,5 @@
 import {user} from "../../action/actionType";
+import storage from "../../core/storage";
 
 const initialState = {
   profile: {},
@@ -7,11 +8,11 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case user.SET_TOKEN:
+    case user.SET_TOKEN: {
+      storage.setters.token(action.token)
       return {...state, token: action.token}
-    case user.SET_ACCESS_TOKEN:
-      return {...state, token: {accessToken: action.accessToken, ...state.token}}
-    case user.SET_USER:
+    }
+    case user.SET_PROFILE:
       return {...state, profile: action.profile}
     default:
       return state

@@ -1,35 +1,36 @@
 const STORAGE_PREFIX = "SCFISH__"
 
 const STORAGE_KEY = {
-  USER: "USER",
+  PROFILE: "PROFILE",
   TOKEN: "TOKEN"
 };
 
 function getItem(key) {
   let item = localStorage.getItem(STORAGE_PREFIX + key)
   try {
-    return item ? JSON.parse(item) : item
+    return item ? JSON.parse(item)["value"] : item
   }catch (e) {
     console.error(e)
     return item
   }
 }
 
-function setItem(key, value = "") {
-  const _value = ["number", "string", "boolean"].includes(typeof value)
-      ? value
-      : JSON.stringify(value)
-  localStorage.setItem(STORAGE_PREFIX + key, _value)
+function setItem(key, value) {
+  const item = {
+    value: value,
+    expiredTime: 0
+  }
+  localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(item))
 }
 
 const getters = {
-  user: () => getItem(STORAGE_KEY.USER),
+  profile: () => getItem(STORAGE_KEY.PROFILE),
   token: () => getItem(STORAGE_KEY.TOKEN)
 }
 
 const setters = {
-  user: (value) => setItem(STORAGE_KEY.USER, value),
-  token: ({sessionToken, expiredTime}) => setItem(STORAGE_KEY.TOKEN, {sessionToken, expiredTime}),
+  profile: (value) => setItem(STORAGE_KEY.PROFILE, value),
+  token: (value) => setItem(STORAGE_KEY.TOKEN, value),
 }
 
 const clear = () => {

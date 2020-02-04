@@ -9,16 +9,18 @@ const service = axios.create({
 
 function setTokenToHeader(config) {
   let token = store.getters.token();
-  if (token){
-    config.headers["Scfish-Authorization"] = token.sessionToken
+  if (token && token.accessToken){
     config.headers["Access-Authorization"] = token.accessToken
   }
+}
+
+function handleError(status, data){
+
 }
 
 service.interceptors.request.use(
   config => {
     config.baseURL = store.getters.apiURL()
-    // TODO set token to header or parameter
     setTokenToHeader(config)
     return config
   },
@@ -32,6 +34,14 @@ service.interceptors.response.use(
       return resp
     },
     error => {
+      const response = error.response
+      const status = response ? response.status : -1
+      const data = response ? response.data : null
+
+      console.log(status, data);
+      // TODO refresh token if token is expired
+      handleError(status, data)
+
       return Promise.reject(error)
     }
 )

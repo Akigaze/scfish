@@ -3,7 +3,7 @@ import {bindActionCreators} from "redux"
 import {connect} from "react-redux"
 import {withRouter} from "react-router-dom"
 import "../../../asset/css/common.css"
-import {login} from "../../../action/user.action";
+import {getProfile, login} from "../../../action/user.action";
 
 export class LoginForm extends Component {
   constructor(props) {
@@ -13,6 +13,7 @@ export class LoginForm extends Component {
   }
 
   loginSuccess(){
+    this.props.getProfile()
     this.props.history.push("/post")
   }
 
@@ -58,7 +59,9 @@ function mapStateToProps(state, props) {
 
 function mapDispatchToProps(dispatch, props) {
   return bindActionCreators({
-    login: login
+    login: login,
+    getProfile: getProfile,
+
   }, dispatch)
 }
 

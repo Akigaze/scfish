@@ -1,9 +1,12 @@
-package com.yogurt.scfish.controller;
+package com.yogurt.scfish.controller.admin;
 
+import com.yogurt.scfish.dto.UserDTO;
 import com.yogurt.scfish.dto.param.RegisterParam;
 import com.yogurt.scfish.entity.User;
 import com.yogurt.scfish.exception.DuplicatedException;
 import com.yogurt.scfish.exception.NotFoundException;
+import com.yogurt.scfish.security.context.SecurityContext;
+import com.yogurt.scfish.security.context.SecurityContextHolder;
 import com.yogurt.scfish.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/scfish/v1/user")
+@RequestMapping("/scfish/user/v1")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class UserController {
 
@@ -70,6 +73,13 @@ public class UserController {
     } catch (NotFoundException e) {
       return ResponseEntity.status(e.getStatus()).build();
     }
+  }
+
+  @GetMapping("/profile")
+  public UserDTO getProfile(){
+    SecurityContext context = SecurityContextHolder.getContext();
+    User user = context.getAuthorization().getUserDetail().getUser();
+    return new UserDTO().convertFrom(user);
   }
 }
 

@@ -15,7 +15,7 @@ adminApi.login = (username, password) => {
   })
 }
 
-adminApi.access = (token) => {
+adminApi.profile = (token) => {
   return service({
     method: "post",
     url: `${baseURL}/access`,
