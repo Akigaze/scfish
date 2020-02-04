@@ -10,6 +10,7 @@ import com.yogurt.scfish.security.context.SecurityContext;
 import com.yogurt.scfish.security.context.SecurityContextHolder;
 import com.yogurt.scfish.security.support.UserDetail;
 import com.yogurt.scfish.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.util.StringUtils;
 
@@ -20,22 +21,30 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
+@Slf4j
 public class AdminAuthorizationFilter extends AbstractAuthorizationFilter {
 
   private StringCacheStore cacheStore;
 
   private UserService userService;
 
-  public AdminAuthorizationFilter(AuthorizationFailureHandler failureHandler) {
+  public AdminAuthorizationFilter(StringCacheStore cacheStore, UserService userService, AuthorizationFailureHandler failureHandler) {
     super(failureHandler);
+    this.cacheStore = cacheStore;
+    this.userService = userService;
   }
 
   private String getTokenFromRequest(@NonNull HttpServletRequest request) {
-    return request.getHeader(ScfishConstant.ACCESS_TOKEN_HEADER_NAME);
+    String tokenInHeader = request.getHeader(ScfishConstant.ACCESS_TOKEN_HEADER_NAME);
+    if (StringUtils.isEmpty(tokenInHeader)){
+      tokenInHeader = request.getParameter(ScfishConstant.ACCESS_TOKEN_REQUEST_PARAM_NAME);
+    }
+    return tokenInHeader;
   }
 
   @Override
   protected void doAuthorize(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+    log.info("-- filter doAuthorize for [{}] --", request.getServletPath());
     String token = this.getTokenFromRequest(request);
 
     if (StringUtils.isEmpty(token)) {

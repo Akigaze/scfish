@@ -4,6 +4,7 @@ import com.yogurt.scfish.config.handler.AuthorizationFailureHandler;
 import com.yogurt.scfish.config.handler.DefaultAuthorizationFailureHandler;
 import com.yogurt.scfish.security.context.SecurityContextHolder;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -16,6 +17,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+@Slf4j
 public abstract class AbstractAuthorizationFilter extends OncePerRequestFilter {
   private AntPathMatcher antPathMatcher;
 
@@ -49,6 +51,7 @@ public abstract class AbstractAuthorizationFilter extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    log.info("-- filter work for [{}] --", request.getServletPath());
     if (shouldNotFilter(request)) {
       filterChain.doFilter(request, response);
       return;

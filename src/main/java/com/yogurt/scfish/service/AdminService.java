@@ -94,6 +94,7 @@ public class AdminService {
     if (!userService.isPasswordMatched(user, loginParam.getPassword())) {
       throw new BadRequestException("incorrect user name or password");
     }
+    log.info("login and authorize for user [{}]", user.getUsername());
     return buildAuthTokenFor(user);
   }
 
