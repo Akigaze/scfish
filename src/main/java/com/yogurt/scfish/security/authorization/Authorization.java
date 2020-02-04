@@ -1,4 +1,4 @@
-package com.yogurt.scfish.security.context;
+package com.yogurt.scfish.security.authorization;
 
 import com.yogurt.scfish.security.support.UserDetail;
 import lombok.AllArgsConstructor;

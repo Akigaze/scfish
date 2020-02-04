@@ -1,4 +1,4 @@
-package com.yogurt.scfish.security;
+package com.yogurt.scfish.security.token;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

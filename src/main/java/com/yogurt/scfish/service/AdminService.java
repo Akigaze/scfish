@@ -6,7 +6,7 @@ import com.yogurt.scfish.dto.param.RegisterParam;
 import com.yogurt.scfish.entity.User;
 import com.yogurt.scfish.exception.DuplicatedException;
 import com.yogurt.scfish.repository.UserRepository;
-import com.yogurt.scfish.security.AuthToken;
+import com.yogurt.scfish.security.token.AuthToken;
 import com.yogurt.scfish.util.AuthUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
