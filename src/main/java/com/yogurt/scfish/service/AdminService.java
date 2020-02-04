@@ -25,9 +25,9 @@ public class AdminService {
 
   private UserRepository userRepository;
 
-  public void addUser(@NonNull RegisterParam registerParam) throws DuplicatedException {
+  public void addUser(@NonNull RegisterParam registerParam) {
     if (this.userRepository.existsById(registerParam.getUsername())) {
-      throw new DuplicatedException();
+      throw new DuplicatedException("user id already existed").setErrorData(registerParam);
     }
     User user = registerParam.convertTo();
     this.userRepository.save(user);

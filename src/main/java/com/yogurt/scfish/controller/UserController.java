@@ -35,7 +35,7 @@ public class UserController {
       User saved = this.userService.addUser(userParam);
       return ResponseEntity.accepted().body(saved);
     } catch (DuplicatedException e) {
-      return ResponseEntity.badRequest().build();
+      return ResponseEntity.status(e.getStatus()).build();
     }
   }
 
@@ -45,7 +45,7 @@ public class UserController {
       User updated = this.userService.updateUser(userParam);
       return ResponseEntity.accepted().body(updated);
     } catch (NotFoundException e) {
-      return ResponseEntity.notFound().build();
+      return ResponseEntity.status(e.getStatus()).build();
     }
   }
 
@@ -57,7 +57,7 @@ public class UserController {
       User frozen = this.userService.updateUserStatus(id, enabled);
       return ResponseEntity.accepted().body(frozen);
     } catch (NotFoundException e) {
-      return ResponseEntity.notFound().build();
+      return ResponseEntity.status(e.getStatus()).build();
     }
   }
 
@@ -68,7 +68,7 @@ public class UserController {
       this.userService.deleteUserById(id);
       return ResponseEntity.noContent().build();
     } catch (NotFoundException e) {
-      return ResponseEntity.notFound().build();
+      return ResponseEntity.status(e.getStatus()).build();
     }
   }
 }
