@@ -3,39 +3,49 @@ import {bindActionCreators} from "redux"
 import {connect} from "react-redux"
 import {withRouter} from "react-router-dom"
 import {getPosts} from "../../../action/post.action";
-import {post as actionType} from "../../../action/actionType";
-import store from "../../../store";
+import Post from "./Post";
 
-export class Posts extends Component{
+export class Posts extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            postPage: []
         };
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.props.getPosts()
+            .then(value => {
+                this.setState({
+                    postPage: value
+                });
+            })
     }
 
+
     render() {
-        return(
-            <div>
-                <p>{this.state.page}</p>
+        return (
+            <div className="post-list">
+                {
+                    this.state.postPage.map((post,index) => {
+                        return <Post post={post} key={post.id} />
+                    }
+                )}
             </div>
         )
     }
 }
 
+
 function mapStateToProps(state, props) {
-    return {
-    }
+    return {}
 }
 
 function mapDispatchToProps(dispatch, props) {
     return bindActionCreators({
-        getPosts:getPosts
+        getPosts: getPosts
     }, dispatch)
 }
 
-export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Posts))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Posts))
 
