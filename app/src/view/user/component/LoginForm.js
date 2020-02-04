@@ -21,6 +21,11 @@ export class LoginForm extends Component {
     }
   }
 
+  clickReset = ()=> {
+    this.usernameRef.current.value = '';
+    this.passwordRef.current.value = '';
+  }
+
   render() {
     return (
         <div className="login-form">
@@ -32,7 +37,7 @@ export class LoginForm extends Component {
           </div>
           <div className="-action">
             <button className="btn" onClick={this.clickLogin}>login</button>
-            <button className="btn">reset</button>
+            <button className="btn" onClick={this.clickReset}>reset</button>
           </div>
           <div className="-sign-up-link">
             <a href="/register">Sign up for Scfish</a>

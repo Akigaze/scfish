@@ -7,3 +7,7 @@ export const user = {
   SET_ACCESS_TOKEN: "SET_ACCESS_TOKEN",
   SET_USER: "SET_USER"
 }
+
+export const post = {
+  POST_PAGE:"POST_PAGE"
+}

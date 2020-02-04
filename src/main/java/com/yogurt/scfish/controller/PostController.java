@@ -8,6 +8,7 @@ import com.yogurt.scfish.service.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,23 +24,19 @@ public class PostController {
     private PostService postService;
 
     @GetMapping("/getPosts")
-    public ModelAndView getPosts() {
+    public ResponseEntity<Page> getPosts() {
         Page<Post> postPage = this.postService.getPosts(0);
-        ModelAndView modelAndView = new ModelAndView("/index");
-        modelAndView.addObject("postPage",postPage);
-        return modelAndView;
+        return ResponseEntity.accepted().body(postPage);
     }
 
     @GetMapping("/getNextPosts")
-    public ModelAndView getNextPosts(@RequestParam Integer page){
+    public ResponseEntity<Page> getNextPosts(@RequestParam Integer page){
         Page<Post> postPage = this.postService.getPosts(page);
-        ModelAndView modelAndView = new ModelAndView("/index");
-        modelAndView.addObject("postPage",postPage);
-        return modelAndView;
+        return ResponseEntity.accepted().body(postPage);
     }
 
     @PostMapping()
-    public ModelAndView publish(HttpServletRequest request, @ModelAttribute PostParam postParam){
+    public ResponseEntity<Page> publish(HttpServletRequest request, @ModelAttribute PostParam postParam){
         HttpSession session = request.getSession();
         postParam.setUsername(session.getAttribute(SessionAttribute.USER_NAME).toString());
         this.postService.addPost(postParam);
@@ -47,7 +44,7 @@ public class PostController {
     }
 
     @GetMapping("/deletePost")
-    public ModelAndView deletePost(HttpServletRequest request,@RequestParam Integer postId){
+    public ResponseEntity<Page> deletePost(HttpServletRequest request,@RequestParam Integer postId){
         User user = (User) request.getSession().getAttribute("user");
         String username = user.getUsername();
         this.postService.deletePost(username, postId);

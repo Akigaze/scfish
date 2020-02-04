@@ -6,7 +6,7 @@ const getters = {
       return state.app.apiURL
     }
     return `${window.location.protocol}//${window.location.host}`
-  }
+  },
 }
 
 export default getters

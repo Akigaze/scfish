@@ -1,10 +1,14 @@
-import React, {Component} from "react"
+import React, {Component, Fragment} from "react"
+import Posts from "./component/Posts";
 
 export class PostList extends Component{
 
   render() {
     return(
-        <h1>Post list ...</h1>
+        <Fragment>
+            <h1>Post List...</h1>
+            <Posts />
+        </Fragment>
     )
   }
 }
