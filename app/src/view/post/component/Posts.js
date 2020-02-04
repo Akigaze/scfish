@@ -9,28 +9,50 @@ export class Posts extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            page: 1,
             postPage: []
         };
     }
 
-    componentWillMount() {
-        this.props.getPosts()
-            .then(value => {
-                this.setState({
-                    postPage: value
-                });
-            })
+    getPage = (page) =>{
+        this.props.getPosts(page)
+          .then(value => {
+              this.setState({
+                  postPage: value,
+                  page : page
+              });
+          })
     }
 
+    componentWillMount() {
+        this.getPage(1)
+    }
+
+    getNextPage = () =>{
+        this.getPage(this.state.page+1)
+    }
+
+    getPrePage = () =>{
+        if(this.state.page===1){
+            this.getPage(1)
+        }else {
+            this.getPage(this.state.page-1)
+            console.log("here")
+        }
+    }
 
     render() {
         return (
             <div className="post-list">
+                <div className="posts">
                 {
                     this.state.postPage.map((post,index) => {
                         return <Post post={post} key={post.id} />
                     }
                 )}
+                </div>
+                <button className="btn" onClick={this.getNextPage}>next</button>
+                <button className="btn" onClick={this.getPrePage}>previous</button>
             </div>
         )
     }

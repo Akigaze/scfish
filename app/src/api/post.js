@@ -4,10 +4,13 @@ const postApi = {}
 
 const baseURL = "/scfish/v1/post"
 
-postApi.getPosts = () => {
+postApi.getPosts = (page) => {
     return service({
         method : "get",
         url : `${baseURL}/getPosts`,
+        params: {
+            page:page
+        }
     })
 }
 

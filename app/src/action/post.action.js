@@ -1,17 +1,17 @@
 import postApi from "../api/post";
 import {post as actionType} from "./actionType";
 
-export const getPosts = () => {
+export const getPosts = (page) => {
     return async (dispatch) =>{
         return new Promise((resolve, reject) => {
-            postApi.getPosts()
+            postApi.getPosts(page)
                 .then(resp => {
                     const postPage = resp.data.content
-                    dispatch({type: actionType.POST_PAGE, page: postPage})
+                    dispatch({type: actionType.POST_PAGE, postPage: postPage})
                     resolve(postPage)
                 })
                 .catch(error => {
-                    reject()
+                    reject(error)
                 })
         })
     }

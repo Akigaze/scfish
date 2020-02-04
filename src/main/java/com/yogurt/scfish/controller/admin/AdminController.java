@@ -39,7 +39,7 @@ public class AdminController {
           @RequestBody @NonNull RegisterParam registerParam) {
     try {
       this.adminService.addUser(registerParam);
-      return ResponseEntity.ok().body("registered successfully");
+      return ResponseEntity.ok().body("Registered successfully");
     } catch (DuplicatedException e) {
       return ResponseEntity.badRequest().body("This username has been registered");
     }
