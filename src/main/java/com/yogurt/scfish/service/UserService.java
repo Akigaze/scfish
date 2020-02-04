@@ -57,7 +57,7 @@ public class UserService {
     return userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException("user name is not existed").setErrorData(username));
   }
 
-  public void mustBeActive(@NonNull User user) {
+  public void mustNotBeDeleted(@NonNull User user) {
     if (user.isDeleted()) {
       throw new ForbiddenException("The user has been forbidden").setErrorData(user.getUsername());
     }

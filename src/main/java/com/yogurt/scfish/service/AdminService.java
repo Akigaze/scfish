@@ -86,12 +86,12 @@ public class AdminService {
     final User user;
     try {
       user = userService.getByUsernameOfNonNull(username);
-    }catch (NotFoundException e){
+    } catch (NotFoundException e) {
       log.warn("Could not find by username [{}]", username);
       throw new BadRequestException("incorrect user name or password", e);
     }
-    userService.mustBeActive(user);
-    if(!userService.isPasswordMatched(user, loginParam.getPassword())){
+    userService.mustNotBeDeleted(user);
+    if (!userService.isPasswordMatched(user, loginParam.getPassword())) {
       throw new BadRequestException("incorrect user name or password");
     }
     return buildAuthTokenFor(user);
