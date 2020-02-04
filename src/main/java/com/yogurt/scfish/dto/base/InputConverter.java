@@ -12,7 +12,7 @@ public interface InputConverter<E> {
 
   @SuppressWarnings("unchecked")
   default E convertTo() {
-    ParameterizedType entityType = this.getParameterizedType();
+    ParameterizedType entityType = this.parameterizedType();
     Assert.notNull(entityType, "Can't get actual type because parameterized type is null");
 
     Class<E> entityClass = (Class<E>) entityType.getActualTypeArguments()[0];
@@ -24,7 +24,7 @@ public interface InputConverter<E> {
   }
 
   @Nullable
-  default ParameterizedType getParameterizedType() {
+  default ParameterizedType parameterizedType() {
     return ReflectionUtil.getParameterizedType(InputConverter.class, this.getClass());
   }
 }
