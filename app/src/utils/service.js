@@ -12,13 +12,13 @@ const service = axios.create({
 
 function setTokenToHeader(config) {
   let token = store.getters.token();
-  if (token && token.accessToken){
+  if (token && token.accessToken) {
     config.headers["Access-Authorization"] = token.accessToken
   }
 }
 
 async function retryRequest(error) {
-  if (error && error.response && error.response.config){
+  if (error && error.response && error.response.config) {
     const config = error.response.config;
     setTokenToHeader(config)
     console.log("retry request", config.path)
@@ -26,14 +26,14 @@ async function retryRequest(error) {
   }
 }
 
-async function refreshToken(token, error){
-  try{
+async function refreshToken(token, error) {
+  try {
     console.log("refresh token")
     const resp = await adminApi.refresh(token)
     console.log("refresh token result", resp)
     store.dispatch({type: user.SET_TOKEN, token: resp.data})
     return retryRequest(error)
-  }catch (e) {
+  } catch (e) {
     console.log("refresh token occur error", e);
     history.push("/login")
     store.dispatch({type: user.CLEAR_TOKEN})
@@ -41,14 +41,14 @@ async function refreshToken(token, error){
 }
 
 service.interceptors.request.use(
-  config => {
-    config.baseURL = store.getters.apiURL()
-    setTokenToHeader(config)
-    return config
-  },
-  error => {
-    return Promise.reject(error)
-  }
+    config => {
+      // config.baseURL = store.getters.apiURL()
+      setTokenToHeader(config)
+      return config
+    },
+    error => {
+      return Promise.reject(error)
+    }
 )
 
 service.interceptors.response.use(
@@ -60,10 +60,10 @@ service.interceptors.response.use(
       const status = response ? response.status : -1
       const data = response ? response.data : null
 
-      if (data){
-        if (status === 401 && data.status === 401){
+      if (data) {
+        if (status === 401 && data.status === 401) {
           const token = store.getters.token()
-          if(token && token.accessToken === data.data && token.refreshToken){
+          if (token && token.accessToken === data.data && token.refreshToken) {
             return refreshToken(token.refreshToken, error)
           }
         }

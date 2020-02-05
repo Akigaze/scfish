@@ -1,6 +1,4 @@
-export const app = {
-  SET_API_URL: "SET_API_URL"
-}
+export const app = {}
 
 export const user = {
   SET_TOKEN: "SET_TOKEN",
@@ -9,5 +7,5 @@ export const user = {
 }
 
 export const post = {
-  POST_PAGE:"POST_PAGE"
+  POST_PAGE: "POST_PAGE"
 }

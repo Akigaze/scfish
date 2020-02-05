@@ -22,7 +22,7 @@ function getItem(key) {
 function setItem(key, value) {
   const item = {
     value: value,
-    expiredTime: 0
+    expiredTime: null
   }
   localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(item))
   console.log(`set [{${key} : ${value}] into localstorage`)
