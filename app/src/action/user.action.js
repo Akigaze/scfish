@@ -36,12 +36,28 @@ export const getProfile = () => {
 }
 
 export const register = (username, nickname, password) => {
-    return async (dispatch) =>
-        adminApi.register(username, nickname, password)
+  return async (dispatch) =>
+      adminApi.register(username, nickname, password)
+          .then(resp => {
+            const result = resp.data;
+            alert(result)
+          }).catch(error => {
+        console.log(error);
+      })
+}
+
+export const logout = () => {
+  return async (dispatch) => {
+    dispatch({type: user.CLEAR_TOKEN})
+    return new Promise((resolve, reject) =>
+        adminApi.logout()
             .then(resp => {
-                const result = resp.data;
-                alert(result)
-            }).catch(error => {
-            console.log(error);
-        })
+              resolve(resp)
+            })
+            .catch(error => {
+              console.log(error);
+              reject(error)
+            })
+    )
+  }
 }

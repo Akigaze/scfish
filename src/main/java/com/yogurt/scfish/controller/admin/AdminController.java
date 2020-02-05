@@ -11,10 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/scfish/admin")
@@ -35,8 +31,7 @@ public class AdminController {
   }
 
   @PostMapping("/register")
-  public ResponseEntity<String> register(
-          @RequestBody @NonNull RegisterParam registerParam) {
+  public ResponseEntity<String> register(@RequestBody @NonNull RegisterParam registerParam) {
     try {
       this.adminService.addUser(registerParam);
       return ResponseEntity.ok().body("Registered successfully");
@@ -45,10 +40,9 @@ public class AdminController {
     }
   }
 
-  @GetMapping("/logout")
-  public ModelAndView logout(HttpServletRequest request) {
-    request.getSession(true).invalidate();
-    return new ModelAndView("redirect:/login");
+  @PostMapping("/logout")
+  public void logout() {
+    adminService.clearToken();
   }
 }
 

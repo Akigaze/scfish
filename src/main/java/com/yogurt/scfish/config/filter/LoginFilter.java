@@ -1,6 +1,7 @@
 package com.yogurt.scfish.config.filter;
 
 import com.yogurt.scfish.cache.StringCacheStore;
+import com.yogurt.scfish.cache.util.CacheStoreUtil;
 import com.yogurt.scfish.core.BaseResponse;
 import com.yogurt.scfish.util.JsonUtil;
 import lombok.AllArgsConstructor;
@@ -34,7 +35,7 @@ public class LoginFilter extends OncePerRequestFilter implements BaseRequestFilt
       return;
     }
     // TODO should based on token and username
-    Optional<String> optionalUsername = cacheStore.get(token);
+    Optional<String> optionalUsername = cacheStore.get(CacheStoreUtil.buildAccessTokenKey(token));
     if (optionalUsername.isPresent()) {
       this.handleReplicatedLogin(request, response, optionalUsername.get());
       return;

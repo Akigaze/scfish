@@ -22,7 +22,7 @@ adminApi.refresh = (token) => {
   })
 }
 
-adminApi.register = (username,nickname,password) => {
+adminApi.register = (username, nickname, password) => {
   return service({
     method: "post",
     url: `${baseURL}/register`,
@@ -34,5 +34,11 @@ adminApi.register = (username,nickname,password) => {
   })
 }
 
+adminApi.logout = () => {
+  return service({
+    method: "post",
+    url: `${baseURL}/logout`
+  })
+}
 
 export default adminApi

@@ -1,6 +1,7 @@
 package com.yogurt.scfish.config.filter;
 
 import com.yogurt.scfish.cache.StringCacheStore;
+import com.yogurt.scfish.cache.util.CacheStoreUtil;
 import com.yogurt.scfish.config.handler.AuthorizationFailureHandler;
 import com.yogurt.scfish.entity.User;
 import com.yogurt.scfish.exception.AuthorizationException;
@@ -42,7 +43,7 @@ public class AdminAuthorizationFilter extends AbstractAuthorizationFilter {
       return;
     }
 
-    Optional<String> optionalUsername = cacheStore.get(token);
+    Optional<String> optionalUsername = cacheStore.get(CacheStoreUtil.buildAccessTokenKey(token));
     if (!optionalUsername.isPresent()) {
       getFailureHandler().handleFailure(request, response, new AuthorizationException("Token was expired or not existed").setErrorData(token));
       return;
