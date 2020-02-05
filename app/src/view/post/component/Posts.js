@@ -37,9 +37,7 @@ export class Posts extends Component {
     }
 
     getPrePage = () =>{
-        if(this.state.page===1){
-            this.getPage(1)
-        }else {
+        if(this.state.page>1){
             this.getPage(this.state.page-1)
         }
     }
