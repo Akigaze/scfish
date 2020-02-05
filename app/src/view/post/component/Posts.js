@@ -37,7 +37,6 @@ export class Posts extends Component {
             this.getPage(1)
         }else {
             this.getPage(this.state.page-1)
-            console.log("here")
         }
     }
 

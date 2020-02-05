@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
-import java.io.IOException;
 
 @Controller
 @RequestMapping("/scfish/post")
@@ -33,9 +31,9 @@ public class PostController {
     public ResponseEntity getPosts(@RequestParam Integer page) {
         Page<Post> postPage = this.postService.getPosts(page-1);
         if(postPage.isEmpty()){
-            return ResponseEntity.badRequest().body("No more");
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        return ResponseEntity.accepted().body(postPage);
+        return new ResponseEntity(postPage,HttpStatus.ACCEPTED);
 
     }
 

@@ -12,6 +12,7 @@ export const getPosts = (page) => {
                 })
                 .catch(error => {
                     reject(error)
+                    alert("No more")
                 })
         })
     }
