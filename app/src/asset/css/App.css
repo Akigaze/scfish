@@ -90,14 +90,13 @@ body {
   border-radius: 25px;
   background-color: #61dafb;
 }
+.post-list{
+    width: 600px;
+    margin: 0 auto;
+}
 
 .posts {
   height: 400px;
-}
-
-.publish{
-    margin: 0 auto;
-    width: 800px;
 }
 
 .publish-btn{

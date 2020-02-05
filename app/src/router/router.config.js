@@ -5,6 +5,7 @@ import {Register} from "../view/user/Register";
 import {PostList} from "../view/post/PostList";
 import AdminLayout from "../layout/AdminLayout";
 import {PublishPage} from "../view/post/PublishPage";
+import {PostDetail} from "../view/post/PostDetail";
 
 export const adminRouterConfig = [
   {
@@ -18,6 +19,12 @@ export const adminRouterConfig = [
     name: "PublishPage",
     layout: AdminLayout,
     component: PublishPage
+  },
+  {
+    path: "/detail",
+    name: "PostDetail",
+    layout: AdminLayout,
+    component: PostDetail
   }
 ]
 

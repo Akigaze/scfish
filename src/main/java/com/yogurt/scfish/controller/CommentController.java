@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,15 +28,13 @@ public class CommentController {
     @PostMapping()
     public ModelAndView publicComment(@ModelAttribute CommentParam commentParam,HttpServletRequest request){
         this.commentService.addComment(commentParam);
-        return getComments(commentParam.getPostId(),request);
+        return null;
     }
 
-    @GetMapping("/get")
-    public ModelAndView getComments(@RequestParam Integer postId,HttpServletRequest request){
-        Page<Comment> page = this.commentService.getComments(postId,0);
-        ModelAndView modelAndView = new ModelAndView("/postContent");
-        modelAndView.addObject("commentPage",page);
-        return modelAndView;
+    @GetMapping("/getComments")
+    public ResponseEntity getComments(@RequestParam Integer postId,Integer page){
+        Page<Comment> commentPage = this.commentService.getComments(postId,page-1);
+        return new ResponseEntity(commentPage,HttpStatus.ACCEPTED);
     }
 
 }

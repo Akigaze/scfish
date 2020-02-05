@@ -1,9 +1,19 @@
 import React, {Component} from "react";
-
+import {withRouter} from "react-router";
+import {connect} from "react-redux";
 
 export class Post extends Component{
+  constructor(props) {
+    super(props);
+  }
+
   clickPost = () =>{
-    console.log(this.props.post.id)
+    const state = {postId:this.props.post.id}
+    const path = {
+      pathname:"/detail",
+      state:state
+    }
+    this.props.history.push(path)
   }
 
   render() {
@@ -16,5 +26,12 @@ export class Post extends Component{
   }
 }
 
+function mapStateToProps(state){
+  return{}
+}
+function mapDispatchToProps(dispatch,props){
+  return {}
+}
 
-export default Post
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Post))
+
