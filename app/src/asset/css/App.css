@@ -70,19 +70,11 @@ body {
   justify-content: space-around;
 }
 
-.register-form > div {
+.register-form > .-action{
+  margin:  12px auto;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin: 8px 0;
-}
-
-.register-form > div.-action {
-  justify-content: space-between;
-}
-
-.register-form > div.-sign-up-link > a {
-  color: white;
 }
 
 .admin-header {
@@ -102,6 +94,7 @@ body {
 .posts {
   height: 400px;
 }
+
 
 
 

@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @RequestMapping("/scfish/post")
@@ -28,10 +29,10 @@ public class PostController {
     private PostService postService;
 
     @GetMapping("/getPosts")
-    public ResponseEntity getPosts(@RequestParam Integer page) {
+    public ResponseEntity<Page> getPosts(@RequestParam Integer page) {
         Page<Post> postPage = this.postService.getPosts(page-1);
         if(postPage.isEmpty()){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(null,HttpStatus.ACCEPTED);
         }
         return new ResponseEntity(postPage,HttpStatus.ACCEPTED);
 

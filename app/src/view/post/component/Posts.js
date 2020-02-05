@@ -17,10 +17,14 @@ export class Posts extends Component {
     getPage = (page) =>{
         this.props.getPosts(page)
           .then(value => {
-              this.setState({
-                  postPage: value,
-                  page : page
-              });
+              if(value===""){
+                  alert("No more")
+              }else {
+                  this.setState({
+                      postPage: value.content,
+                      page : page
+                 });
+              }
           })
     }
 
