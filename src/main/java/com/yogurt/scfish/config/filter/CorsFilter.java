@@ -1,5 +1,6 @@
 package com.yogurt.scfish.config.filter;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.filter.GenericFilterBean;
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import com.yogurt.scfish.contstant.ScfishConstant;
-
+@Slf4j
 public class CorsFilter extends GenericFilterBean {
 
   private final static String ALLOW_HEADERS = String.join(
@@ -25,7 +26,7 @@ public class CorsFilter extends GenericFilterBean {
 
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-
+    log.info("-- Cors Filter work --");
     HttpServletRequest httpServletRequest = (HttpServletRequest) request;
     HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 

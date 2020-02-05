@@ -2,7 +2,6 @@ package com.yogurt.scfish.config.filter;
 
 import com.yogurt.scfish.cache.StringCacheStore;
 import com.yogurt.scfish.config.handler.AuthorizationFailureHandler;
-import com.yogurt.scfish.contstant.ScfishConstant;
 import com.yogurt.scfish.entity.User;
 import com.yogurt.scfish.exception.AuthorizationException;
 import com.yogurt.scfish.security.authorization.Authorization;
@@ -11,7 +10,6 @@ import com.yogurt.scfish.security.context.SecurityContextHolder;
 import com.yogurt.scfish.security.support.UserDetail;
 import com.yogurt.scfish.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.lang.NonNull;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.FilterChain;
@@ -32,14 +30,6 @@ public class AdminAuthorizationFilter extends AbstractAuthorizationFilter {
     super(failureHandler);
     this.cacheStore = cacheStore;
     this.userService = userService;
-  }
-
-  private String getTokenFromRequest(@NonNull HttpServletRequest request) {
-    String tokenInHeader = request.getHeader(ScfishConstant.ACCESS_TOKEN_HEADER_NAME);
-    if (StringUtils.isEmpty(tokenInHeader)){
-      tokenInHeader = request.getParameter(ScfishConstant.ACCESS_TOKEN_REQUEST_PARAM_NAME);
-    }
-    return tokenInHeader;
   }
 
   @Override

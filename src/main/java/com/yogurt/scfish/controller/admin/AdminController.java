@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/scfish/admin/v1")
+@RequestMapping("/scfish/admin")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class AdminController {
 

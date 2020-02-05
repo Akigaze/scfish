@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/scfish/user/v1")
+@RequestMapping("/scfish/user")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class UserController {
 

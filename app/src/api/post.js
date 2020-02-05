@@ -2,7 +2,7 @@ import service from "../utils/service";
 
 const postApi = {}
 
-const baseURL = "/scfish/v1/post"
+const baseURL = "/scfish/post"
 
 postApi.getPosts = (page) => {
     return service({

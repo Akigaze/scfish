@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Slf4j
-public abstract class AbstractAuthorizationFilter extends OncePerRequestFilter {
+public abstract class AbstractAuthorizationFilter extends OncePerRequestFilter implements BaseRequestFilter {
   private AntPathMatcher antPathMatcher;
 
   private Set<String> excludePathPatterns = new HashSet<>();

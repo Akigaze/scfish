@@ -4,6 +4,7 @@ import com.yogurt.scfish.cache.InMemoryCacheStore;
 import com.yogurt.scfish.cache.StringCacheStore;
 import com.yogurt.scfish.config.filter.AdminAuthorizationFilter;
 import com.yogurt.scfish.config.filter.CorsFilter;
+import com.yogurt.scfish.config.filter.LoginFilter;
 import com.yogurt.scfish.config.handler.AuthorizationFailureHandler;
 import com.yogurt.scfish.config.handler.DefaultAuthorizationFailureHandler;
 import com.yogurt.scfish.service.UserService;
@@ -33,6 +34,17 @@ public class ScfishConfiguration {
   }
 
   @Bean
+  public FilterRegistrationBean<LoginFilter> loginFilter(StringCacheStore cacheStore) {
+    FilterRegistrationBean<LoginFilter> loginFilter = new FilterRegistrationBean<>();
+
+    loginFilter.setOrder(-1);
+    loginFilter.setFilter(new LoginFilter(cacheStore));
+    loginFilter.addUrlPatterns("/scfish/admin/login");
+
+    return loginFilter;
+  }
+
+  @Bean
   public FilterRegistrationBean<AdminAuthorizationFilter> adminAuthorizationFilter(
       StringCacheStore cacheStore,
       UserService userService){
@@ -40,9 +52,9 @@ public class ScfishConfiguration {
     AdminAuthorizationFilter filter = new AdminAuthorizationFilter(cacheStore, userService, failureHandler);
 
     filter.addExcludePathPatterns(
-        "/scfish/admin/*/login",
-        "/scfish/admin/*/register",
-        "/scfish/admin/*/refresh/*"
+        "/scfish/admin/login",
+        "/scfish/admin/register",
+        "/scfish/admin/refresh/*"
     );
 
     FilterRegistrationBean<AdminAuthorizationFilter> registrationBean = new FilterRegistrationBean<>();

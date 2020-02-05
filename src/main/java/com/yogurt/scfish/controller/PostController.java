@@ -23,7 +23,7 @@ import javax.validation.constraints.Null;
 import java.io.IOException;
 
 @Controller
-@RequestMapping("/scfish/v1/post")
+@RequestMapping("/scfish/post")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class PostController {
 
@@ -57,7 +57,7 @@ public class PostController {
 
     @GetMapping("/enterPost")
     public ModelAndView clickPost(@RequestParam Integer postId,HttpServletRequest request){
-        ModelAndView modelAndView = new ModelAndView("redirect:/scfish/v1/comment/get?postId="+postId);
+        ModelAndView modelAndView = new ModelAndView("redirect:/scfish/comment/get?postId="+postId);
         request.getSession().setAttribute("post",this.postService.getPost(postId));
         return modelAndView;
     }

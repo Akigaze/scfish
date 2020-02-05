@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-    <form action="/scfish/v1/post" method="post">
+    <form action="/scfish/post" method="post">
         <input type="hidden" name="userId" th:value="${session.get('user').getId()}">
         <input type="text" name="title">
         <input type="text" name="content">

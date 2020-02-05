@@ -53,7 +53,7 @@ public class AdminControllerTest {
     when(adminService.authorize(any(LoginParam.class))).thenReturn(authToken);
 
     MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-        .post("/scfish/admin/v1/login")
+        .post("/scfish/admin/login")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(loginParam));
 
@@ -75,7 +75,7 @@ public class AdminControllerTest {
     when(adminService.refreshToken(refreshToken)).thenReturn(authToken);
 
     MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-        .post("/scfish/admin/v1/refresh/" + refreshToken);
+        .post("/scfish/admin/refresh/" + refreshToken);
 
     ResultActions resultActions = mockMvc.perform(request);
 

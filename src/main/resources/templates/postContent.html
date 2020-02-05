@@ -17,7 +17,7 @@
 </div>
 
 
-<form action="/scfish/v1/comment" method="post">
+<form action="/scfish/comment" method="post">
     <input type="hidden" name="postId" th:value="${session.get('post').getId()}">
     <input type="hidden" name="userId" th:value="${session.get('user').getId()}">
     <input type="text" name="commentContent">

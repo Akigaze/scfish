@@ -2,7 +2,7 @@ import service from "../utils/service";
 
 const userApi = {}
 
-const baseURL = "/scfish/user/v1"
+const baseURL = "/scfish/user"
 
 userApi.profile = () => {
   return service({

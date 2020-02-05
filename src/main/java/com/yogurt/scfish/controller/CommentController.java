@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/scfish/v1/comment")
+@RequestMapping("/scfish/comment")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class CommentController {
     private CommentService commentService;
