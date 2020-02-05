@@ -33,6 +33,7 @@ public class LoginFilter extends OncePerRequestFilter implements BaseRequestFilt
       chain.doFilter(request, response);
       return;
     }
+    // TODO should based on token and username
     Optional<String> optionalUsername = cacheStore.get(token);
     if (optionalUsername.isPresent()) {
       this.handleReplicatedLogin(request, response, optionalUsername.get());

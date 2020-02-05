@@ -2,47 +2,60 @@ import React, {Component} from "react"
 import {bindActionCreators} from "redux"
 import {connect} from "react-redux"
 import {withRouter} from "react-router-dom"
-import "../../../asset/css/common.css"
+import Button from "@material-ui/core/Button"
+import TextField from "@material-ui/core/TextField"
 import {getProfile, login} from "../../../action/user.action";
 
 export class LoginForm extends Component {
   constructor(props) {
     super(props);
-    this.usernameRef = React.createRef()
-    this.passwordRef = React.createRef()
+    this.state = {
+      username: "",
+      password: ""
+    }
   }
 
-  loginSuccess(){
+  loginSuccess() {
     this.props.getProfile()
     this.props.history.push("/post")
   }
 
   clickLogin = () => {
-    const username = this.usernameRef.current.value
-    const password = this.passwordRef.current.value
+    const {username, password} = this.state
     if (username && password) {
       this.props.login(username, password)
-          .then((resp) => this.loginSuccess(resp))
+          .then(resp => this.loginSuccess(resp))
     }
   }
 
-  clickReset = ()=> {
-    this.usernameRef.current.value = '';
-    this.passwordRef.current.value = '';
+  clickReset = () => {
+    this.setState({username: "", password: ""})
+  }
+
+  handleUsernameChange = (event) => {
+    this.setState({username: event.target.value})
+  }
+
+  handlePasswordChange = (event) => {
+    this.setState({password: event.target.value})
   }
 
   render() {
     return (
         <div className="login-form">
           <div>
-            <input ref={this.usernameRef} className="input" placeholder="user name"/>
+            <TextField className="input" size="small" color="secondary"
+                       label="user name" variant="outlined"
+                       value={this.state.username} onChange={this.handleUsernameChange}/>
           </div>
           <div>
-            <input ref={this.passwordRef} className="input" type="password" placeholder="password"/>
+            <TextField type="password" className="input" size="small"
+                       color="secondary" label="password" variant="outlined"
+                       value={this.state.password} onChange={this.handlePasswordChange}/>
           </div>
           <div className="-action">
-            <button className="btn" onClick={this.clickLogin}>login</button>
-            <button className="btn" onClick={this.clickReset}>reset</button>
+            <Button variant="contained" color="primary" onClick={this.clickLogin}>login</Button>
+            <Button variant="outlined" color="secondary" onClick={this.clickReset}>reset</Button>
           </div>
           <div className="-sign-up-link">
             <a href="/register">Sign up for Scfish</a>

@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {Router, Switch} from 'react-router-dom';
 import './asset/css/App.css';
+import "./asset/css/common.css"
+import "typeface-roboto"
 import Routes from "./router/Routes";
 import history from "./router/history";
 
