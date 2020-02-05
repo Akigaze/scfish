@@ -17,6 +17,20 @@ export const getPosts = (page) => {
     }
 }
 
+export const publish = (username,title, content) => {
+  return async (dispatch) => {
+    return new Promise((resolve,reject)=>{
+      postApi.publish(username,title,content)
+        .then(resp =>{
+          const result = resp.data
+          alert(result)
+          resolve(result)
+        }).catch(error=>{
+          reject(error)
+      })
+    })
+  }
+}
 
 
 

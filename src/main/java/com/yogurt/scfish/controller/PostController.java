@@ -38,12 +38,10 @@ public class PostController {
 
     }
 
-    @PostMapping()
-    public ResponseEntity publish(HttpServletRequest request, @ModelAttribute PostParam postParam){
-        HttpSession session = request.getSession();
-        postParam.setUsername(session.getAttribute(SessionAttribute.USER_NAME).toString());
+    @PostMapping("/publish")
+    public ResponseEntity publish(@RequestBody PostParam postParam){
         this.postService.addPost(postParam);
-        return getPosts(PostAttribute.FIRST_PAGE);
+        return new ResponseEntity("Publish successfully",HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/deletePost")

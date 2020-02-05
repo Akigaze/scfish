@@ -95,6 +95,13 @@ body {
   height: 400px;
 }
 
+.publish{
+    margin: 0 auto;
+    width: 800px;
+}
 
-
+.publish-btn{
+    width: 100px;
+    margin:0 auto;
+}
 

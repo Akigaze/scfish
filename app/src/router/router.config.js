@@ -4,6 +4,7 @@ import {ExceptionPage} from "../view/exception/404";
 import {Register} from "../view/user/Register";
 import {PostList} from "../view/post/PostList";
 import AdminLayout from "../layout/AdminLayout";
+import {PublishPage} from "../view/post/PublishPage";
 
 export const adminRouterConfig = [
   {
@@ -11,6 +12,12 @@ export const adminRouterConfig = [
     name: "PostList",
     layout: AdminLayout,
     component: PostList
+  },
+  {
+    path: "/publish",
+    name: "PublishPage",
+    layout: AdminLayout,
+    component: PublishPage
   }
 ]
 

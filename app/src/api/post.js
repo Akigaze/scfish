@@ -14,6 +14,17 @@ postApi.getPosts = (page) => {
     })
 }
 
+postApi.publish = (username,title,content) => {
+  return service({
+    method: "post",
+    url: `${baseURL}/publish`,
+    data: {
+      username:username,
+      title: title,
+      content: content
+    }
+  })
+}
 
 export default postApi
 
