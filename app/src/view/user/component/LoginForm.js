@@ -1,9 +1,10 @@
 import React, {Component} from "react"
 import {bindActionCreators} from "redux"
 import {connect} from "react-redux"
-import {withRouter} from "react-router-dom"
+import {Link, withRouter} from "react-router-dom"
 import Button from "@material-ui/core/Button"
 import TextField from "@material-ui/core/TextField"
+import FormControl from "@material-ui/core/FormControl"
 import {getProfile, login} from "../../../action/user.action";
 
 export class LoginForm extends Component {
@@ -43,23 +44,23 @@ export class LoginForm extends Component {
   render() {
     return (
         <div className="login-form">
-          <div>
-            <TextField className="input" size="small" color="secondary"
+          <FormControl margin="normal" fullWidth>
+            <TextField size="small" color="secondary"
                        label="user name" variant="outlined"
                        value={this.state.username} onChange={this.handleUsernameChange}/>
-          </div>
-          <div>
-            <TextField type="password" className="input" size="small"
+          </FormControl>
+          <FormControl margin="normal" fullWidth>
+            <TextField type="password" size="small"
                        color="secondary" label="password" variant="outlined"
                        value={this.state.password} onChange={this.handlePasswordChange}/>
-          </div>
-          <div className="-action">
+          </FormControl>
+          <FormControl margin="normal" className="-action">
             <Button variant="contained" color="primary" onClick={this.clickLogin}>login</Button>
             <Button variant="outlined" color="secondary" onClick={this.clickReset}>reset</Button>
-          </div>
-          <div className="-sign-up-link">
-            <a href="/register">Sign up for Scfish</a>
-          </div>
+          </FormControl>
+          <FormControl margin="normal" className="-sign-up-link">
+            <Link to="/register">Sign up for Scfish</Link>
+          </FormControl>
         </div>
     )
   }
