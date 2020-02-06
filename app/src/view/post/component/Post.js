@@ -2,12 +2,8 @@ import React, {Component} from "react";
 import {withRouter} from "react-router";
 import {connect} from "react-redux";
 import Box from "@material-ui/core/Box";
-import {width} from "@material-ui/system";
 
 export class Post extends Component{
-  constructor(props) {
-    super(props);
-  }
 
   clickPost = () =>{
     const state = {postId:this.props.post.id}
@@ -20,7 +16,8 @@ export class Post extends Component{
 
   render() {
     return(
-      <div onClick={this.clickPost} style={{padding:15}}>
+      <Box onClick={this.clickPost} style={{padding:15}}
+           borderRadius={4} border={1} borderColor="grey" m={1} boxShadow={2}>
         <Box component="div" overflow="hidden" textOverflow="ellipsis"
              textAlign="left" fontSize="h5.fontSize"
               style={{height:"1.4em"}} ml={2}>
@@ -31,7 +28,7 @@ export class Post extends Component{
              style={{height:"2.8em"}} ml={4} mt={2}>
           {this.props.post.content}
         </Box>
-      </div>
+      </Box>
     )
   }
 }

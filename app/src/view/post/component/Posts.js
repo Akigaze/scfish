@@ -6,66 +6,88 @@ import {getPosts} from "../../../action/post.action";
 import Post from "./Post";
 import FormControl from "@material-ui/core/FormControl";
 import Container from "@material-ui/core/Container";
-import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 
+//
+let flag = true;
+
 export class Posts extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            page: 1,
-            postPage: []
-        };
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      page: 1,
+      postPage: [],
+    };
+  }
 
-    getPage = (page) =>{
-        this.props.getPosts(page)
-          .then(value => {
-              if(value===""){
-                  alert("No more")
-              }else {
-                  this.setState({
-                      postPage: value.content,
-                      page : page
-                 });
-              }
-          })
+  // Load next page automatically
+  onScrollHandle(event) {
+    const scrollTop = (event.target ? event.target.documentElement.scrollTop : false) || window.pageYOffset || (event.target ? event.target.body.scrollTop : 0);
+    const clientHeight = (event.target && event.target.documentElement.clientHeight) || document.body.clientHeight;
+    const scrollHeight = (event.target && event.target.documentElement.scrollHeight) || document.body.scrollHeight;
+    const height = scrollHeight - scrollTop - clientHeight;
+    if(Math.round(height)<1 && flag){
+      flag = false
+      document.getElementById("flag").click()
     }
+  }
 
-    componentWillMount() {
-        this.getPage(1)
-    }
+  componentDidMount() {
+    window.addEventListener("scroll",this.onScrollHandle)
+  }
 
-    getNextPage = () =>{
-        this.getPage(this.state.page+1)
-    }
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.onScrollHandle)
+  }
 
-    getPrePage = () =>{
-        if(this.state.page>1){
-            this.getPage(this.state.page-1)
+  handleFlagClick = () => {
+    this.getNextPage()
+    flag = true
+  }
+
+  //getPosts
+  componentWillMount() {
+    this.getPage(1)
+  }
+
+  getPage = (page) => {
+    this.props.getPosts(page)
+      .then(value => {
+        if (value === "") {
+          alert("No more")
+        } else {
+         for(let index in value.content) {
+           this.setState({
+             postPage: [...this.state.postPage, value.content[index]],
+             page: page
+           })
+         }
         }
-    }
+      })
+  }
 
-  clickPublish = () =>{
-    this.props.history.push("/publish");
+  getNextPage = () => {
+    this.getPage(this.state.page + 1)
+  }
+
+  clickPublish = () => {
+    this.props.history.push("/publish")
   }
 
   render() {
     return (
-      <div className="post-list">
+      <div id="post-list">
+        <div id="flag" type="hidden" onClick={this.handleFlagClick}/>
         <Container fixed maxWidth="md">
-            {
-              this.state.postPage.map((post,index) => {
-                  return (
-                    <Box borderRadius={4} border={1} borderColor="grey" m={1} boxShadow={2}>
-                      <Post post={post} key={post.id} />
-                    </Box>
-                  )}
-              )}
+          {
+            this.state.postPage.map((post, index) => {
+                return (
+                    <Post post={post} key={post.id}/>
+                )
+              })
+          }
         </Container>
         <FormControl margin="normal" className="-action">
-          <Button color="secondary" variant="outlined" onClick={this.getNextPage}>next</Button>
-          <Button color="secondary" variant="outlined" onClick={this.getPrePage}>previous</Button>
           <Button color="primary" variant="contained" onClick={this.clickPublish}>publish</Button>
         </FormControl>
       </div>
