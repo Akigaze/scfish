@@ -1,5 +1,7 @@
 import React from "react"
 
-export const ExceptionPage = (props) => {
+const ExceptionPage = (props) => {
   return <span>404</span>
 }
+
+export default ExceptionPage

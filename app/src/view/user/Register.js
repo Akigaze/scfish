@@ -2,7 +2,7 @@ import React, {Component, Fragment} from "react"
 import logo from "../../asset/icon/logo.svg";
 import RegisterForm from "./component/RegisterForm";
 
-export class Register extends Component {
+export default class Register extends Component {
 
   render() {
     return (

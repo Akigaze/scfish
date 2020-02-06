@@ -1,11 +1,16 @@
-import {BasicLayout} from "../layout/BasicLayout";
-import {Login} from "../view/user/Login";
-import {ExceptionPage} from "../view/exception/404";
-import {Register} from "../view/user/Register";
-import {PostList} from "../view/post/PostList";
+import React from "react"
+
+import BasicLayout from "../layout/BasicLayout";
 import AdminLayout from "../layout/AdminLayout";
-import {PublishPage} from "../view/post/PublishPage";
-import {PostDetail} from "../view/post/PostDetail";
+
+
+const PostList = React.lazy(() => import("../view/post/PostList"))
+const PublishPage = React.lazy(() => import("../view/post/PublishPage"))
+const PostDetail = React.lazy(() => import("../view/post/PostDetail"))
+
+const Login = React.lazy(() => import("../view/user/Login"))
+const Register = React.lazy(() => import("../view/user/Register"))
+const ExceptionPage = React.lazy(() => import("../view/exception/404"))
 
 export const adminRouterConfig = [
   {
@@ -27,7 +32,6 @@ export const adminRouterConfig = [
     component: PostDetail
   }
 ]
-
 
 export const publicRouterConfig = [
   {

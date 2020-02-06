@@ -1,7 +1,7 @@
 import React, {Component} from "react"
 
 
-export class BasicLayout extends Component{
+export default class BasicLayout extends Component{
 
   render() {
     return (

@@ -2,7 +2,7 @@ import React, {Component, Fragment} from "react"
 import logo from "../../asset/icon/logo.svg";
 import LoginForm from "./component/LoginForm";
 
-export class Login extends Component {
+export default class Login extends Component {
 
   render() {
     return (
