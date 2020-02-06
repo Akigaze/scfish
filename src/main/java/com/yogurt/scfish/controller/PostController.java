@@ -35,11 +35,10 @@ public class PostController {
             return new ResponseEntity(null,HttpStatus.ACCEPTED);
         }
         return new ResponseEntity(postPage,HttpStatus.ACCEPTED);
-
     }
 
     @PostMapping("/publish")
-    public ResponseEntity publish(@RequestBody PostParam postParam){
+    public ResponseEntity publish(@ModelAttribute PostParam postParam){
         this.postService.addPost(postParam);
         return new ResponseEntity("Publish successfully",HttpStatus.ACCEPTED);
     }
@@ -52,11 +51,14 @@ public class PostController {
         return getPosts(PostAttribute.FIRST_PAGE);
     }
 
-    @GetMapping("/enterPost")
-    public ModelAndView clickPost(@RequestParam Integer postId,HttpServletRequest request){
-        ModelAndView modelAndView = new ModelAndView("redirect:/scfish/comment/get?postId="+postId);
-        request.getSession().setAttribute("post",this.postService.getPost(postId));
-        return modelAndView;
+    @PostMapping("/search")
+    public ResponseEntity search(@RequestParam String keyword,Integer page){
+        keyword = "%" + keyword + "%";
+        Page<Post> postPage = this.postService.Search(keyword,page-1);
+        if(postPage.isEmpty()){
+            return new ResponseEntity(null,HttpStatus.ACCEPTED);
+        }
+        return new ResponseEntity(postPage,HttpStatus.ACCEPTED);
     }
 }
 

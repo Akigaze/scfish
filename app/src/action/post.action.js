@@ -32,6 +32,20 @@ export const publish = (username,title, content) => {
   }
 }
 
+export const search = (keyword,page) => {
+  return async (dispatch) => {
+    return new Promise((resolve,reject)=>{
+      postApi.search(keyword,page)
+        .then(resp =>{
+          const postPage = resp.data
+          dispatch({type: actionType.POST_PAGE, postPage: postPage})
+          resolve(postPage)
+        }).catch(error=>{
+        reject(error)
+      })
+    })
+  }
+}
 
 
 

@@ -18,10 +18,21 @@ postApi.publish = (username,title,content) => {
   return service({
     method: "post",
     url: `${baseURL}/publish`,
-    data: {
+    params: {
       username:username,
       title: title,
       content: content
+    }
+  })
+}
+
+postApi.search = (keyword,page) => {
+  return service({
+    method: "post",
+    url: `${baseURL}/search`,
+    params: {
+      keyword:keyword,
+      page: page
     }
   })
 }

@@ -35,4 +35,10 @@ public class PostService {
       this.postRepository.deleteById(postId);
     }
   }
+
+  public Page<Post> Search(String keyword,Integer page){
+      Pageable pageable = PageRequest.of(page,PAGE_SIZE, new Sort(Sort.Direction.DESC, "updatedTime"));
+      return postRepository.findAllByTitleLikeOrContentLike(keyword,keyword,pageable);
+  }
+
 }
