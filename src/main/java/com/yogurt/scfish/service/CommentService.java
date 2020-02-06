@@ -23,13 +23,17 @@ public class CommentService{
         this.commentRepository.save(comment);
     }
 
+    public void changeUpdateTime(Integer postId){
+//        this.commentRepository.changeUpdateTime(postId,postId);
+    }
+
     public Page<Comment> getComments(Integer postId,Integer page) {
         Pageable pageable = PageRequest.of(page, COMMENT_SIZE, new Sort(Sort.Direction.ASC, "creationTime"));
         return commentRepository.findAllByPostId(postId,pageable);
     }
 
     public void deleteComment(String userId,Integer commentId){
-        if(commentRepository.findByUserIdAndId(userId,commentId)!=null){
+        if(commentRepository.findByUsernameAndId(userId,commentId)!=null){
             this.commentRepository.deleteById(commentId);
         }
     }

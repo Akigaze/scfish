@@ -25,9 +25,10 @@ import javax.servlet.http.HttpSession;
 public class CommentController {
     private CommentService commentService;
 
-    @PostMapping()
-    public ModelAndView publicComment(@ModelAttribute CommentParam commentParam,HttpServletRequest request){
+    @PostMapping("/publish")
+    public ResponseEntity publishComment(@ModelAttribute CommentParam commentParam){
         this.commentService.addComment(commentParam);
+//        this.commentService.changeUpdateTime(commentParam.getPostId());
         return null;
     }
 

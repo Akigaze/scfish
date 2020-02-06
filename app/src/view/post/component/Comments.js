@@ -2,8 +2,9 @@ import React, {Component} from "react";
 import {bindActionCreators} from "redux";
 import {withRouter} from "react-router";
 import {connect} from "react-redux";
-import {getComments} from "../../../action/comment.action";
+import {getComments, publish} from "../../../action/comment.action";
 import Comment from "./Comment";
+import storage from "../../../core/storage";
 
 
 export class Comments extends Component{
@@ -12,7 +13,8 @@ export class Comments extends Component{
     this.state={
       page:1,
       postId:this.props.location.state.postId,
-      commentPage:[]
+      commentPage:[],
+      commentContent:''
     }
   }
 
@@ -26,9 +28,19 @@ export class Comments extends Component{
         })
   }
 
+  handleChange = (event) => {
+    this.setState({commentContent:event.target.value})
+  }
+
+  clickPublish = () => {
+    this.props.publish(storage.getters.profile().username,this.state.postId,this.state.commentContent)
+  }
+
   render() {
     return(
       <div>
+        <input value={this.state.commentContent} onChange={this.handleChange}/>
+        <button onClick={this.clickPublish}>publish</button>
         <div className="posts">
           {
             this.state.commentPage.map((comment,index) => {
@@ -48,7 +60,8 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch,props){
   return bindActionCreators({
-    getComments:getComments
+    getComments:getComments,
+    publish:publish
   },dispatch)
 }
 

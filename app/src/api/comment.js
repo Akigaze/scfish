@@ -15,4 +15,17 @@ commentApi.getComments = (page,postId) => {
   })
 }
 
+
+commentApi.publish = (username,postId,commentContent) => {
+  return service({
+    method: "post",
+    url: `${baseURL}/publish`,
+    params: {
+      username:username,
+      postId:postId,
+      commentContent:commentContent
+    }
+  })
+}
+
 export default commentApi

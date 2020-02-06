@@ -23,7 +23,6 @@ export const publish = (username,title, content) => {
       postApi.publish(username,title,content)
         .then(resp =>{
           const result = resp.data
-          alert(result)
           resolve(result)
         }).catch(error=>{
           reject(error)

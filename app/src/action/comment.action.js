@@ -15,3 +15,17 @@ export const getComments = (page,postId) => {
     })
   }
 }
+
+export const publish = (username,postId,commentContent) => {
+  return async (dispatch) => {
+    return new Promise((resolve,reject)=>{
+      commentApi.publish(username,postId,commentContent)
+        .then(resp =>{
+          const result = resp.data
+          resolve(result)
+        }).catch(error=>{
+        reject(error)
+      })
+    })
+  }
+}

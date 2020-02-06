@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 public class CommentParam implements InputConverter<Comment> {
     private Integer id;
-    private String userId;
+    private String username;
     private Integer postId;
     private String commentContent;
 }

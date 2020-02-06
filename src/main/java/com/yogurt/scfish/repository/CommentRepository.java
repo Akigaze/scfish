@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CommentRepository extends JpaRepository<Comment,Integer> {
     void deleteById(Integer commentId);
-    Comment findByUserIdAndId(String userId, Integer commentId);
+    Comment findByUsernameAndId(String username, Integer commentId);
     Page<Comment> findAllByPostId(Integer postId, Pageable pageable);
 }
