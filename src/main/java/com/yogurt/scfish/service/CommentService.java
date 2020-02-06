@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import static com.yogurt.scfish.contstant.PostAttribute.COMMENT_SIZE;
+
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class CommentService{
@@ -22,8 +24,7 @@ public class CommentService{
     }
 
     public Page<Comment> getComments(Integer postId,Integer page) {
-        int size = 5;
-        Pageable pageable = PageRequest.of(page, size, new Sort(Sort.Direction.ASC, "creationTime"));
+        Pageable pageable = PageRequest.of(page, COMMENT_SIZE, new Sort(Sort.Direction.ASC, "creationTime"));
         return commentRepository.findAllByPostId(postId,pageable);
     }
 

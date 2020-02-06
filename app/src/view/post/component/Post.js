@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import {withRouter} from "react-router";
 import {connect} from "react-redux";
+import Box from "@material-ui/core/Box";
+import {width} from "@material-ui/system";
 
 export class Post extends Component{
   constructor(props) {
@@ -18,9 +20,17 @@ export class Post extends Component{
 
   render() {
     return(
-      <div className="post" onClick={this.clickPost}>
-        <p>{this.props.post.title}</p>
-        <p>{this.props.post.content}</p>
+      <div onClick={this.clickPost} style={{padding:15}}>
+        <Box component="div" overflow="hidden" textOverflow="ellipsis"
+             textAlign="left" fontSize="h5.fontSize"
+              style={{height:"1.4em"}} ml={2}>
+          {this.props.post.title}
+        </Box>
+        <Box component="div" overflow="hidden" textOverflow="ellipsis"
+             textAlign="left" fontSize={16}
+             style={{height:"2.8em"}} ml={4} mt={2}>
+          {this.props.post.content}
+        </Box>
       </div>
     )
   }

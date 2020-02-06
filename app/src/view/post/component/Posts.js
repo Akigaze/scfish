@@ -5,6 +5,8 @@ import {withRouter} from "react-router-dom"
 import {getPosts} from "../../../action/post.action";
 import Post from "./Post";
 import FormControl from "@material-ui/core/FormControl";
+import Container from "@material-ui/core/Container";
+import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 
 export class Posts extends Component {
@@ -51,13 +53,16 @@ export class Posts extends Component {
   render() {
     return (
       <div className="post-list">
-        <div className="posts">
-          {
-            this.state.postPage.map((post,index) => {
-                return <Post post={post} key={post.id} />
-              }
-            )}
-        </div>
+        <Container fixed maxWidth="md">
+            {
+              this.state.postPage.map((post,index) => {
+                  return (
+                    <Box borderRadius={4} border={1} borderColor="grey" m={1} boxShadow={2}>
+                      <Post post={post} key={post.id} />
+                    </Box>
+                  )}
+              )}
+        </Container>
         <FormControl margin="normal" className="-action">
           <Button color="secondary" variant="outlined" onClick={this.getNextPage}>next</Button>
           <Button color="secondary" variant="outlined" onClick={this.getPrePage}>previous</Button>

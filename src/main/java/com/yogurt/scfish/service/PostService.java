@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import static com.yogurt.scfish.contstant.PostAttribute.PAGE_SIZE;
+
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class PostService {
@@ -24,8 +26,7 @@ public class PostService {
   }
 
   public Page<Post> getPosts(Integer page) {
-    int size = 5;
-    Pageable pageable = PageRequest.of(page, size, new Sort(Sort.Direction.DESC, "updatedTime"));
+    Pageable pageable = PageRequest.of(page,PAGE_SIZE, new Sort(Sort.Direction.DESC, "updatedTime"));
     return postRepository.findAll(pageable);
   }
 
