@@ -96,3 +96,19 @@ body {
     margin:0 auto;
 }
 
+.search-bar{
+    padding:2px;
+    background-color: #5587ce;
+}
+.search-icon{
+    position: relative;
+    top:8px;
+    padding: 0 8px;
+}
+
+.search {
+    display: flex;
+    width: 300px;
+    flex-direction: row;
+    justify-content: space-between;
+}

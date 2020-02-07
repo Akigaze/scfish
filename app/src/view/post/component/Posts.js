@@ -65,6 +65,10 @@ export class Posts extends Component {
       })
   }
 
+  search = (keyword) => {
+    this.props.search(keyword,this.state.page)
+  }
+
   getNextPage = () => {
     this.getPage(this.state.page + 1)
   }
@@ -101,6 +105,7 @@ function mapStateToProps(state, props) {
 function mapDispatchToProps(dispatch, props) {
   return bindActionCreators({
     getPosts: getPosts,
+    search:search
   }, dispatch)
 }
 

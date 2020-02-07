@@ -2,10 +2,9 @@ import React, {Component} from "react"
 import {withRouter} from "react-router-dom"
 import {connect} from "react-redux"
 import {bindActionCreators} from "redux"
-import SearchIcon from '@material-ui/icons/Search'
 import {
-  AppBar,
-  IconButton, InputBase,
+  AppBar, Drawer,
+  IconButton,
   ListItemIcon,
   ListItemText,
   MenuItem,
@@ -19,14 +18,28 @@ import MenuIcon from "@material-ui/icons/Menu"
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import SettingsIcon from '@material-ui/icons/Settings';
 import {logout} from "../action/user.action";
-import Box from "@material-ui/core/Box";
+import {PublishRounded} from "@material-ui/icons";
+import Divider from "@material-ui/core/Divider";
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
 export class AdminLayout extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      anchorEl: null
+      anchorEl: null,
+      menuOpen: null
     }
+  }
+
+  menus(){
+    return[
+      {
+        id:"publish",
+        text:"publish",
+        Icon: PublishRounded,
+        onclick:this.handleClickPublish
+      }
+    ]
   }
 
   profileMenus() {
@@ -52,6 +65,14 @@ export class AdminLayout extends Component {
     ]
   }
 
+  handleClickMenu = (event) => {
+    this.setState({menuOpen:event.target})
+  }
+
+  handleCloseMenu = (event) => {
+    this.setState({menuOpen:null})
+  }
+
   handleClickPortrait = (event) => {
     this.setState({anchorEl: event.target})
   }
@@ -72,17 +93,36 @@ export class AdminLayout extends Component {
     this.props.logout()
   }
 
+  handleClickPublish = (event) => {
+    if(this.props.location.pathname!=="/publish"){
+      this.props.history.push("/publish")
+    }
+  }
 
   render() {
     const {profile} = this.props
     const {anchorEl} = this.state
+    const {menuOpen} = this.state
     return (
         <div className="App">
           <AppBar position="static">
             <Toolbar className="admin-toolbar">
-              <IconButton edge="start" color="inherit" aria-label="menu">
+              <IconButton edge="start" color="inherit" aria-label="menu" onClick={this.handleClickMenu}>
                 <MenuIcon/>
               </IconButton>
+              <Drawer open={Boolean(menuOpen)} onClose={this.handleCloseMenu}>
+                <div>
+                  <IconButton onClick={this.handleCloseMenu} >
+                    <ChevronLeftIcon />
+                  </IconButton>
+                </div>
+                <Divider />
+                <MenuList>
+                  {this.menus().map(item => {
+                    return <ProfileMenuItem key={item.id} {...item}/>
+                  })}
+                </MenuList>
+              </Drawer>
               <Tooltip title={profile && profile.nickname}>
                 <IconButton edge="end" color="inherit" onClick={this.handleClickPortrait}>
                   <AccountCircleIcon/>
@@ -115,7 +155,6 @@ export class AdminLayout extends Component {
 
 const ProfileMenuItem = (props) => {
   const {id, text, Icon, onclick} = props
-  console.log(onclick)
   return (
       <MenuItem id={id} onClick={onclick}>
         <ListItemIcon>
@@ -134,7 +173,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    logout: logout
+    logout: logout,
   }, dispatch)
 }
 
