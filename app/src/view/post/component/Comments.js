@@ -36,16 +36,7 @@ export class Comments extends Component {
           })
         }
       })
-    if(this.state.pageNum===0){
-      document.getElementById("upIcon").setAttribute("style","display: none");
-    }else{
-      document.getElementById("upIcon").setAttribute("style","");
-    }
-    if(this.state.pageNum+1===this.state.totalPages){
-      document.getElementById("downIcon").setAttribute("style","display: none");
-    }else{
-      document.getElementById("downIcon").setAttribute("style","");
-    }
+    this.handlePageButtonChange()
   }
 
   handleNextPage = () => {
@@ -66,12 +57,23 @@ export class Comments extends Component {
       this.refreshCommentList()})
   }
 
-
+  handlePageButtonChange = () => {
+    if(this.state.pageNum===0){
+      document.getElementById("upIcon").setAttribute("style","visibility: hidden");
+    }else{
+      document.getElementById("upIcon").setAttribute("style","");
+    }
+    if(this.state.pageNum+1===this.state.totalPages){
+      document.getElementById("downIcon").setAttribute("style","display: none");
+    }else{
+      document.getElementById("downIcon").setAttribute("style","");
+    }
+  }
 
   render() {
     return (
         <div className="posts">
-          <IconButton id="upIcon" onClick={this.handlePrePage} style={{"display":"none"}}>
+          <IconButton id="upIcon" onClick={this.handlePrePage} style={{"visibility":"hidden"}}>
             <KeyboardArrowUpIcon />
           </IconButton>
           {
@@ -79,7 +81,7 @@ export class Comments extends Component {
                 return <Comment key={comment.id} {...comment}/>
               })
           }
-            <IconButton id="downIcon" onClick={this.handleNextPage}>
+            <IconButton id="downIcon" onClick={this.handleNextPage} style={{"visibility":"hidden"}}>
               <KeyboardArrowDownIcon />
             </IconButton>
         </div>

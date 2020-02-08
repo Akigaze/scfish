@@ -49,7 +49,7 @@ export class Posts extends Component {
     this.initPostList()
   }
 
-  getPageOfPost = (pageNum = 0, pageSize = 6) => {
+  getPageOfPost = (pageNum = 0, pageSize = 10) => {
     this.props.getPosts(pageNum, pageSize)
       .then(pageOfPost => {
         if (pageOfPost && !_.isEmpty(pageOfPost.content))
