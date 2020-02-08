@@ -35,6 +35,11 @@ public class AdminController {
     return ResponseEntity.accepted().body("Register successfully");
   }
 
+  @PostMapping("/update")
+  public ResponseEntity update(){
+      return null;
+  }
+
   @PostMapping("/logout")
   public void logout() {
     adminService.clearToken();

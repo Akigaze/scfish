@@ -112,3 +112,32 @@ body {
     flex-direction: row;
     justify-content: space-between;
 }
+
+.publish{
+    width: 600px;
+    margin: 0 auto;
+}
+
+.comment-input-box{
+    margin: 10px auto;
+    display: block;
+    height: 100px;
+    width: 80%;
+    resize: none;
+    border: 1px solid #4b61e9;
+}
+.comment-button{
+    margin: 4px auto;
+    padding: 10px 20px;
+    display: inline-block;
+}
+
+.comment-button:hover{
+    border-radius: 5px;
+    background-color: #eaeaea;
+    cursor: pointer;
+}
+
+.comment-submit-button{
+    margin: 10px;
+}

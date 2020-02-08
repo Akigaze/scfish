@@ -28,10 +28,6 @@ public class CommentService {
     this.commentRepository.save(comment);
   }
 
-  public void changeUpdateTime(Integer postId) {
-//        this.commentRepository.changeUpdateTime(postId,postId);
-  }
-
   public Page<Comment> getComments(@NonNull int postId, @NonNull int pageNum, @NonNull int pageSize) {
     Pageable pageable = PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.ASC, "creationTime"));
     return commentRepository.findAllByPostId(postId, pageable);
