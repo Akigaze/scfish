@@ -2,94 +2,93 @@ import React, {Component} from "react"
 import {bindActionCreators} from "redux"
 import {connect} from "react-redux"
 import {withRouter} from "react-router-dom"
-import {getPosts, search} from "../../../action/post.action";
-import Post from "./Post";
 import FormControl from "@material-ui/core/FormControl";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
+import _ from "lodash"
 
-let flag = true;
+import {getPosts} from "../../../action/post.action";
+import Post from "./Post";
+
 
 export class Posts extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      page: 1,
-      postPage: [],
+      totalPages: undefined,
+      pageNum: 0,
+      postList: [],
     };
   }
 
   // Load next page automatically
-  onScrollHandle(event) {
+  handleWindowScroll = (event) => {
     const scrollTop = (event.target ? event.target.documentElement.scrollTop : false) || window.pageYOffset || (event.target ? event.target.body.scrollTop : 0);
     const clientHeight = (event.target && event.target.documentElement.clientHeight) || document.body.clientHeight;
     const scrollHeight = (event.target && event.target.documentElement.scrollHeight) || document.body.scrollHeight;
     const height = scrollHeight - scrollTop - clientHeight;
-    if(Math.round(height)<1 && flag){
-      flag = false
-      document.getElementById("flag").click()
+    if (Math.round(height) < 1) {
+      this.getNextPage()
     }
   }
 
   componentDidMount() {
-    window.addEventListener("scroll",this.onScrollHandle)
+    window.addEventListener("scroll", this.handleWindowScroll)
   }
 
   componentWillUnmount() {
-    window.removeEventListener("scroll", this.onScrollHandle)
+    window.removeEventListener("scroll", this.handleWindowScroll)
   }
 
-  handleFlagClick = () => {
-    this.getNextPage()
-    flag = true
+  initPostList() {
+    this.getPageOfPost()
   }
 
   //getPosts
   componentWillMount() {
-    this.getPage(1)
+    this.initPostList()
   }
 
-  getPage = (page) => {
-    this.props.getPosts(page)
-      .then(value => {
-        if (value === "") {
-          alert("No more")
-        } else {
-         for(let index in value.content) {
-           this.setState({
-             postPage: [...this.state.postPage, value.content[index]],
-             page: page
-           })
-         }
-        }
-      })
+  getPageOfPost = (pageNum = 0, pageSize = 6) => {
+    this.props.getPosts(pageNum, pageSize)
+        .then(pageOfPost => {
+          if (pageOfPost && !_.isEmpty(pageOfPost.content))
+            this.setState({
+              postList: [...this.state.postList, ...pageOfPost.content],
+              totalPages: pageOfPost.totalPages
+            })
+        })
   }
 
   getNextPage = () => {
-    this.getPage(this.state.page + 1)
+    const {pageNum, totalPages} = this.state
+    if (pageNum + 1 === totalPages) {
+      return
+    }
+    this.setState({pageNum: pageNum + 1}, () => {
+      this.getPageOfPost(this.state.pageNum)
+    })
   }
 
-  clickPublish = () => {
+  handlePublishClick = () => {
     this.props.history.push("/publish")
   }
 
   render() {
     return (
-      <div id="post-list">
-        <div id="flag" type="hidden" onClick={this.handleFlagClick}/>
-        <Container fixed maxWidth="md">
-          {
-            this.state.postPage.map((post, index) => {
-                return (
-                    <Post post={post} key={post.id}/>
-                )
+        <div id="post-list">
+          <Container fixed maxWidth="md">
+            {
+              this.state.postList.map(post => {
+                return <Post key={post.id} {...post}/>
+
               })
-          }
-        </Container>
-        <FormControl margin="normal" className="-action">
-          <Button color="primary" variant="contained" onClick={this.clickPublish}>publish</Button>
-        </FormControl>
-      </div>
+            }
+          </Container>
+          <FormControl margin="normal" className="-action">
+            <Button color="primary" variant="contained" onClick={this.handlePublishClick}>publish</Button>
+          </FormControl>
+        </div>
     )
   }
 }

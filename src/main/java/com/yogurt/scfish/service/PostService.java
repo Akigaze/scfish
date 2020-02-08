@@ -23,6 +23,9 @@ public class PostService {
 
   public void addPost(PostParam postParam) {
     Post post = postParam.convertTo();
+    SecurityContext context = SecurityContextHolder.getContext();
+    User user = context.getAuthorizedUser();
+    post.setUsername(user.getUsername());
     postRepository.save(post);
   }
 

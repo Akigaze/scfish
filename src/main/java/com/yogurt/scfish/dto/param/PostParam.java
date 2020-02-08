@@ -10,9 +10,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostParam implements InputConverter<Post> {
-  private Integer id;
-  private String username;
   private String title;
   private String content;
-
 }

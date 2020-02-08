@@ -4,27 +4,20 @@ const commentApi = {}
 
 const baseURL = "/scfish/comment"
 
-commentApi.getComments = (page,postId) => {
+commentApi.getComments = (postId, pageNum) => {
   return service({
     method: "get",
-    url: `${baseURL}/getComments`,
-    params: {
-      page:page,
-      postId:postId
-    }
+    url: `${baseURL}`,
+    params: {pageNum, postId}
   })
 }
 
 
-commentApi.publish = (username,postId,commentContent) => {
+commentApi.publish = (postId, content) => {
   return service({
     method: "post",
-    url: `${baseURL}/publish`,
-    params: {
-      username:username,
-      postId:postId,
-      commentContent:commentContent
-    }
+    url: `${baseURL}`,
+    data: {postId, content}
   })
 }
 

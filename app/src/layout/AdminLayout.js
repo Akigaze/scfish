@@ -2,10 +2,9 @@ import React, {Component} from "react"
 import {withRouter} from "react-router-dom"
 import {connect} from "react-redux"
 import {bindActionCreators} from "redux"
-import SearchIcon from '@material-ui/icons/Search'
 import {
   AppBar,
-  IconButton, InputBase,
+  IconButton,
   ListItemIcon,
   ListItemText,
   MenuItem,
@@ -19,7 +18,6 @@ import MenuIcon from "@material-ui/icons/Menu"
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import SettingsIcon from '@material-ui/icons/Settings';
 import {logout} from "../action/user.action";
-import Box from "@material-ui/core/Box";
 
 export class AdminLayout extends Component {
   constructor(props) {
@@ -115,7 +113,6 @@ export class AdminLayout extends Component {
 
 const ProfileMenuItem = (props) => {
   const {id, text, Icon, onclick} = props
-  console.log(onclick)
   return (
       <MenuItem id={id} onClick={onclick}>
         <ListItemIcon>

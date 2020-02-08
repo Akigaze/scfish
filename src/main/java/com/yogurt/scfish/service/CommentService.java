@@ -2,7 +2,10 @@ package com.yogurt.scfish.service;
 
 import com.yogurt.scfish.dto.param.CommentParam;
 import com.yogurt.scfish.entity.Comment;
+import com.yogurt.scfish.entity.User;
 import com.yogurt.scfish.repository.CommentRepository;
+import com.yogurt.scfish.security.context.SecurityContext;
+import com.yogurt.scfish.security.context.SecurityContextHolder;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +22,9 @@ public class CommentService {
 
   public void addComment(@NonNull CommentParam commentParam) {
     Comment comment = commentParam.convertTo();
+    SecurityContext context = SecurityContextHolder.getContext();
+    User user = context.getAuthorizedUser();
+    comment.setUsername(user.getUsername());
     this.commentRepository.save(comment);
   }
 

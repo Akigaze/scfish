@@ -4,36 +4,27 @@ const postApi = {}
 
 const baseURL = "/scfish/post"
 
-postApi.getPosts = (page) => {
-    return service({
-        method : "get",
-        url : `${baseURL}/getPosts`,
-        params: {
-            page:page
-        }
-    })
-}
-
-postApi.publish = (username,title,content) => {
+postApi.getPosts = (pageNum, pageSize) => {
   return service({
-    method: "post",
-    url: `${baseURL}/publish`,
-    params: {
-      username:username,
-      title: title,
-      content: content
-    }
+    method: "get",
+    url: `${baseURL}`,
+    params: {pageNum, pageSize}
   })
 }
 
-postApi.search = (keyword,page) => {
+postApi.publish = (title, content) => {
+  return service({
+    method: "post",
+    url: `${baseURL}`,
+    data: {title, content}
+  })
+}
+
+postApi.search = (keyword, pageNum, pageSize) => {
   return service({
     method: "post",
     url: `${baseURL}/search`,
-    params: {
-      keyword:keyword,
-      page: page
-    }
+    params: {keyword, pageNum, pageSize}
   })
 }
 

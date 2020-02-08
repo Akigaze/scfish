@@ -1,6 +1,7 @@
 package com.yogurt.scfish.service;
 
 import com.yogurt.scfish.cache.StringCacheStore;
+import com.yogurt.scfish.cache.util.CacheStoreUtil;
 import com.yogurt.scfish.dto.param.LoginParam;
 import com.yogurt.scfish.entity.User;
 import com.yogurt.scfish.exception.BadRequestException;
@@ -125,7 +126,7 @@ public class AdminServiceTest {
   public void should_return_AuthToken_if_could_not_find_username_from_cacheStore_by_refresh_token_when_do_refreshToken() {
     String refreshToken = "test-refresh-token";
 
-    when(cacheStore.get(refreshToken)).thenReturn(Optional.empty());
+    when(cacheStore.get(CacheStoreUtil.buildRefreshTokenKey(refreshToken))).thenReturn(Optional.empty());
 
     try {
       AuthToken authToken = adminService.refreshToken(refreshToken);
@@ -146,7 +147,7 @@ public class AdminServiceTest {
     user.setDeleted(false);
     user.setNickname("Test Nickname");
 
-    when(cacheStore.get(refreshToken)).thenReturn(Optional.of("test-username"));
+    when(cacheStore.get(CacheStoreUtil.buildRefreshTokenKey(refreshToken))).thenReturn(Optional.of("test-username"));
     when(userService.getByUsernameOfNonNull("test-username")).thenReturn(user);
 
     AuthToken authToken = adminService.refreshToken(refreshToken);

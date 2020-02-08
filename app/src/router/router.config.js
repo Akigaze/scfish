@@ -26,7 +26,7 @@ export const adminRouterConfig = [
     component: PublishPage
   },
   {
-    path: "/detail",
+    path: "/post/:id",
     name: "PostDetail",
     layout: AdminLayout,
     component: PostDetail

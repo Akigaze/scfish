@@ -1,16 +1,22 @@
 import React, {Component, Fragment} from "react";
+import {withRouter} from "react-router-dom"
 import Comments from "./component/Comments";
-import Typography from "@material-ui/core/Typography";
 
-export default class PostDetail extends Component{
+export class PostDetail extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      id: this.props.match.params.id
+    }
+  }
+
   render() {
-    return(
-      <Fragment>
-        <Typography variant="h1" component="h2">
-          Comment list...
-        </Typography>
-        <Comments/>
-      </Fragment>
+    return (
+        <Fragment>
+          <Comments postId={this.state.id}/>
+        </Fragment>
     )
   }
 }
+
+export default withRouter(PostDetail)

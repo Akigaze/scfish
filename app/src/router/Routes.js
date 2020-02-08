@@ -22,6 +22,7 @@ export class Routes extends Component {
                   return (
                       <Route key={route.name}
                              path={route.path}
+                             exact={true}
                              component={() => <Layout><route.component/></Layout>}/>
                   )
                 })
@@ -32,6 +33,7 @@ export class Routes extends Component {
                   return (
                       <Route key={route.name}
                              path={route.path}
+                             exact={true}
                              component={() => !this.props.isAuth
                                  ? <Redirect to="/login"/>
                                  : <Layout><route.component/></Layout>

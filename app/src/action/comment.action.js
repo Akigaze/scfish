@@ -1,31 +1,29 @@
 import commentApi from "../api/comment";
-import {comment} from "./actionType";
 
-export const getComments = (page,postId) => {
+export const getComments = (postId, pageNum) => {
   return async (dispatch) => {
-    return new Promise((resolve,reject)=>{
-      commentApi.getComments(page,postId)
-        .then(resp =>{
-          const commentPage = resp.data
-          dispatch({type:comment.COMMENT_PAGE,commentPage:commentPage})
-          resolve(commentPage)
-        }).catch(error=>{
-        reject(error)
-      })
+    return new Promise((resolve, reject) => {
+      commentApi.getComments(postId, pageNum)
+          .then(resp => {
+            resolve(resp.data)
+          })
+          .catch(error => {
+            reject(error)
+          })
     })
   }
 }
 
-export const publish = (username,postId,commentContent) => {
+export const publish = (postId, content) => {
   return async (dispatch) => {
-    return new Promise((resolve,reject)=>{
-      commentApi.publish(username,postId,commentContent)
-        .then(resp =>{
-          const result = resp.data
-          resolve(result)
-        }).catch(error=>{
-        reject(error)
-      })
+    return new Promise((resolve, reject) => {
+      commentApi.publish(postId, content)
+          .then(resp => {
+            resolve(resp.data)
+          })
+          .catch(error => {
+            reject(error)
+          })
     })
   }
 }

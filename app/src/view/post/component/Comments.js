@@ -4,67 +4,72 @@ import {withRouter} from "react-router";
 import {connect} from "react-redux";
 import {getComments, publish} from "../../../action/comment.action";
 import Comment from "./Comment";
-import storage from "../../../core/storage";
 
 
-export class Comments extends Component{
+export class Comments extends Component {
   constructor(props) {
     super(props);
-    this.state={
-      page:1,
-      postId:this.props.location.state.postId,
-      commentPage:[],
-      commentContent:''
+    this.state = {
+      content: '',
+      pageNum: 0,
+      commentList: []
     }
   }
 
-  componentWillMount() {
-    console.log(this.state.postId)
-    this.props.getComments(this.state.page,this.state.postId)
-      .then(value=>{
-        this.setState({
-            commentPage:value.content
+  componentDidMount() {
+    this.refreshCommentList()
+  }
+
+  refreshCommentList() {
+    this.props.getComments(this.props.postId, this.state.pageNum)
+        .then(pageOfComment => {
+          this.setState({
+            commentList: pageOfComment.content
           })
         })
   }
 
   handleChange = (event) => {
-    this.setState({commentContent:event.target.value})
+    this.setState({content: event.target.value})
   }
 
-  clickPublish = () => {
-    this.props.publish(storage.getters.profile().username,this.state.postId,this.state.commentContent)
+  handlePublishClick = () => {
+    this.props.publish(this.props.postId, this.state.content)
+        .then(resp => {
+          this.setState({content: ''})
+          this.refreshCommentList()
+        })
   }
 
   render() {
-    return(
-      <div>
-        <input value={this.state.commentContent} onChange={this.handleChange}/>
-        <button onClick={this.clickPublish}>publish</button>
-        <div className="posts">
-          {
-            this.state.commentPage.map((comment,index) => {
-                return <Comment comment={comment} key={comment.id} />
-              }
-            )}
+    return (
+        <div>
+          <input value={this.state.content} onChange={this.handleChange}/>
+          <button onClick={this.handlePublishClick}>publish</button>
+          <div className="posts">
+            {
+              this.state.commentList.map(comment => {
+                    return <Comment key={comment.id} {...comment}/>
+                  }
+              )}
+          </div>
         </div>
-      </div>
     )
   }
 
 }
 
-function mapStateToProps(state){
-  return{}
+function mapStateToProps(state) {
+  return {}
 }
 
-function mapDispatchToProps(dispatch,props){
+function mapDispatchToProps(dispatch, props) {
   return bindActionCreators({
-    getComments:getComments,
-    publish:publish
-  },dispatch)
+    getComments: getComments,
+    publish: publish
+  }, dispatch)
 }
 
-export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Comments))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Comments))
 
 

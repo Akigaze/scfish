@@ -1,45 +1,43 @@
 import postApi from "../api/post";
 import {post as actionType} from "./actionType";
 
-export const getPosts = (page) => {
-    return async (dispatch) =>{
-        return new Promise((resolve, reject) => {
-            postApi.getPosts(page)
-                .then(resp => {
-                    const postPage = resp.data
-                    dispatch({type: actionType.POST_PAGE, postPage: postPage})
-                    resolve(postPage)
-                })
-                .catch(error => {
-                    reject(error)
-                })
-        })
-    }
-}
-
-export const publish = (username,title, content) => {
+export const getPosts = (pageNum, pageSize) => {
   return async (dispatch) => {
-    return new Promise((resolve,reject)=>{
-      postApi.publish(username,title,content)
-        .then(resp =>{
-          const result = resp.data
-          resolve(result)
-        }).catch(error=>{
-          reject(error)
-      })
+    return new Promise((resolve, reject) => {
+      postApi.getPosts(pageNum, pageSize)
+          .then(resp => {
+            resolve(resp.data)
+          })
+          .catch(error => {
+            reject(error)
+          })
     })
   }
 }
 
-export const search = (keyword,page) => {
+export const publish = (title, content) => {
   return async (dispatch) => {
-    return new Promise((resolve,reject)=>{
-      postApi.search(keyword,page)
-        .then(resp =>{
-          const postPage = resp.data
-          dispatch({type: actionType.POST_PAGE, postPage: postPage})
-          resolve(postPage)
-        }).catch(error=>{
+    return new Promise((resolve, reject) => {
+      postApi.publish(title, content)
+          .then(resp => {
+            resolve(resp.data)
+          })
+          .catch(error => {
+            reject(error)
+          })
+    })
+  }
+}
+
+export const search = (keyword, page) => {
+  return async (dispatch) => {
+    return new Promise((resolve, reject) => {
+      postApi.search(keyword, page)
+          .then(resp => {
+            const postPage = resp.data
+            dispatch({type: actionType.POST_PAGE, postPage: postPage})
+            resolve(postPage)
+          }).catch(error => {
         reject(error)
       })
     })
