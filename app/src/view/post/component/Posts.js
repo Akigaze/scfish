@@ -84,9 +84,6 @@ export class Posts extends Component {
             })
           }
         </Container>
-        <FormControl margin="normal" className="-action">
-          <Button color="primary" variant="contained" onClick={this.handlePublishClick}>publish</Button>
-        </FormControl>
       </div>
     )
   }
