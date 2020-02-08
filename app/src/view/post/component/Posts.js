@@ -70,10 +70,6 @@ export class Posts extends Component {
     })
   }
 
-  handlePublishClick = () => {
-    this.props.history.push("/publish")
-  }
-
   render() {
     return (
       <div id="post-list">
@@ -84,9 +80,6 @@ export class Posts extends Component {
             })
           }
         </Container>
-        <FormControl margin="normal" className="-action">
-          <Button color="primary" variant="contained" onClick={this.handlePublishClick}>publish</Button>
-        </FormControl>
       </div>
     )
   }

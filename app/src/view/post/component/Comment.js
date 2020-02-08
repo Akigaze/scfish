@@ -4,7 +4,7 @@ export class Comment extends Component {
 
   render() {
     return (
-        <div className="post">
+        <div>
           <p>{this.props.content}</p>
         </div>
     )

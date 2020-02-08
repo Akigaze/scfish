@@ -18,8 +18,8 @@ import MenuIcon from "@material-ui/icons/Menu"
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import SettingsIcon from '@material-ui/icons/Settings';
 import {logout} from "../action/user.action";
-import {PublishRounded} from "@material-ui/icons";
 import Divider from "@material-ui/core/Divider";
+import CreateIcon from '@material-ui/icons/Create';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
 export class AdminLayout extends Component {
@@ -29,17 +29,6 @@ export class AdminLayout extends Component {
       anchorEl: null,
       menuOpen: null
     }
-  }
-
-  menus(){
-    return[
-      {
-        id:"publish",
-        text:"publish",
-        Icon: PublishRounded,
-        onclick:this.handleClickPublish
-      }
-    ]
   }
 
   profileMenus() {
@@ -118,33 +107,37 @@ export class AdminLayout extends Component {
                 </div>
                 <Divider />
                 <MenuList>
-                  {this.menus().map(item => {
-                    return <ProfileMenuItem key={item.id} {...item}/>
-                  })}
                 </MenuList>
               </Drawer>
-              <Tooltip title={profile && profile.nickname}>
-                <IconButton edge="end" color="inherit" onClick={this.handleClickPortrait}>
-                  <AccountCircleIcon/>
-                </IconButton>
-              </Tooltip>
-              <Popover open={Boolean(anchorEl)}
-                       anchorEl={anchorEl}
-                       anchorOrigin={{
-                         vertical: "bottom",
-                         horizontal: "right"
-                       }}
-                       transformOrigin={{
-                         vertical: -8,
-                         horizontal: 8
-                       }}
-                       onClose={this.closePopover}>
-                <MenuList>
-                  {this.profileMenus().map(item => {
-                    return <ProfileMenuItem key={item.id} {...item}/>
-                  })}
-                </MenuList>
-              </Popover>
+              <div>
+                <Tooltip title="publish">
+                  <IconButton edge="end" color="inherit" onClick={this.handleClickPublish}>
+                    <CreateIcon/>
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title={profile && profile.nickname}>
+                  <IconButton edge="end" color="inherit" onClick={this.handleClickPortrait}>
+                    <AccountCircleIcon/>
+                  </IconButton>
+                </Tooltip>
+                <Popover open={Boolean(anchorEl)}
+                         anchorEl={anchorEl}
+                         anchorOrigin={{
+                           vertical: "bottom",
+                           horizontal: "right"
+                         }}
+                         transformOrigin={{
+                           vertical: -8,
+                           horizontal: 8
+                         }}
+                         onClose={this.closePopover}>
+                  <MenuList>
+                    {this.profileMenus().map(item => {
+                      return <ProfileMenuItem key={item.id} {...item}/>
+                    })}
+                  </MenuList>
+                </Popover>
+              </div>
             </Toolbar>
           </AppBar>
           {this.props.children}
