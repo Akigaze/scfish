@@ -20,5 +20,5 @@ public class Comment extends BaseEntity {
     private Integer id;
     private String username;
     private Integer postId;
-    private String commentContent;
+    private String content;
 }

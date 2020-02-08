@@ -6,8 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
-public interface CommentRepository extends JpaRepository<Comment,Integer> {
-    void deleteById(Integer commentId);
-    Comment findByUsernameAndId(String username, Integer commentId);
-    Page<Comment> findAllByPostId(Integer postId, Pageable pageable);
+public interface CommentRepository extends JpaRepository<Comment, Integer> {
+  Comment findByUsernameAndId(String username, Integer commentId);
+
+  Page<Comment> findAllByPostId(Integer postId, Pageable pageable);
 }

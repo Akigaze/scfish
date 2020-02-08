@@ -2,13 +2,18 @@ package com.yogurt.scfish.service;
 
 import com.yogurt.scfish.dto.param.PostParam;
 import com.yogurt.scfish.entity.Post;
+import com.yogurt.scfish.entity.User;
 import com.yogurt.scfish.repository.PostRepository;
+import com.yogurt.scfish.security.context.SecurityContext;
+import com.yogurt.scfish.security.context.SecurityContextHolder;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
-
-import static com.yogurt.scfish.contstant.PostAttribute.PAGE_SIZE;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -21,24 +26,22 @@ public class PostService {
     postRepository.save(post);
   }
 
-  public Post getPost(Integer postId){
-    return postRepository.findById(postId).get();
-  }
-
-  public Page<Post> getPosts(Integer page) {
-    Pageable pageable = PageRequest.of(page,PAGE_SIZE, new Sort(Sort.Direction.DESC, "updatedTime"));
+  public Page<Post> getPosts(@NonNull int pageNum, @NonNull int pageSize) {
+    Pageable pageable = PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.DESC, "updatedTime"));
     return postRepository.findAll(pageable);
   }
 
-  public void deletePost(String username,Integer postId){
-    if(postRepository.findByUsernameAndId(username,postId)!=null){
+  public void deletePost(Integer postId) {
+    SecurityContext context = SecurityContextHolder.getContext();
+    User user = context.getAuthorizedUser();
+    if (postRepository.findByUsernameAndId(user.getUsername(), postId) != null) {
       this.postRepository.deleteById(postId);
     }
   }
 
-  public Page<Post> Search(String keyword,Integer page){
-      Pageable pageable = PageRequest.of(page,PAGE_SIZE, new Sort(Sort.Direction.DESC, "updatedTime"));
-      return postRepository.findAllByTitleLikeOrContentLike(keyword,keyword,pageable);
+  public Page<Post> search(String keyword, @NonNull int pageNum, @NonNull int pageSize) {
+    Pageable pageable = PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.DESC, "updatedTime"));
+    return postRepository.findAllByTitleLikeOrContentLike(keyword, keyword, pageable);
   }
 
 }

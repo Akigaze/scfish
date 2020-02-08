@@ -3,7 +3,6 @@ package com.yogurt.scfish.controller.admin;
 
 import com.yogurt.scfish.dto.param.LoginParam;
 import com.yogurt.scfish.dto.param.RegisterParam;
-import com.yogurt.scfish.exception.DuplicatedException;
 import com.yogurt.scfish.security.token.AuthToken;
 import com.yogurt.scfish.service.AdminService;
 import lombok.AllArgsConstructor;
@@ -32,12 +31,8 @@ public class AdminController {
 
   @PostMapping("/register")
   public ResponseEntity<String> register(@RequestBody @NonNull RegisterParam registerParam) {
-    try {
-      this.adminService.addUser(registerParam);
-      return ResponseEntity.ok().body("Registered successfully");
-    } catch (DuplicatedException e) {
-      return ResponseEntity.badRequest().body("This username has been registered");
-    }
+    this.adminService.addUser(registerParam);
+    return ResponseEntity.accepted().body("Register successfully");
   }
 
   @PostMapping("/logout")

@@ -9,33 +9,32 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
-
-import static com.yogurt.scfish.contstant.PostAttribute.COMMENT_SIZE;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class CommentService{
-    private CommentRepository commentRepository;
+public class CommentService {
+  private CommentRepository commentRepository;
 
-    public void addComment(CommentParam commentParam){
-        Comment comment = commentParam.convertTo();
-        this.commentRepository.save(comment);
-    }
+  public void addComment(@NonNull CommentParam commentParam) {
+    Comment comment = commentParam.convertTo();
+    this.commentRepository.save(comment);
+  }
 
-    public void changeUpdateTime(Integer postId){
+  public void changeUpdateTime(Integer postId) {
 //        this.commentRepository.changeUpdateTime(postId,postId);
-    }
+  }
 
-    public Page<Comment> getComments(Integer postId,Integer page) {
-        Pageable pageable = PageRequest.of(page, COMMENT_SIZE, new Sort(Sort.Direction.ASC, "creationTime"));
-        return commentRepository.findAllByPostId(postId,pageable);
-    }
+  public Page<Comment> getComments(@NonNull int postId, @NonNull int pageNum, @NonNull int pageSize) {
+    Pageable pageable = PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.ASC, "creationTime"));
+    return commentRepository.findAllByPostId(postId, pageable);
+  }
 
-    public void deleteComment(String userId,Integer commentId){
-        if(commentRepository.findByUsernameAndId(userId,commentId)!=null){
-            this.commentRepository.deleteById(commentId);
-        }
+  public void deleteComment(@NonNull String username, @NonNull Integer commentId) {
+    if (commentRepository.findByUsernameAndId(username, commentId) != null) {
+      this.commentRepository.deleteById(commentId);
     }
+  }
 
 }
