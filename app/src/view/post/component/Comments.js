@@ -80,7 +80,7 @@ export class Comments extends Component {
           </IconButton>
           {
             this.state.commentList.map(comment => {
-                return <Comment key={comment.postId} {...comment}/>
+                return <Comment key={"comment"+comment.id} {...comment}/>
               })
           }
             <IconButton id={"downIcon"+this.props.postId} onClick={this.handleNextPage} style={{"visibility":"hidden"}}>

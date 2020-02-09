@@ -54,7 +54,7 @@ export class RegisterForm extends Component {
               </FormControl>
               <FormControl margin="normal" fullWidth>
               <TextField value={this.state.password} onChange={this.handlePasswordChange}
-                         size="small" label="password"
+                         size="small" label="password" type="password"
                          color="secondary" variant="outlined" />
               </FormControl>
               <FormControl margin="normal" className="-action">

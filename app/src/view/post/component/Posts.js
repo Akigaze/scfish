@@ -71,13 +71,11 @@ export class Posts extends Component {
   render() {
     return (
       <div id="post-list">
-        <Container fixed maxWidth="md">
           {
             this.state.postList.map(post => {
-              return <Post key={post.id} {...post}/>
+              return <Post key={"post"+post.id} {...post}/>
             })
           }
-        </Container>
       </div>
     )
   }

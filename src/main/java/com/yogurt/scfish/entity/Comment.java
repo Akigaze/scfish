@@ -18,7 +18,10 @@ public class Comment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String username;
     private Integer postId;
     private String content;
+
+    @ManyToOne(targetEntity = User.class,cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JoinColumn(name="username")
+    private User user;
 }

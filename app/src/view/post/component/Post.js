@@ -47,7 +47,7 @@ export class Post extends Component {
     const {expanded, comment} = this.state
     const {id, title, content, userNickname, createdTime} = this.props
     return (
-        <Box borderRadius={4} m={1} boxShadow={2} className="word-break">
+        <Box borderRadius={4} m={1} boxShadow={2} style={{"wordBreak":"break-all"}}>
           <ExpansionPanel expanded={Boolean(expanded)} onChange={this.handleExpansionPress}>
             <ExpansionPanelSummary>
               <Box p={1} style={{"width": "100%"}} >

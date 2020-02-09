@@ -1,5 +1,6 @@
 package com.yogurt.scfish.controller;
 
+import com.yogurt.scfish.dto.CommentDTO;
 import com.yogurt.scfish.dto.param.CommentParam;
 import com.yogurt.scfish.entity.Comment;
 import com.yogurt.scfish.service.CommentService;
@@ -22,7 +23,7 @@ public class CommentController {
   }
 
   @GetMapping
-  public Page<Comment> getComments(
+  public Page<CommentDTO> getComments(
       @RequestParam @NonNull Integer postId,
       @RequestParam(defaultValue = "0") int pageNum,
       @RequestParam(defaultValue = "10") int pageSize) {

@@ -109,11 +109,6 @@
     justify-content: space-between;
 }
 
-.publish{
-    width: 600px;
-    margin: 0 auto;
-}
-
 .comment-button{
     margin: 4px auto;
     padding: 10px 20px;
@@ -128,8 +123,4 @@
 
 .comment-submit-button{
     margin: 10px;
-}
-
-.word-break{
-    word-break:break-all;
 }
