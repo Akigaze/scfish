@@ -33,10 +33,11 @@ export class Comments extends Component {
           this.setState({
             commentList: pageOfComment.content,
             totalPages:pageOfComment.totalPages
-          })
-        }
+          },()=>
+            this.handlePageButtonChange()
+          )}
       })
-    this.handlePageButtonChange()
+
   }
 
   handleNextPage = () => {
@@ -58,30 +59,32 @@ export class Comments extends Component {
   }
 
   handlePageButtonChange = () => {
-    if(this.state.pageNum===0){
-      document.getElementById("upIcon").setAttribute("style","visibility: hidden");
+    const{pageNum,totalPages} = this.state
+    if(pageNum===0){
+      console.log("hidden")
+      document.getElementById("upIcon"+this.props.postId).setAttribute("style","display: none;");
     }else{
-      document.getElementById("upIcon").setAttribute("style","");
+      document.getElementById("upIcon"+this.props.postId).setAttribute("style","");
     }
-    if(this.state.pageNum+1===this.state.totalPages){
-      document.getElementById("downIcon").setAttribute("style","display: none");
+    if(pageNum+1===totalPages){
+      document.getElementById("downIcon"+this.props.postId).setAttribute("style","display: none");
     }else{
-      document.getElementById("downIcon").setAttribute("style","");
+      document.getElementById("downIcon"+this.props.postId).setAttribute("style","");
     }
   }
 
   render() {
     return (
-        <div className="posts">
-          <IconButton id="upIcon" onClick={this.handlePrePage} style={{"visibility":"hidden"}}>
+        <div>
+          <IconButton id={"upIcon"+this.props.postId} onClick={this.handlePrePage} >
             <KeyboardArrowUpIcon />
           </IconButton>
           {
             this.state.commentList.map(comment => {
-                return <Comment key={comment.id} {...comment}/>
+                return <Comment key={comment.postId} {...comment}/>
               })
           }
-            <IconButton id="downIcon" onClick={this.handleNextPage} style={{"visibility":"hidden"}}>
+            <IconButton id={"downIcon"+this.props.postId} onClick={this.handleNextPage}>
               <KeyboardArrowDownIcon />
             </IconButton>
         </div>
