@@ -7,8 +7,9 @@ import {bindActionCreators} from "redux";
 import {publish} from "../../../action/comment.action";
 import Comments from "./Comments";
 import Button from "@material-ui/core/Button";
-import {Avatar, ExpansionPanel, ExpansionPanelDetails} from "@material-ui/core";
+import {Avatar, ExpansionPanel, ExpansionPanelDetails, TextField} from "@material-ui/core";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import Typography from "@material-ui/core/Typography";
 
 export class Post extends Component {
   constructor(props) {
@@ -45,16 +46,15 @@ export class Post extends Component {
   render() {
     const {expanded, comment} = this.state
     const {id, title, content, userNickname, createdTime} = this.props
-
     return (
-        <Box borderRadius={4} m={1} boxShadow={2}>
+        <Box borderRadius={4} m={1} boxShadow={2} className="word-break">
           <ExpansionPanel expanded={Boolean(expanded)} onChange={this.handleExpansionPress}>
             <ExpansionPanelSummary>
-              <Box p={1} style={{"width": "100%"}}>
-                <Box textAlign="left" fontSize="h5.fontSize" mb="4px">
+              <Box p={1} style={{"width": "100%"}} >
+                <Box textAlign="left" fontSize="h5.fontSize" mb="4px" >
                   {title}
                 </Box>
-                <Box textAlign="left" fontSize={16}>
+                <Box textAlign="left" fontSize={16} >
                   {content}
                 </Box>
                 <Box mt="14px" display="flex" alignItems="center" justifyContent="space-between">
@@ -66,7 +66,7 @@ export class Post extends Component {
                     <span>{userNickname}</span>
                   </Box>
                   <Box fontSize={12} textAlign="right">
-                    {createdTime}
+                    {createdTime.replace('T',' ')}
                   </Box>
                 </Box>
               </Box>
@@ -75,7 +75,9 @@ export class Post extends Component {
               <div style={{"width": "100%"}}>
                 <Divider/>
                 <div id={"comment" + id}>
-                  <input value={comment} onChange={this.onCommentChange} className="comment-input-box"/>
+                  <TextField style={{"display":"block"}} fullWidth multiline rows={3} rowsMax={20}
+                             variant="outlined" label="comment" margin="normal"
+                             value={comment} onChange={this.onCommentChange}/>
                   <Button color="primary" variant="outlined" onClick={this.handleSubmitClick}>submit</Button>
                   <Comments onRef={this.onRef} postId={id}/>
                 </div>

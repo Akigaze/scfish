@@ -29,7 +29,7 @@ public class CommentService {
   }
 
   public Page<Comment> getComments(@NonNull int postId, @NonNull int pageNum, @NonNull int pageSize) {
-    Pageable pageable = PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.ASC, "creationTime"));
+    Pageable pageable = PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.ASC, "createdTime"));
     return commentRepository.findAllByPostId(postId, pageable);
   }
 

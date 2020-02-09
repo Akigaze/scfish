@@ -61,13 +61,12 @@ export class Comments extends Component {
   handlePageButtonChange = () => {
     const{pageNum,totalPages} = this.state
     if(pageNum===0){
-      console.log("hidden")
-      document.getElementById("upIcon"+this.props.postId).setAttribute("style","display: none;");
+      document.getElementById("upIcon"+this.props.postId).setAttribute("style","visibility: hidden");
     }else{
       document.getElementById("upIcon"+this.props.postId).setAttribute("style","");
     }
     if(pageNum+1===totalPages){
-      document.getElementById("downIcon"+this.props.postId).setAttribute("style","display: none");
+      document.getElementById("downIcon"+this.props.postId).setAttribute("style","visibility: hidden");
     }else{
       document.getElementById("downIcon"+this.props.postId).setAttribute("style","");
     }
@@ -76,7 +75,7 @@ export class Comments extends Component {
   render() {
     return (
         <div>
-          <IconButton id={"upIcon"+this.props.postId} onClick={this.handlePrePage} >
+          <IconButton id={"upIcon"+this.props.postId} onClick={this.handlePrePage} style={{"visibility":"hidden"}}>
             <KeyboardArrowUpIcon />
           </IconButton>
           {
@@ -84,7 +83,7 @@ export class Comments extends Component {
                 return <Comment key={comment.postId} {...comment}/>
               })
           }
-            <IconButton id={"downIcon"+this.props.postId} onClick={this.handleNextPage}>
+            <IconButton id={"downIcon"+this.props.postId} onClick={this.handleNextPage} style={{"visibility":"hidden"}}>
               <KeyboardArrowDownIcon />
             </IconButton>
         </div>
