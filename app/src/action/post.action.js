@@ -1,5 +1,4 @@
 import postApi from "../api/post";
-import {post as actionType} from "./actionType";
 
 export const getPosts = (pageNum, pageSize) => {
   return async (dispatch) => {

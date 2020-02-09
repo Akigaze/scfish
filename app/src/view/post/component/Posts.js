@@ -68,7 +68,7 @@ export class Posts extends Component {
       this.setState({pageNum: pageNum + 1}, () => {
         this.search(keyword, this.state.pageNum)
       })
-    }else{
+    } else {
       this.setState({pageNum: pageNum + 1}, () => {
         this.getPageOfPost(this.state.pageNum)
       })
@@ -78,24 +78,25 @@ export class Posts extends Component {
   //search
   search = () => {
     const {keyword, pageNum} = this.state
-    if (keyword) {
-      this.props.search(keyword, pageNum)
-        .then(pageOfPost => {
-          if (pageOfPost && !_.isEmpty(pageOfPost.content))
-            this.setState({
-              postList: [...this.state.postList, ...pageOfPost.content],
-              totalPages: pageOfPost.totalPages
-            })
-        })
-    } else {
-      this.initPostList()
-    }
+    this.props.search(keyword, pageNum)
+      .then(pageOfPost => {
+        if (pageOfPost && !_.isEmpty(pageOfPost.content))
+          this.setState({
+            postList: [...this.state.postList, ...pageOfPost.content],
+            totalPages: pageOfPost.totalPages
+          })
+      })
   }
 
   handleKeywordChange = () => {
-    this.setState({keyword: store.getState().post.keyword, postList: []}, () => {
-      this.search()
+    this.setState({keyword: store.getState().post.keyword, postList: [], pageNum: 0}, () => {
+      if (this.state.keyword) {
+        this.search()
+      } else {
+        this.initPostList()
+      }
     })
+
   }
 
   render() {
