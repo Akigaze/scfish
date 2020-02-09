@@ -37,11 +37,12 @@ export class Publish extends Component {
     return (
         <div className="publish">
           <FormControl margin="normal" fullWidth>
-            <TextField variant="outlined" size="small" color="primary"
+            <TextField variant="outlined" size="small" color="primary" label="title"
                        value={this.state.title} onChange={this.handleTitleChange}/>
           </FormControl>
           <FormControl margin="normal" fullWidth className="content">
             <TextField variant="outlined" size="small" color="primary"
+                       label="content" rows={5} rowsMax={20} multiline
                        value={this.state.content} onChange={this.handleContentChange}/>
           </FormControl>
           <FormControl margin="normal" fullWidth>

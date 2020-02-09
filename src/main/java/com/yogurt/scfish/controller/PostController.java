@@ -1,5 +1,6 @@
 package com.yogurt.scfish.controller;
 
+import com.yogurt.scfish.dto.PostDTO;
 import com.yogurt.scfish.dto.param.PostParam;
 import com.yogurt.scfish.entity.Post;
 import com.yogurt.scfish.service.PostService;
@@ -18,7 +19,7 @@ public class PostController {
   private PostService postService;
 
   @GetMapping
-  public Page<Post> getAll(
+  public Page<PostDTO> getAll(
       @RequestParam(defaultValue = "0") int pageNum,
       @RequestParam(defaultValue = "10") int pageSize) {
     return this.postService.getPosts(pageNum, pageSize);
@@ -31,9 +32,8 @@ public class PostController {
   }
 
   @DeleteMapping
-  public Page<Post> delete(@RequestParam @NonNull int postId) {
+  public void delete(@RequestParam @NonNull int postId) {
     this.postService.deletePost(postId);
-    return getAll(0, 10);
   }
 
   @PostMapping("/search")
