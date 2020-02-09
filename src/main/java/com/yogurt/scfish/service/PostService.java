@@ -1,5 +1,6 @@
 package com.yogurt.scfish.service;
 
+import com.yogurt.scfish.dto.PostDTO;
 import com.yogurt.scfish.dto.param.PostParam;
 import com.yogurt.scfish.entity.Post;
 import com.yogurt.scfish.entity.User;
@@ -25,19 +26,25 @@ public class PostService {
     Post post = postParam.convertTo();
     SecurityContext context = SecurityContextHolder.getContext();
     User user = context.getAuthorizedUser();
-    post.setUsername(user.getUsername());
+    post.setUser(user);
     postRepository.save(post);
   }
 
-  public Page<Post> getPosts(@NonNull int pageNum, @NonNull int pageSize) {
+  public Page<PostDTO> getPosts(@NonNull int pageNum, @NonNull int pageSize) {
     Pageable pageable = PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.DESC, "updatedTime"));
-    return postRepository.findAll(pageable);
+    Page<Post> pageOfPost = postRepository.findAll(pageable);
+    return pageOfPost.map(post -> {
+      PostDTO postDTO = new PostDTO().convertFrom(post);
+      postDTO.setUsername(post.getUser().getUsername());
+      postDTO.setUserNickname(post.getUser().getNickname());
+      return postDTO;
+    });
   }
 
   public void deletePost(Integer postId) {
     SecurityContext context = SecurityContextHolder.getContext();
     User user = context.getAuthorizedUser();
-    if (postRepository.findByUsernameAndId(user.getUsername(), postId) != null) {
+    if (postRepository.findByUserAndId(user, postId) != null) {
       this.postRepository.deleteById(postId);
     }
   }

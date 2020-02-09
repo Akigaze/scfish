@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 public class BaseEntity implements Serializable {
   @CreatedDate
   @Column(name = "created_time", updatable = false)
-  private LocalDateTime creationTime;
+  private LocalDateTime createdTime;
 
   @LastModifiedDate
   @Column(name = "updated_time")

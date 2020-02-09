@@ -3,7 +3,9 @@ import {withRouter} from "react-router-dom"
 import {connect} from "react-redux"
 import {bindActionCreators} from "redux"
 import {
-  AppBar, Drawer,
+  AppBar,
+  Container,
+  Drawer,
   IconButton,
   ListItemIcon,
   ListItemText,
@@ -55,11 +57,11 @@ export class AdminLayout extends Component {
   }
 
   handleClickMenu = (event) => {
-    this.setState({menuOpen:event.target})
+    this.setState({menuOpen: event.target})
   }
 
   handleCloseMenu = (event) => {
-    this.setState({menuOpen:null})
+    this.setState({menuOpen: null})
   }
 
   handleClickPortrait = (event) => {
@@ -83,7 +85,7 @@ export class AdminLayout extends Component {
   }
 
   handleClickPublish = (event) => {
-    if(this.props.location.pathname!=="/publish"){
+    if (this.props.location.pathname !== "/publish") {
       this.props.history.push("/publish")
     }
   }
@@ -101,11 +103,10 @@ export class AdminLayout extends Component {
               </IconButton>
               <Drawer open={Boolean(menuOpen)} onClose={this.handleCloseMenu}>
                 <div>
-                  <IconButton onClick={this.handleCloseMenu} >
-                    <ChevronLeftIcon />
+                  <IconButton onClick={this.handleCloseMenu}>
+                    <ChevronLeftIcon/>
                   </IconButton>
                 </div>
-                <Divider />
                 <MenuList>
                 </MenuList>
               </Drawer>
@@ -140,7 +141,11 @@ export class AdminLayout extends Component {
               </div>
             </Toolbar>
           </AppBar>
-          {this.props.children}
+          <div>
+            <Container maxWidth="sm">
+              {this.props.children}
+            </Container>
+          </div>
         </div>
     )
   }
