@@ -66,7 +66,7 @@ export class Comments extends Component {
       document.getElementById("upIcon"+this.props.postId).setAttribute("style","");
     }
     if(pageNum+1===totalPages){
-      document.getElementById("downIcon"+this.props.postId).setAttribute("style","visibility: hidden");
+      document.getElementById("downIcon"+this.props.postId).setAttribute("style","display:none");
     }else{
       document.getElementById("downIcon"+this.props.postId).setAttribute("style","");
     }
@@ -83,8 +83,8 @@ export class Comments extends Component {
                 return <Comment key={"comment"+comment.id} {...comment}/>
               })
           }
-            <IconButton id={"downIcon"+this.props.postId} onClick={this.handleNextPage} style={{"visibility":"hidden"}}>
-              <KeyboardArrowDownIcon />
+            <IconButton id={"downIcon"+this.props.postId} onClick={this.handleNextPage} style={{"display":"none"}}>
+              <KeyboardArrowDownIcon/>
             </IconButton>
         </div>
     )

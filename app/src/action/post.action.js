@@ -29,20 +29,19 @@ export const publish = (title, content) => {
   }
 }
 
-export const search = (keyword, page) => {
+export const search = (keyword,page) => {
   return async (dispatch) => {
     return new Promise((resolve, reject) => {
       postApi.search(keyword, page)
           .then(resp => {
-            const postPage = resp.data
-            dispatch({type: actionType.POST_PAGE, postPage: postPage})
-            resolve(postPage)
+            resolve(resp.data)
           }).catch(error => {
         reject(error)
       })
     })
   }
 }
+
 
 
 

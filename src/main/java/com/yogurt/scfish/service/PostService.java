@@ -49,9 +49,15 @@ public class PostService {
     }
   }
 
-  public Page<Post> search(String keyword, @NonNull int pageNum, @NonNull int pageSize) {
+  public Page<PostDTO> search(String keyword, @NonNull int pageNum, @NonNull int pageSize) {
     Pageable pageable = PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.DESC, "updatedTime"));
-    return postRepository.findAllByTitleLikeOrContentLike(keyword, keyword, pageable);
+    Page<Post> pageOfPost=  postRepository.findAllByTitleLikeOrContentLike(keyword, keyword, pageable);
+    return pageOfPost.map(post->{
+        PostDTO postDTO = new PostDTO().convertFrom(post);
+        postDTO.setUsername(post.getUser().getUsername());
+        postDTO.setUserNickname(post.getUser().getUsername());
+        return postDTO;
+    });
   }
 
 }

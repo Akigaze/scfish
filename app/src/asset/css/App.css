@@ -97,16 +97,30 @@
     background-color: #5587ce;
 }
 .search-icon{
+    display: inline-block;
     position: relative;
-    top:8px;
+    top: 6px;
     padding: 0 8px;
 }
 
+.search-clear{
+    display: inline-block;
+    position: relative;
+    top: 5px;
+    padding: 0 6px;
+}
+
 .search {
-    display: flex;
-    width: 300px;
-    flex-direction: row;
-    justify-content: space-between;
+    position: relative;
+    top: 3px;
+    margin-right: 10px;
+    display: inline-block;
+    background-color: #7a97d1;
+    border-radius: 6px;
+}
+
+.search:hover{
+    background-color: #88a3ee;
 }
 
 .comment-button{
@@ -123,4 +137,11 @@
 
 .comment-submit-button{
     margin: 10px;
+}
+
+.word{
+    width: 100%;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
 }

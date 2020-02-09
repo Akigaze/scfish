@@ -9,7 +9,6 @@ import Comments from "./Comments";
 import Button from "@material-ui/core/Button";
 import {Avatar, ExpansionPanel, ExpansionPanelDetails, TextField} from "@material-ui/core";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import Typography from "@material-ui/core/Typography";
 
 export class Post extends Component {
   constructor(props) {
@@ -47,11 +46,11 @@ export class Post extends Component {
     const {expanded, comment} = this.state
     const {id, title, content, userNickname, createdTime} = this.props
     return (
-        <Box borderRadius={4} m={1} boxShadow={2} style={{"wordBreak":"break-all"}}>
+        <Box borderRadius={4} m={1} boxShadow={2} style={{"wordBreak":"break-all"}} >
           <ExpansionPanel expanded={Boolean(expanded)} onChange={this.handleExpansionPress}>
             <ExpansionPanelSummary>
-              <Box p={1} style={{"width": "100%"}} >
-                <Box textAlign="left" fontSize="h5.fontSize" mb="4px" >
+              <Box p={1}  >
+                <Box textAlign="left" fontSize="h5.fontSize" mb="4px">
                   {title}
                 </Box>
                 <Box textAlign="left" fontSize={16} >

@@ -1,13 +1,11 @@
-import {post} from "../../action/actionType";
-
 const initialState = {
-    pagePage : []
+  keyword : ''
 }
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case post.POST_PAGE:
-            return {...state, pagePage: action.pagePage}
+      case 'keyword':
+            return {...state, keyword: action.keyword}
         default:
             return state
     }

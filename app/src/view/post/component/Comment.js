@@ -7,7 +7,7 @@ export class Comment extends Component {
   render() {
     const {userNickname,content,createdTime} = this.props
     return (
-      <Box my="30px">
+      <Box my="20px">
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Box fontSize={14} textAlign="left" display="flex" alignItems="center">
             <Avatar alt={userNickname}

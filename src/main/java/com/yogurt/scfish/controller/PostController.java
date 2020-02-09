@@ -37,10 +37,11 @@ public class PostController {
   }
 
   @PostMapping("/search")
-  public Page<Post> search(
+  public Page<PostDTO> search(
       @RequestParam String keyword,
       @RequestParam(defaultValue = "0") int pageNum,
       @RequestParam(defaultValue = "10") int pageSize) {
+      System.out.println(keyword);
     return this.postService.search("%" + keyword + "%", pageNum, pageSize);
   }
 }
