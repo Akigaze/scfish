@@ -2,9 +2,7 @@ import React, {Component} from "react"
 import {bindActionCreators} from "redux"
 import {connect} from "react-redux"
 import {withRouter} from "react-router-dom"
-import FormControl from "@material-ui/core/FormControl";
 import Container from "@material-ui/core/Container";
-import Button from "@material-ui/core/Button";
 import _ from "lodash"
 
 import {getPosts} from "../../../action/post.action";
