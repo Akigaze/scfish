@@ -49,7 +49,7 @@ export class Post extends Component {
         <Box borderRadius={4} m={1} boxShadow={2} style={{"wordBreak":"break-all"}} >
           <ExpansionPanel expanded={Boolean(expanded)} onChange={this.handleExpansionPress}>
             <ExpansionPanelSummary>
-              <Box p={1}  >
+              <Box p={1} style={{"width":"100%"}} >
                 <Box textAlign="left" fontSize="h5.fontSize" mb="4px">
                   {title}
                 </Box>
@@ -64,7 +64,7 @@ export class Post extends Component {
                     </Avatar>
                     <span>{userNickname}</span>
                   </Box>
-                  <Box fontSize={12} textAlign="right">
+                  <Box fontSize={12} textAlign="right" >
                     {createdTime.replace('T',' ')}
                   </Box>
                 </Box>

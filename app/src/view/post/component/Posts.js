@@ -19,7 +19,6 @@ export class Posts extends Component {
     };
   }
 
-  // Load next page automatically
   handleWindowScroll = (event) => {
     const scrollTop = (event.target ? event.target.documentElement.scrollTop : false) || window.pageYOffset || (event.target ? event.target.body.scrollTop : 0);
     const clientHeight = (event.target && event.target.documentElement.clientHeight) || document.body.clientHeight;
@@ -39,13 +38,18 @@ export class Posts extends Component {
     window.removeEventListener("scroll", this.handleWindowScroll)
   }
 
-  initPostList() {
-    this.getPageOfPost()
-  }
-
-  //getPosts
   componentWillMount() {
     this.initPostList()
+  }
+
+  initPostList() {
+    this.setState({keyword: store.getState().post.keyword, postList: [], pageNum: 0}, () => {
+      if (this.state.keyword) {
+        this.search()
+      } else {
+        this.getPageOfPost()
+      }
+    })
   }
 
   getPageOfPost = (pageNum = 0, pageSize = 10) => {
@@ -75,9 +79,8 @@ export class Posts extends Component {
     }
   }
 
-  //search
   search = () => {
-    const {keyword, pageNum} = this.state
+    const {keyword,pageNum} = this.state
     this.props.search(keyword, pageNum)
       .then(pageOfPost => {
         if (pageOfPost && !_.isEmpty(pageOfPost.content))
@@ -89,14 +92,11 @@ export class Posts extends Component {
   }
 
   handleKeywordChange = () => {
-    this.setState({keyword: store.getState().post.keyword, postList: [], pageNum: 0}, () => {
-      if (this.state.keyword) {
-        this.search()
-      } else {
-        this.initPostList()
-      }
-    })
-
+    if(this.props.history.location.pathname!=="/post"){
+      this.props.history.push("/post")
+    }else{
+      this.initPostList()
+    }
   }
 
   render() {
