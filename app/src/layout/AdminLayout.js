@@ -77,7 +77,9 @@ export class AdminLayout extends Component {
   }
 
   handleClickAccount = (event) => {
-
+    if (this.props.location.pathname !== "/information") {
+      this.props.history.push("/information")
+    }
   }
 
   handleClickSettings = (event) => {

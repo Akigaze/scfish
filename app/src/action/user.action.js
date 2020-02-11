@@ -61,3 +61,19 @@ export const logout = () => {
     )
   }
 }
+
+export const modify = (newProfile) => {
+  return async (dispatch) => {
+    return new Promise((resolve, reject) =>
+      adminApi.modify(newProfile)
+        .then(resp => {
+          dispatch({type: user.SET_PROFILE, profile:resp.data})
+          resolve(resp)
+        })
+        .catch(error => {
+          console.log(error);
+          reject(error)
+        })
+    )
+  }
+}

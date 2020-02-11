@@ -1,6 +1,7 @@
 package com.yogurt.scfish.controller.admin;
 
 
+import com.yogurt.scfish.dto.UserDTO;
 import com.yogurt.scfish.dto.param.LoginParam;
 import com.yogurt.scfish.dto.param.RegisterParam;
 import com.yogurt.scfish.security.token.AuthToken;
@@ -35,9 +36,9 @@ public class AdminController {
     return ResponseEntity.accepted().body("Register successfully");
   }
 
-  @PostMapping("/update")
-  public ResponseEntity update(){
-      return null;
+  @PostMapping("/modify")
+  public UserDTO modify(@RequestBody @NonNull UserDTO newProfile) {
+      return this.adminService.modifyUser(newProfile);
   }
 
   @PostMapping("/logout")

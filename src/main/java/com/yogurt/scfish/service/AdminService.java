@@ -2,6 +2,7 @@ package com.yogurt.scfish.service;
 
 import com.yogurt.scfish.cache.StringCacheStore;
 import com.yogurt.scfish.cache.util.CacheStoreUtil;
+import com.yogurt.scfish.dto.UserDTO;
 import com.yogurt.scfish.dto.param.LoginParam;
 import com.yogurt.scfish.dto.param.RegisterParam;
 import com.yogurt.scfish.entity.User;
@@ -18,6 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 import static com.yogurt.scfish.contstant.TokenEnum.ACCESS_TOKEN;
 import static com.yogurt.scfish.contstant.TokenEnum.REFRESH_TOKEN;
@@ -105,5 +108,12 @@ public class AdminService {
     cacheStore.put(CacheStoreUtil.buildRefreshTokenKey(user), refreshToken, REFRESH_TOKEN.getDuration(), REFRESH_TOKEN.getTimeUnit());
 
     return authToken;
+  }
+
+  public UserDTO modifyUser(@NonNull UserDTO newProfile){
+      User oldUser = userRepository.findByUsername(newProfile.getUsername()).get();
+      oldUser.setNickname(newProfile.getNickname());
+      userRepository.save(oldUser);
+      return new UserDTO().convertFrom(userRepository.findByUsername(newProfile.getUsername()).get());
   }
 }

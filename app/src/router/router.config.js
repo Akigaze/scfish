@@ -6,6 +6,10 @@ import AdminLayout from "../layout/AdminLayout";
 
 const PostList = React.lazy(() => import("../view/post/PostList"))
 const PublishPage = React.lazy(() => import("../view/post/PublishPage"))
+const Modify = React.lazy(() => import("../view/user/Modify"))
+const InformationPage = React.lazy(() => import("../view/user/InformationPage"))
+
+
 
 const Login = React.lazy(() => import("../view/user/Login"))
 const Register = React.lazy(() => import("../view/user/Register"))
@@ -24,6 +28,18 @@ export const adminRouterConfig = [
     layout: AdminLayout,
     component: PublishPage
   },
+  {
+    path: "/modify",
+    name: "ModifyPage",
+    layout: AdminLayout,
+    component: Modify
+  },
+  {
+    path: "/information",
+    name: "InformationPage",
+    layout: AdminLayout,
+    component: InformationPage
+  }
 ]
 
 export const publicRouterConfig = [

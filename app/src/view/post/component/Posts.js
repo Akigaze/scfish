@@ -7,6 +7,7 @@ import store from "../../../store";
 
 import {getPosts, search} from "../../../action/post.action";
 import Post from "./Post";
+import storage from "../../../core/storage";
 
 export class Posts extends Component {
   constructor(props) {
@@ -32,6 +33,7 @@ export class Posts extends Component {
   componentDidMount() {
     store.subscribe(this.handleKeywordChange)
     window.addEventListener("scroll", this.handleWindowScroll)
+    console.log(store.getState())
   }
 
   componentWillUnmount() {

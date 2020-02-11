@@ -140,8 +140,14 @@
 }
 
 .word{
-    width: 100%;
-    overflow: hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
+    word-break: break-word;
+}
+
+.information-format{
+    margin: 15px auto;
+}
+
+.information-format>span{
+    display: flex;
+    justify-content: center;
 }
