@@ -30,15 +30,19 @@ public class PostService {
     postRepository.save(post);
   }
 
-  public Page<PostDTO> getPosts(@NonNull int pageNum, @NonNull int pageSize) {
-    Pageable pageable = PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.DESC, "updatedTime"));
-    Page<Post> pageOfPost = postRepository.findAll(pageable);
+  public Page<PostDTO> convert(@NonNull Page<Post> pageOfPost){
     return pageOfPost.map(post -> {
       PostDTO postDTO = new PostDTO().convertFrom(post);
       postDTO.setUsername(post.getUser().getUsername());
       postDTO.setUserNickname(post.getUser().getNickname());
       return postDTO;
     });
+  }
+
+  public Page<PostDTO> getPosts(@NonNull int pageNum, @NonNull int pageSize) {
+    Pageable pageable = PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.DESC, "updatedTime"));
+    Page<Post> pageOfPost = postRepository.findAll(pageable);
+    return convert(pageOfPost);
   }
 
   public void deletePost(Integer postId) {
@@ -52,12 +56,15 @@ public class PostService {
   public Page<PostDTO> search(String keyword, @NonNull int pageNum, @NonNull int pageSize) {
     Pageable pageable = PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.DESC, "updatedTime"));
     Page<Post> pageOfPost=  postRepository.findAllByTitleLikeOrContentLike(keyword, keyword, pageable);
-    return pageOfPost.map(post->{
-        PostDTO postDTO = new PostDTO().convertFrom(post);
-        postDTO.setUsername(post.getUser().getUsername());
-        postDTO.setUserNickname(post.getUser().getUsername());
-        return postDTO;
-    });
+    return convert(pageOfPost);
+  }
+
+  public Page<PostDTO> getPostsByUsername(@NonNull int pageNum, @NonNull int pageSize) {
+    Pageable pageable = PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.DESC, "updatedTime"));
+    SecurityContext context = SecurityContextHolder.getContext();
+    User user = context.getAuthorizedUser();
+    Page<Post> pageOfPost = postRepository.findAllByUser(user,pageable);
+    return convert(pageOfPost);
   }
 
 }

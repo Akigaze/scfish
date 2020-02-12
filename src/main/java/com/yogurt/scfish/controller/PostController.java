@@ -25,6 +25,13 @@ public class PostController {
     return this.postService.getPosts(pageNum, pageSize);
   }
 
+    @GetMapping("/getMyPosts")
+    public Page<PostDTO> getMyPosts(
+            @RequestParam(defaultValue = "0") int pageNum,
+            @RequestParam(defaultValue = "10") int pageSize) {
+        return this.postService.getPostsByUsername(pageNum, pageSize);
+    }
+
   @PostMapping
   public ResponseEntity<String> publish(@RequestBody @NonNull PostParam postParam) {
     this.postService.addPost(postParam);

@@ -16,6 +16,7 @@ import {
 import AccountCircleIcon from "@material-ui/icons/AccountCircle"
 import MenuIcon from "@material-ui/icons/Menu"
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
+import HomeIcon from '@material-ui/icons/Home';
 import SettingsIcon from '@material-ui/icons/Settings';
 import {logout} from "../action/user.action";
 import CreateIcon from '@material-ui/icons/Create';
@@ -25,6 +26,7 @@ import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from '@material-ui/icons/Search';
 import store from "../store";
 import ClearIcon from '@material-ui/icons/Clear';
+import ForumIcon from '@material-ui/icons/Forum';
 
 export class AdminLayout extends Component {
   constructor(props) {
@@ -34,6 +36,17 @@ export class AdminLayout extends Component {
       menuOpen: null,
       keyword:''
     }
+  }
+
+  drawerMenus(){
+    return [
+      {
+        id: "myPosts",
+        text: "My Posts",
+        Icon: ForumIcon,
+        onclick: this.handleClickMyPost
+      }
+    ]
   }
 
   profileMenus() {
@@ -114,6 +127,18 @@ export class AdminLayout extends Component {
     this.setState({keyword:''})
   }
 
+  handleClickHome = () => {
+    if (this.props.location.pathname !== "/post") {
+      this.props.history.push("/post")
+    }
+  }
+
+  handleClickMyPost = () => {
+    if (this.props.location.pathname !== "/myPosts") {
+      this.props.history.push("/myPosts")
+    }
+  }
+
   render() {
     const {profile} = this.props
     const {anchorEl} = this.state
@@ -122,27 +147,32 @@ export class AdminLayout extends Component {
       <div className="App">
         <AppBar position="static">
           <Toolbar className="admin-toolbar">
-            <IconButton edge="start" color="inherit" aria-label="menu" onClick={this.handleClickMenu}>
-              <MenuIcon/>
-            </IconButton>
-            <Drawer open={Boolean(menuOpen)} onClose={this.handleCloseMenu}>
-              <div>
-                <IconButton onClick={this.handleCloseMenu}>
-                  <ChevronLeftIcon/>
-                </IconButton>
-              </div>
-              <MenuList>
-              </MenuList>
-            </Drawer>
+            <div>
+              <IconButton edge="start" color="inherit" aria-label="menu" onClick={this.handleClickMenu}>
+                <MenuIcon/>
+              </IconButton>
+              <Drawer open={Boolean(menuOpen)} onClose={this.handleCloseMenu}>
+                <div>
+                  <IconButton onClick={this.handleCloseMenu}>
+                    <ChevronLeftIcon/>
+                  </IconButton>
+                </div>
+                <MenuList>
+                  {this.drawerMenus().map(item => {
+                    return <ProfileMenuItem key={item.id} {...item}/>
+                  })}
+                </MenuList>
+              </Drawer>
+              <IconButton color="inherit" onClick={this.handleClickHome}>
+                <HomeIcon/>
+              </IconButton>
+            </div>
             <div>
               <div className="search">
-                <div className="search-icon">
-                  <SearchIcon />
-                </div>
-                <InputBase value={this.state.keyword} onKeyPress={this.handleSearchKeyPress} onChange={this.handleKeywordChange} placeholder="Search…" color="primary"/>
-                <div className="search-clear">
-                  <ClearIcon fontSize="small" onClick={this.handleClickSearchClear}/>
-                </div>
+                <InputBase value={this.state.keyword} onKeyPress={this.handleSearchKeyPress} style={{width:"200px"}}
+                           onChange={this.handleKeywordChange} placeholder="Search…" color="primary"
+                           startAdornment={<SearchIcon style={{color:"white",margin:"5px"}}/>}
+                           endAdornment={<ClearIcon style={{color:"white",margin:"5px"}} onClick={this.handleClickSearchClear}/>}/>
               </div>
               <Tooltip title="publish">
                 <IconButton edge="end" color="inherit" onClick={this.handleClickPublish}>
@@ -151,7 +181,7 @@ export class AdminLayout extends Component {
               </Tooltip>
               <Tooltip title={profile && profile.nickname}>
                 <IconButton edge="end" color="inherit" onClick={this.handleClickPortrait}>
-                  <AccountCircleIcon/>
+                    <AccountCircleIcon/>
                 </IconButton>
               </Tooltip>
               <Popover open={Boolean(anchorEl)}

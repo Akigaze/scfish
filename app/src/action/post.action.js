@@ -41,7 +41,19 @@ export const search = (keyword,page) => {
   }
 }
 
-
+export const getMyPosts = (pageNum, pageSize) => {
+  return async (dispatch) => {
+    return new Promise((resolve, reject) => {
+      postApi.getMyPost(pageNum, pageSize)
+        .then(resp => {
+          resolve(resp.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  }
+}
 
 
 

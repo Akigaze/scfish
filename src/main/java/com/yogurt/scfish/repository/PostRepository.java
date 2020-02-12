@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
   Post findByUserAndId(User user, Integer postId);
-
+  Page<Post> findAllByUser(User user,Pageable pageable);
   Page<Post> findAllByTitleLikeOrContentLike(String title, String content, Pageable pageable);
 }

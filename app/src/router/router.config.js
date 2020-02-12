@@ -2,6 +2,7 @@ import React from "react"
 
 import BasicLayout from "../layout/BasicLayout";
 import AdminLayout from "../layout/AdminLayout";
+import MyPostList from "../view/post/MyPostList";
 
 
 const PostList = React.lazy(() => import("../view/post/PostList"))
@@ -39,6 +40,12 @@ export const adminRouterConfig = [
     name: "InformationPage",
     layout: AdminLayout,
     component: InformationPage
+  },
+  {
+    path: "/myPosts",
+    name: "MyPostList",
+    layout: AdminLayout,
+    component: MyPostList
   }
 ]
 

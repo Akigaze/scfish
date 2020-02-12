@@ -92,27 +92,9 @@
     margin:0 auto;
 }
 
-.search-bar{
-    padding:2px;
-    background-color: #5587ce;
-}
-.search-icon{
-    display: inline-block;
-    position: relative;
-    top: 6px;
-    padding: 0 8px;
-}
-
-.search-clear{
-    display: inline-block;
-    position: relative;
-    top: 5px;
-    padding: 0 6px;
-}
-
 .search {
     position: relative;
-    top: 3px;
+    top: 8px;
     margin-right: 10px;
     display: inline-block;
     background-color: #7a97d1;
@@ -151,3 +133,4 @@
     display: flex;
     justify-content: center;
 }
+

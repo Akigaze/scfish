@@ -28,6 +28,14 @@ postApi.search = (keyword, pageNum, pageSize) => {
   })
 }
 
+postApi.getMyPost = (pageNum, pageSize) => {
+  return service({
+    method: "get",
+    url: `${baseURL}/getMyPosts`,
+    params: {pageNum, pageSize}
+  })
+}
+
 export default postApi
 
 
