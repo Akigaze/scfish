@@ -3,6 +3,7 @@ package com.yogurt.scfish.dto;
 import com.yogurt.scfish.dto.base.OutputConverter;
 import com.yogurt.scfish.entity.Post;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDateTime;
 
@@ -14,4 +15,5 @@ public class PostDTO implements OutputConverter<PostDTO, Post> {
   private String username;
   private String userNickname;
   private LocalDateTime createdTime;
+  private Boolean favorite;
 }

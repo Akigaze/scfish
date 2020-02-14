@@ -55,5 +55,44 @@ export const getMyPosts = (pageNum, pageSize) => {
   }
 }
 
+export const addFavorite = (postId) => {
+  return async (dispatch) => {
+    return new Promise((resolve, reject) => {
+      postApi.addFavorite(postId)
+        .then(resp => {
+          resolve(resp.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  }
+}
 
+export const removeFavorite = (postId) => {
+  return async (dispatch) => {
+    return new Promise((resolve, reject) => {
+      postApi.removeFavorite(postId)
+        .then(resp => {
+          resolve(resp.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  }
+}
 
+export const getMyFavorite = (pageNum,pageSize) => {
+  return async (dispatch) => {
+    return new Promise((resolve, reject) => {
+      postApi.getMyFavorite(pageNum,pageSize)
+        .then(resp => {
+          resolve(resp.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  }
+}

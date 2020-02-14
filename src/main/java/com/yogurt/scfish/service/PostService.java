@@ -16,17 +16,23 @@ import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class PostService {
 
   private PostRepository postRepository;
+  private FavoriteService favoriteService;
+
+  public User getUser(){
+    SecurityContext context = SecurityContextHolder.getContext();
+    return context.getAuthorizedUser();
+  }
 
   public void addPost(PostParam postParam) {
     Post post = postParam.convertTo();
-    SecurityContext context = SecurityContextHolder.getContext();
-    User user = context.getAuthorizedUser();
-    post.setUser(user);
+    post.setUser(getUser());
     postRepository.save(post);
   }
 
@@ -35,6 +41,7 @@ public class PostService {
       PostDTO postDTO = new PostDTO().convertFrom(post);
       postDTO.setUsername(post.getUser().getUsername());
       postDTO.setUserNickname(post.getUser().getNickname());
+      postDTO.setFavorite(this.favoriteService.isFavorite(getUser(),post));
       return postDTO;
     });
   }
@@ -46,9 +53,7 @@ public class PostService {
   }
 
   public void deletePost(Integer postId) {
-    SecurityContext context = SecurityContextHolder.getContext();
-    User user = context.getAuthorizedUser();
-    if (postRepository.findByUserAndId(user, postId) != null) {
+    if (postRepository.findByUserAndId(getUser(), postId) != null) {
       this.postRepository.deleteById(postId);
     }
   }
@@ -61,10 +66,27 @@ public class PostService {
 
   public Page<PostDTO> getPostsByUsername(@NonNull int pageNum, @NonNull int pageSize) {
     Pageable pageable = PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.DESC, "updatedTime"));
-    SecurityContext context = SecurityContextHolder.getContext();
-    User user = context.getAuthorizedUser();
-    Page<Post> pageOfPost = postRepository.findAllByUser(user,pageable);
+    Page<Post> pageOfPost = postRepository.findAllByUser(getUser(),pageable);
     return convert(pageOfPost);
   }
 
+  public void addFavorite(Integer postId){
+    Optional<Post> post = this.postRepository.findById(postId);
+    this.favoriteService.addFavorite(post.get(),getUser());
+  }
+
+  public void removeFavorite(Integer postId){
+    Optional<Post> post = this.postRepository.findById(postId);
+    this.favoriteService.removeFavorite(post.get(),getUser());
+  }
+
+  public Page<PostDTO> getFavoritePosts(@NonNull Integer pageNum,@NonNull Integer pageSize){
+    return this.favoriteService.getFavoriteList(getUser(),pageNum,pageSize).map(favorite -> {
+      PostDTO postDTO = new PostDTO().convertFrom(favorite.getPost());
+      postDTO.setUsername(favorite.getUser().getUsername());
+      postDTO.setUserNickname(favorite.getUser().getNickname());
+      postDTO.setFavorite(true);
+      return postDTO;
+    });
+  }
 }

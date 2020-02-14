@@ -36,6 +36,30 @@ postApi.getMyPost = (pageNum, pageSize) => {
   })
 }
 
+postApi.addFavorite = (postId) => {
+  return service({
+    method: "get",
+    url: `${baseURL}/addFavorite`,
+    params: {postId}
+  })
+}
+
+postApi.removeFavorite = (postId) => {
+  return service({
+    method: "get",
+    url: `${baseURL}/removeFavorite`,
+    params: {postId}
+  })
+}
+
+postApi.getMyFavorite = (pageNum,pageSize) => {
+  return service({
+    method: "get",
+    url: `${baseURL}/getMyFavorite`,
+    params: {pageNum,pageSize}
+  })
+}
+
 export default postApi
 
 

@@ -27,6 +27,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import store from "../store";
 import ClearIcon from '@material-ui/icons/Clear';
 import ForumIcon from '@material-ui/icons/Forum';
+import {Favorite} from "@material-ui/icons";
 
 export class AdminLayout extends Component {
   constructor(props) {
@@ -45,6 +46,12 @@ export class AdminLayout extends Component {
         text: "My Posts",
         Icon: ForumIcon,
         onclick: this.handleClickMyPost
+      },
+      {
+        id: "myFavorite",
+        text: "My Favorite",
+        Icon: Favorite,
+        onclick: this.handleClickMyFavorite
       }
     ]
   }
@@ -136,6 +143,12 @@ export class AdminLayout extends Component {
   handleClickMyPost = () => {
     if (this.props.location.pathname !== "/myPosts") {
       this.props.history.push("/myPosts")
+    }
+  }
+
+  handleClickMyFavorite = () => {
+    if (this.props.location.pathname !== "/myFavorite") {
+      this.props.history.push("/myFavorite")
     }
   }
 

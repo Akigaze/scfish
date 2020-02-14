@@ -3,19 +3,17 @@ import {bindActionCreators} from "redux"
 import {connect} from "react-redux"
 import {withRouter} from "react-router-dom"
 import _ from "lodash"
-import store from "../../../store";
 
-import {getPosts, search} from "../../../action/post.action";
+import {getMyFavorite, getMyPosts} from "../../../action/post.action";
 import Post from "./Post";
 
-export class Posts extends Component {
+export class MyFavorite extends Component {
   constructor(props) {
     super(props);
     this.state = {
       totalPages: undefined,
       pageNum: 0,
       postList: [],
-      keyword: ''
     };
   }
 
@@ -30,7 +28,6 @@ export class Posts extends Component {
   }
 
   componentDidMount() {
-    store.subscribe(this.handleKeywordChange)
     window.addEventListener("scroll", this.handleWindowScroll)
   }
 
@@ -43,17 +40,11 @@ export class Posts extends Component {
   }
 
   initPostList() {
-    this.setState({keyword: store.getState().post.keyword, postList: [], pageNum: 0}, () => {
-      if (this.state.keyword) {
-        this.search()
-      } else {
-        this.getPageOfPost()
-      }
-    })
+    this.getPageOfMyFavorite()
   }
 
-  getPageOfPost = (pageNum = 0, pageSize = 10) => {
-    this.props.getPosts(pageNum, pageSize)
+  getPageOfMyFavorite = (pageNum = 0, pageSize = 10) => {
+    this.props.getMyFavorite(pageNum, pageSize)
       .then(pageOfPost => {
         if (pageOfPost && !_.isEmpty(pageOfPost.content))
           this.setState({
@@ -64,39 +55,13 @@ export class Posts extends Component {
   }
 
   getNextPage = () => {
-    const {pageNum, totalPages, keyword} = this.state
+    const {pageNum, totalPages} = this.state
     if (pageNum + 1 === totalPages) {
       return
     }
-    if (keyword) {
-      this.setState({pageNum: pageNum + 1}, () => {
-        this.search(keyword, this.state.pageNum)
-      })
-    } else {
-      this.setState({pageNum: pageNum + 1}, () => {
-        this.getPageOfPost(this.state.pageNum)
-      })
-    }
-  }
-
-  search = () => {
-    const {keyword,pageNum} = this.state
-    this.props.search(keyword, pageNum)
-      .then(pageOfPost => {
-        if (pageOfPost && !_.isEmpty(pageOfPost.content))
-          this.setState({
-            postList: [...this.state.postList, ...pageOfPost.content],
-            totalPages: pageOfPost.totalPages
-          })
-      })
-  }
-
-  handleKeywordChange = () => {
-    if(this.props.history.location.pathname!=="/post"){
-      this.props.history.push("/post")
-    }else{
-      this.initPostList()
-    }
+    this.setState({pageNum: pageNum + 1}, () => {
+      this.getPageOfMyFavorite(this.state.pageNum)
+    })
   }
 
   render() {
@@ -104,7 +69,7 @@ export class Posts extends Component {
       <div id="post-list">
         {
           this.state.postList.map(post => {
-            return <Post key={"post" + post.id} {...post} />
+            return <Post key={"post" + post.id} {...post}/>
           })
         }
       </div>
@@ -118,10 +83,9 @@ function mapStateToProps(state, props) {
 
 function mapDispatchToProps(dispatch, props) {
   return bindActionCreators({
-    getPosts: getPosts,
-    search: search
+    getMyFavorite:getMyFavorite
   }, dispatch)
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Posts))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MyFavorite))
 

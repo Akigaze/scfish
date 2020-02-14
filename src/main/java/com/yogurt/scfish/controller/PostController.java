@@ -2,7 +2,7 @@ package com.yogurt.scfish.controller;
 
 import com.yogurt.scfish.dto.PostDTO;
 import com.yogurt.scfish.dto.param.PostParam;
-import com.yogurt.scfish.entity.Post;
+import com.yogurt.scfish.service.FavoriteService;
 import com.yogurt.scfish.service.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/scfish/post")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class PostController {
-
   private PostService postService;
+
 
   @GetMapping
   public Page<PostDTO> getAll(
@@ -50,6 +50,23 @@ public class PostController {
       @RequestParam(defaultValue = "10") int pageSize) {
       System.out.println(keyword);
     return this.postService.search("%" + keyword + "%", pageNum, pageSize);
+  }
+
+  @GetMapping("/addFavorite")
+  public void addFavorite(@RequestParam Integer postId){
+    this.postService.addFavorite(postId);
+  }
+
+  @GetMapping("/removeFavorite")
+  public void removeFavorite(@RequestParam Integer postId){
+    this.postService.removeFavorite(postId);
+  }
+
+  @GetMapping("/getMyFavorite")
+  public Page<PostDTO> getMyFavoritePosts(
+          @RequestParam @NonNull Integer pageNum,
+          @RequestParam @NonNull Integer pageSize){
+    return this.postService.getFavoritePosts(pageNum,pageSize);
   }
 }
 

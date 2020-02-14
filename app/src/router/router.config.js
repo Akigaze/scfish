@@ -2,13 +2,14 @@ import React from "react"
 
 import BasicLayout from "../layout/BasicLayout";
 import AdminLayout from "../layout/AdminLayout";
-import MyPostList from "../view/post/MyPostList";
 
 
 const PostList = React.lazy(() => import("../view/post/PostList"))
 const PublishPage = React.lazy(() => import("../view/post/PublishPage"))
 const Modify = React.lazy(() => import("../view/user/Modify"))
 const InformationPage = React.lazy(() => import("../view/user/InformationPage"))
+const MyPostList = React.lazy(() => import("../view/post/MyPostList"))
+const MyFavoriteList = React.lazy(() => import("../view/post/MyFavoriteList"))
 
 
 
@@ -46,6 +47,12 @@ export const adminRouterConfig = [
     name: "MyPostList",
     layout: AdminLayout,
     component: MyPostList
+  },
+  {
+    path: "/myFavorite",
+    name: "MyFavorite",
+    layout: AdminLayout,
+    component: MyFavoriteList
   }
 ]
 

@@ -1,7 +1,6 @@
 package com.yogurt.scfish.service;
 
 import com.yogurt.scfish.dto.CommentDTO;
-import com.yogurt.scfish.dto.PostDTO;
 import com.yogurt.scfish.dto.param.CommentParam;
 import com.yogurt.scfish.entity.Comment;
 import com.yogurt.scfish.entity.User;
