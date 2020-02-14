@@ -22,12 +22,9 @@ public class Favorite extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
+  private String username;
 
   @ManyToOne(targetEntity = Post.class, cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
   @JoinColumn(name = "postId")
   private Post post;
-
-  @ManyToOne(targetEntity = User.class, cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
-  @JoinColumn(name = "username")
-  private User user;
 }

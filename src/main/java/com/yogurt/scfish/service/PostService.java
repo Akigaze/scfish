@@ -41,7 +41,7 @@ public class PostService {
       PostDTO postDTO = new PostDTO().convertFrom(post);
       postDTO.setUsername(post.getUser().getUsername());
       postDTO.setUserNickname(post.getUser().getNickname());
-      postDTO.setFavorite(this.favoriteService.isFavorite(getUser(),post));
+      postDTO.setFavorite(this.favoriteService.isFavorite(getUser().getUsername(),post));
       return postDTO;
     });
   }
@@ -72,19 +72,19 @@ public class PostService {
 
   public void addFavorite(Integer postId){
     Optional<Post> post = this.postRepository.findById(postId);
-    this.favoriteService.addFavorite(post.get(),getUser());
+    this.favoriteService.addFavorite(post.get(),getUser().getUsername());
   }
 
   public void removeFavorite(Integer postId){
     Optional<Post> post = this.postRepository.findById(postId);
-    this.favoriteService.removeFavorite(post.get(),getUser());
+    this.favoriteService.removeFavorite(post.get(),getUser().getUsername());
   }
 
   public Page<PostDTO> getFavoritePosts(@NonNull Integer pageNum,@NonNull Integer pageSize){
-    return this.favoriteService.getFavoriteList(getUser(),pageNum,pageSize).map(favorite -> {
+    return this.favoriteService.getFavoriteList(getUser().getUsername(),pageNum,pageSize).map(favorite -> {
       PostDTO postDTO = new PostDTO().convertFrom(favorite.getPost());
-      postDTO.setUsername(favorite.getUser().getUsername());
-      postDTO.setUserNickname(favorite.getUser().getNickname());
+      postDTO.setUsername(favorite.getPost().getUser().getUsername());
+      postDTO.setUserNickname(favorite.getPost().getUser().getNickname());
       postDTO.setFavorite(true);
       return postDTO;
     });
