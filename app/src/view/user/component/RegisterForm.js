@@ -31,9 +31,18 @@ export class RegisterForm extends Component {
     this.setState({password: event.target.value})
   }
 
+  verify = () => {
+    const {username, nickname, password} = this.state;
+    const EnglishReg = /^[A-Za-z0-9_]{8,40}$/
+    const ChineseReg = /^[A-Za-z0-9_\u4e00-\u9fa5]{8,40}$/
+    return username && EnglishReg.test(username) &&
+      password && EnglishReg.test(this.state.password) &&
+      nickname && ChineseReg.test(this.state.nickname)
+  }
+
   clickRegister = () => {
     const {username, nickname, password} = this.state;
-    if (username && nickname && password) {
+    if (this.verify()) {
       this.props.register(username, nickname, password)
         .then(() => this.props.history.push("/login"))
     }
