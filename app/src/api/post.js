@@ -60,6 +60,22 @@ postApi.getMyFavorite = (pageNum,pageSize) => {
   })
 }
 
+postApi.addLike = (postId) => {
+  return service({
+    method: "get",
+    url: `${baseURL}/addLike`,
+    params: {postId}
+  })
+}
+
+postApi.removeLike = (postId) => {
+  return service({
+    method: "get",
+    url: `${baseURL}/removeLike`,
+    params: {postId}
+  })
+}
+
 export default postApi
 
 

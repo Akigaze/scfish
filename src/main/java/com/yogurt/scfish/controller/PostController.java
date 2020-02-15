@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
   private PostService postService;
 
-
   @GetMapping
   public Page<PostDTO> getAll(
       @RequestParam(defaultValue = "0") int pageNum,
@@ -68,5 +67,16 @@ public class PostController {
           @RequestParam @NonNull Integer pageSize){
     return this.postService.getFavoritePosts(pageNum,pageSize);
   }
+
+  @GetMapping("/addLike")
+  public void addLike(@RequestParam Integer postId){
+    this.postService.addLike(postId);
+  }
+
+  @GetMapping("/removeLike")
+  public void removeLike(@RequestParam Integer postId){
+    this.postService.removeLike(postId);
+  }
+
 }
 

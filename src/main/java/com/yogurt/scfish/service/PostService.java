@@ -24,6 +24,7 @@ public class PostService {
 
   private PostRepository postRepository;
   private FavoriteService favoriteService;
+  private LikeService likeService;
 
   public User getUser(){
     SecurityContext context = SecurityContextHolder.getContext();
@@ -41,7 +42,9 @@ public class PostService {
       PostDTO postDTO = new PostDTO().convertFrom(post);
       postDTO.setUsername(post.getUser().getUsername());
       postDTO.setUserNickname(post.getUser().getNickname());
-      postDTO.setFavorite(this.favoriteService.isFavorite(getUser().getUsername(),post));
+      postDTO.setIsFavorite(this.favoriteService.isFavorite(getUser().getUsername(),post));
+      postDTO.setIsLike(likeService.isLike(getUser().getUsername(),post.getId()));
+      postDTO.setLikeNum(likeService.getLikeNum(post.getId()));
       return postDTO;
     });
   }
@@ -85,8 +88,19 @@ public class PostService {
       PostDTO postDTO = new PostDTO().convertFrom(favorite.getPost());
       postDTO.setUsername(favorite.getPost().getUser().getUsername());
       postDTO.setUserNickname(favorite.getPost().getUser().getNickname());
-      postDTO.setFavorite(true);
+      postDTO.setIsFavorite(true);
+      postDTO.setIsLike(likeService.isLike(getUser().getUsername(),favorite.getId()));
+      postDTO.setLikeNum(likeService.getLikeNum(favorite.getId()));
       return postDTO;
     });
   }
+
+  public void addLike(@NonNull Integer postId){
+    likeService.addLike(getUser().getUsername(),postId);
+  }
+
+  public void removeLike(@NonNull Integer postId){
+    likeService.removeLike(getUser().getUsername(),postId);
+  }
+
 }

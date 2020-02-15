@@ -15,5 +15,7 @@ public class PostDTO implements OutputConverter<PostDTO, Post> {
   private String username;
   private String userNickname;
   private LocalDateTime createdTime;
-  private Boolean favorite;
+  private Boolean isFavorite;
+  private Boolean isLike;
+  private Integer likeNum;
 }

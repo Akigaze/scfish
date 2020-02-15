@@ -96,3 +96,31 @@ export const getMyFavorite = (pageNum,pageSize) => {
     })
   }
 }
+
+export const addLike = (postId) => {
+  return async (dispatch) => {
+    return new Promise((resolve, reject) => {
+      postApi.addLike(postId)
+        .then(resp => {
+          resolve(resp.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  }
+}
+
+export const removeLike = (postId) => {
+  return async (dispatch) => {
+    return new Promise((resolve, reject) => {
+      postApi.removeLike(postId)
+        .then(resp => {
+          resolve(resp.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  }
+}

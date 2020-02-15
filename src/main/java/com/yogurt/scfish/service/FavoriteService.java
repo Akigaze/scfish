@@ -2,7 +2,6 @@ package com.yogurt.scfish.service;
 
 import com.yogurt.scfish.entity.Favorite;
 import com.yogurt.scfish.entity.Post;
-import com.yogurt.scfish.entity.User;
 import com.yogurt.scfish.repository.FavoriteRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

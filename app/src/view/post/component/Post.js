@@ -9,10 +9,11 @@ import Comments from "./Comments";
 import Button from "@material-ui/core/Button";
 import {Avatar, ExpansionPanel, ExpansionPanelDetails, TextField} from "@material-ui/core";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import {addFavorite, removeFavorite} from "../../../action/post.action";
+import {addFavorite, addLike, removeFavorite, removeLike} from "../../../action/post.action";
 import {Favorite, FavoriteBorder} from "@material-ui/icons";
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
 import IconButton from "@material-ui/core/IconButton";
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 
 export class Post extends Component {
   constructor(props) {
@@ -20,7 +21,9 @@ export class Post extends Component {
     this.state = {
       comment: '',
       expanded: false,
-      favorite:this.props.favorite
+      isFavorite:this.props.isFavorite,
+      isLike:this.props.isLike,
+      likeNum:this.props.likeNum
     }
   }
 
@@ -49,8 +52,8 @@ export class Post extends Component {
 
   handleFavoriteClick = (event) => {
     event.stopPropagation()
-    this.setState({favorite:!this.state.favorite},()=>{
-      if(this.state.favorite){
+    this.setState({isFavorite:!this.state.isFavorite},()=>{
+      if(this.state.isFavorite){
         this.props.addFavorite(this.props.id)
       }else {
         this.props.removeFavorite(this.props.id)
@@ -58,6 +61,18 @@ export class Post extends Component {
     })
   }
 
+  handleLikeClick = (event) => {
+    event.stopPropagation()
+    this.setState({isLike:!this.state.isLike},()=>{
+      if(this.state.isLike){
+        this.setState({likeNum:this.state.likeNum+1})
+        this.props.addLike(this.props.id)
+      }else {
+        this.setState({likeNum:this.state.likeNum-1})
+        this.props.removeLike(this.props.id)
+      }
+    })
+  }
 
   render() {
     const {expanded, comment} = this.state
@@ -86,8 +101,12 @@ export class Post extends Component {
                   </Box>
                 </Box>
                 <Box style={{"display":"flex","flexDirection":"row-reverse"}} alignItems="center" my={1}>
-                  <IconButton style={{"padding":"6px"}} onClick={this.handleFavoriteClick} >
-                    {this.state.favorite===true?<Favorite color="secondary"/>:<FavoriteBorder/>}
+                  <span style={{"margin-right":"10px","font-size":"14px"}}>({this.state.likeNum})</span>
+                  <IconButton style={{"padding":"4px"}} onClick={this.handleLikeClick} >
+                    {this.state.isLike===true?<ThumbUpIcon style={{"padding":"1px"}} color="primary"/>:<ThumbUpOutlinedIcon />}
+                  </IconButton>
+                  <IconButton style={{"padding":"4px"}} onClick={this.handleFavoriteClick} >
+                    {this.state.isFavorite===true?<Favorite style={{"padding":"1px"}} color="secondary"/>:<FavoriteBorder/>}
                   </IconButton>
                 </Box>
               </Box>
@@ -118,7 +137,9 @@ function mapDispatchToProps(dispatch, props) {
   return bindActionCreators({
     publish: publish,
     addFavorite:addFavorite,
-    removeFavorite:removeFavorite
+    removeFavorite:removeFavorite,
+    addLike:addLike,
+    removeLike:removeLike
   }, dispatch)
 }
 
