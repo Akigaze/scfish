@@ -35,11 +35,11 @@ export class AdminLayout extends Component {
     this.state = {
       anchorEl: null,
       menuOpen: null,
-      keyword:''
+      keyword: ''
     }
   }
 
-  drawerMenus(){
+  drawerMenus() {
     return [
       {
         id: "myPosts",
@@ -117,21 +117,21 @@ export class AdminLayout extends Component {
   }
 
   handleKeywordChange = (event) => {
-    this.setState({keyword:event.target.value})
+    this.setState({keyword: event.target.value})
   }
 
   handleSearchKeyPress = (event) => {
-    if(event.charCode===13){
+    if (event.charCode === 13) {
       this.handleClickSearch()
     }
   }
 
   handleClickSearch = () => {
-    store.dispatch({type:"keyword",keyword:this.state.keyword})
+    store.dispatch({type: "keyword", keyword: this.state.keyword})
   }
 
   handleClickSearchClear = () => {
-    this.setState({keyword:''})
+    this.setState({keyword: ''})
   }
 
   handleClickHome = () => {
@@ -182,10 +182,11 @@ export class AdminLayout extends Component {
             </div>
             <div>
               <div className="search">
-                <InputBase value={this.state.keyword} onKeyPress={this.handleSearchKeyPress} style={{width:"200px"}}
+                <InputBase value={this.state.keyword} onKeyPress={this.handleSearchKeyPress} style={{width: "200px"}}
                            onChange={this.handleKeywordChange} placeholder="Search…" color="primary"
-                           startAdornment={<SearchIcon style={{color:"white",margin:"5px"}}/>}
-                           endAdornment={<ClearIcon style={{color:"white",margin:"5px"}} onClick={this.handleClickSearchClear}/>}/>
+                           startAdornment={<SearchIcon style={{color: "white", margin: "5px"}}/>}
+                           endAdornment={<ClearIcon style={{color: "white", margin: "5px"}}
+                                                    onClick={this.handleClickSearchClear}/>}/>
               </div>
               <Tooltip title="publish">
                 <IconButton edge="end" color="inherit" onClick={this.handleClickPublish}>
@@ -194,7 +195,7 @@ export class AdminLayout extends Component {
               </Tooltip>
               <Tooltip title={profile && profile.nickname}>
                 <IconButton edge="end" color="inherit" onClick={this.handleClickPortrait}>
-                    <AccountCircleIcon/>
+                  <AccountCircleIcon/>
                 </IconButton>
               </Tooltip>
               <Popover open={Boolean(anchorEl)}

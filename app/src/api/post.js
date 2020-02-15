@@ -52,11 +52,11 @@ postApi.removeFavorite = (postId) => {
   })
 }
 
-postApi.getMyFavorite = (pageNum,pageSize) => {
+postApi.getMyFavorite = (pageNum, pageSize) => {
   return service({
     method: "get",
     url: `${baseURL}/getMyFavorite`,
-    params: {pageNum,pageSize}
+    params: {pageNum, pageSize}
   })
 }
 

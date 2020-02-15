@@ -33,12 +33,11 @@ public class CommentService {
     Pageable pageable = PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.ASC, "createdTime"));
     Page<Comment> commentPage = commentRepository.findAllByPostId(postId, pageable);
     return commentPage.map(comment -> {
-        CommentDTO commentDTO = new CommentDTO().convertFrom(comment);
-        commentDTO.setUserNickname(comment.getUser().getNickname());
-        commentDTO.setUsername(comment.getUser().getUsername());
-        return commentDTO;
+      CommentDTO commentDTO = new CommentDTO().convertFrom(comment);
+      commentDTO.setUserNickname(comment.getUser().getNickname());
+      commentDTO.setUsername(comment.getUser().getUsername());
+      return commentDTO;
     });
   }
-
 
 }

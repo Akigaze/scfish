@@ -26,7 +26,7 @@ public class PostService {
   private FavoriteService favoriteService;
   private LikeService likeService;
 
-  public User getUser(){
+  public User getUser() {
     SecurityContext context = SecurityContextHolder.getContext();
     return context.getAuthorizedUser();
   }
@@ -37,13 +37,13 @@ public class PostService {
     postRepository.save(post);
   }
 
-  public Page<PostDTO> convert(@NonNull Page<Post> pageOfPost){
+  public Page<PostDTO> convert(@NonNull Page<Post> pageOfPost) {
     return pageOfPost.map(post -> {
       PostDTO postDTO = new PostDTO().convertFrom(post);
       postDTO.setUsername(post.getUser().getUsername());
       postDTO.setUserNickname(post.getUser().getNickname());
-      postDTO.setIsFavorite(this.favoriteService.isFavorite(getUser().getUsername(),post));
-      postDTO.setIsLike(likeService.isLike(getUser().getUsername(),post.getId()));
+      postDTO.setIsFavorite(this.favoriteService.isFavorite(getUser().getUsername(), post));
+      postDTO.setIsLike(likeService.isLike(getUser().getUsername(), post.getId()));
       postDTO.setLikeNum(likeService.getLikeNum(post.getId()));
       return postDTO;
     });
@@ -63,44 +63,44 @@ public class PostService {
 
   public Page<PostDTO> search(String keyword, @NonNull int pageNum, @NonNull int pageSize) {
     Pageable pageable = PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.DESC, "updatedTime"));
-    Page<Post> pageOfPost=  postRepository.findAllByTitleLikeOrContentLike(keyword, keyword, pageable);
+    Page<Post> pageOfPost = postRepository.findAllByTitleLikeOrContentLike(keyword, keyword, pageable);
     return convert(pageOfPost);
   }
 
   public Page<PostDTO> getPostsByUsername(@NonNull int pageNum, @NonNull int pageSize) {
     Pageable pageable = PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.DESC, "updatedTime"));
-    Page<Post> pageOfPost = postRepository.findAllByUser(getUser(),pageable);
+    Page<Post> pageOfPost = postRepository.findAllByUser(getUser(), pageable);
     return convert(pageOfPost);
   }
 
-  public void addFavorite(Integer postId){
+  public void addFavorite(Integer postId) {
     Optional<Post> post = this.postRepository.findById(postId);
-    this.favoriteService.addFavorite(post.get(),getUser().getUsername());
+    this.favoriteService.addFavorite(post.get(), getUser().getUsername());
   }
 
-  public void removeFavorite(Integer postId){
+  public void removeFavorite(Integer postId) {
     Optional<Post> post = this.postRepository.findById(postId);
-    this.favoriteService.removeFavorite(post.get(),getUser().getUsername());
+    this.favoriteService.removeFavorite(post.get(), getUser().getUsername());
   }
 
-  public Page<PostDTO> getFavoritePosts(@NonNull Integer pageNum,@NonNull Integer pageSize){
-    return this.favoriteService.getFavoriteList(getUser().getUsername(),pageNum,pageSize).map(favorite -> {
+  public Page<PostDTO> getFavoritePosts(@NonNull Integer pageNum, @NonNull Integer pageSize) {
+    return this.favoriteService.getFavoriteList(getUser().getUsername(), pageNum, pageSize).map(favorite -> {
       PostDTO postDTO = new PostDTO().convertFrom(favorite.getPost());
       postDTO.setUsername(favorite.getPost().getUser().getUsername());
       postDTO.setUserNickname(favorite.getPost().getUser().getNickname());
       postDTO.setIsFavorite(true);
-      postDTO.setIsLike(likeService.isLike(getUser().getUsername(),favorite.getId()));
+      postDTO.setIsLike(likeService.isLike(getUser().getUsername(), favorite.getId()));
       postDTO.setLikeNum(likeService.getLikeNum(favorite.getId()));
       return postDTO;
     });
   }
 
-  public void addLike(@NonNull Integer postId){
-    likeService.addLike(getUser().getUsername(),postId);
+  public void addLike(@NonNull Integer postId) {
+    likeService.addLike(getUser().getUsername(), postId);
   }
 
-  public void removeLike(@NonNull Integer postId){
-    likeService.removeLike(getUser().getUsername(),postId);
+  public void removeLike(@NonNull Integer postId) {
+    likeService.removeLike(getUser().getUsername(), postId);
   }
 
 }

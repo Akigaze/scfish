@@ -16,7 +16,7 @@ export class Comments extends Component {
     this.state = {
       content: '',
       pageNum: 0,
-      totalPages:0,
+      totalPages: 0,
       commentList: []
     }
   }
@@ -29,64 +29,67 @@ export class Comments extends Component {
   refreshCommentList() {
     this.props.getComments(this.props.postId, this.state.pageNum)
       .then(pageOfComment => {
-        if (pageOfComment && !_.isEmpty(pageOfComment.content)){
+        if (pageOfComment && !_.isEmpty(pageOfComment.content)) {
           this.setState({
-            commentList: pageOfComment.content,
-            totalPages:pageOfComment.totalPages
-          },()=>
-            this.handlePageButtonChange()
-          )}
+              commentList: pageOfComment.content,
+              totalPages: pageOfComment.totalPages
+            }, () =>
+              this.handlePageButtonChange()
+          )
+        }
       })
 
   }
 
   handleNextPage = () => {
-    const{pageNum,totalPages} = this.state
-    if(pageNum+1===totalPages){
+    const {pageNum, totalPages} = this.state
+    if (pageNum + 1 === totalPages) {
       return
     }
-    this.setState({pageNum:pageNum+1},()=>{
-        this.refreshCommentList()})
+    this.setState({pageNum: pageNum + 1}, () => {
+      this.refreshCommentList()
+    })
   }
 
   handlePrePage = () => {
-    const{pageNum} = this.state
-    if (pageNum===0){
+    const {pageNum} = this.state
+    if (pageNum === 0) {
       return
     }
-    this.setState({pageNum:pageNum-1},()=>{
-      this.refreshCommentList()})
+    this.setState({pageNum: pageNum - 1}, () => {
+      this.refreshCommentList()
+    })
   }
 
   handlePageButtonChange = () => {
-    const{pageNum,totalPages} = this.state
-    if(pageNum===0){
-      document.getElementById("upIcon"+this.props.postId).setAttribute("style","visibility: hidden");
-    }else{
-      document.getElementById("upIcon"+this.props.postId).setAttribute("style","");
+    const {pageNum, totalPages} = this.state
+    if (pageNum === 0) {
+      document.getElementById("upIcon" + this.props.postId).setAttribute("style", "visibility: hidden");
+    } else {
+      document.getElementById("upIcon" + this.props.postId).setAttribute("style", "");
     }
-    if(pageNum+1===totalPages){
-      document.getElementById("downIcon"+this.props.postId).setAttribute("style","display:none");
-    }else{
-      document.getElementById("downIcon"+this.props.postId).setAttribute("style","");
+    if (pageNum + 1 === totalPages) {
+      document.getElementById("downIcon" + this.props.postId).setAttribute("style", "display:none");
+    } else {
+      document.getElementById("downIcon" + this.props.postId).setAttribute("style", "");
     }
   }
 
   render() {
     return (
-        <div>
-          <IconButton id={"upIcon"+this.props.postId} onClick={this.handlePrePage} style={{"visibility":"hidden"}}>
-            <KeyboardArrowUpIcon />
-          </IconButton>
-          {
-            this.state.commentList.map(comment => {
-                return <Comment key={"comment"+comment.id} {...comment}/>
-              })
-          }
-            <IconButton id={"downIcon"+this.props.postId} onClick={this.handleNextPage} style={{"display":"none"}}>
-              <KeyboardArrowDownIcon/>
-            </IconButton>
-        </div>
+      <div>
+        <IconButton id={"upIcon" + this.props.postId} onClick={this.handlePrePage} style={{"visibility": "hidden"}}>
+          <KeyboardArrowUpIcon/>
+        </IconButton>
+        {
+          this.state.commentList.map(comment => {
+            return <Comment key={"comment" + comment.id} {...comment}/>
+          })
+        }
+        <IconButton id={"downIcon" + this.props.postId} onClick={this.handleNextPage} style={{"display": "none"}}>
+          <KeyboardArrowDownIcon/>
+        </IconButton>
+      </div>
     )
   }
 

@@ -6,10 +6,10 @@ export default class Register extends Component {
 
   render() {
     return (
-        <Fragment>
-          <img src={logo} className="App-logo" alt="logo"/>
-          <RegisterForm/>
-        </Fragment>
+      <Fragment>
+        <img src={logo} className="App-logo" alt="logo"/>
+        <RegisterForm/>
+      </Fragment>
     )
   }
 }

@@ -19,17 +19,17 @@ public class PostController {
 
   @GetMapping
   public Page<PostDTO> getAll(
-      @RequestParam(defaultValue = "0") int pageNum,
-      @RequestParam(defaultValue = "10") int pageSize) {
+          @RequestParam(defaultValue = "0") int pageNum,
+          @RequestParam(defaultValue = "10") int pageSize) {
     return this.postService.getPosts(pageNum, pageSize);
   }
 
-    @GetMapping("/getMyPosts")
-    public Page<PostDTO> getMyPosts(
-            @RequestParam(defaultValue = "0") int pageNum,
-            @RequestParam(defaultValue = "10") int pageSize) {
-        return this.postService.getPostsByUsername(pageNum, pageSize);
-    }
+  @GetMapping("/getMyPosts")
+  public Page<PostDTO> getMyPosts(
+          @RequestParam(defaultValue = "0") int pageNum,
+          @RequestParam(defaultValue = "10") int pageSize) {
+    return this.postService.getPostsByUsername(pageNum, pageSize);
+  }
 
   @PostMapping
   public ResponseEntity<String> publish(@RequestBody @NonNull PostParam postParam) {
@@ -44,37 +44,37 @@ public class PostController {
 
   @PostMapping("/search")
   public Page<PostDTO> search(
-      @RequestParam String keyword,
-      @RequestParam(defaultValue = "0") int pageNum,
-      @RequestParam(defaultValue = "10") int pageSize) {
-      System.out.println(keyword);
+          @RequestParam String keyword,
+          @RequestParam(defaultValue = "0") int pageNum,
+          @RequestParam(defaultValue = "10") int pageSize) {
+    System.out.println(keyword);
     return this.postService.search("%" + keyword + "%", pageNum, pageSize);
   }
 
   @GetMapping("/addFavorite")
-  public void addFavorite(@RequestParam Integer postId){
+  public void addFavorite(@RequestParam Integer postId) {
     this.postService.addFavorite(postId);
   }
 
   @GetMapping("/removeFavorite")
-  public void removeFavorite(@RequestParam Integer postId){
+  public void removeFavorite(@RequestParam Integer postId) {
     this.postService.removeFavorite(postId);
   }
 
   @GetMapping("/getMyFavorite")
   public Page<PostDTO> getMyFavoritePosts(
           @RequestParam @NonNull Integer pageNum,
-          @RequestParam @NonNull Integer pageSize){
-    return this.postService.getFavoritePosts(pageNum,pageSize);
+          @RequestParam @NonNull Integer pageSize) {
+    return this.postService.getFavoritePosts(pageNum, pageSize);
   }
 
   @GetMapping("/addLike")
-  public void addLike(@RequestParam Integer postId){
+  public void addLike(@RequestParam Integer postId) {
     this.postService.addLike(postId);
   }
 
   @GetMapping("/removeLike")
-  public void removeLike(@RequestParam Integer postId){
+  public void removeLike(@RequestParam Integer postId) {
     this.postService.removeLike(postId);
   }
 

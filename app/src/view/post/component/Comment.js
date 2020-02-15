@@ -5,7 +5,7 @@ import {Avatar} from "@material-ui/core";
 export class Comment extends Component {
 
   render() {
-    const {userNickname,content,createdTime} = this.props
+    const {userNickname, content, createdTime} = this.props
     return (
       <Box my="20px">
         <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -16,8 +16,8 @@ export class Comment extends Component {
             </Avatar>
             <span>{userNickname} :</span>
           </Box>
-          <Box fontSize={12}  textAlign="right">
-            <span>{createdTime.replace('T',' ')}</span>
+          <Box fontSize={12} textAlign="right">
+            <span>{createdTime.replace('T', ' ')}</span>
           </Box>
         </Box>
         <Box textAlign="left" mx={5} my={1}>

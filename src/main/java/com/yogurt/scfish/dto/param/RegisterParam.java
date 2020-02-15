@@ -12,5 +12,4 @@ public class RegisterParam implements InputConverter<User> {
   private String username;
   private String nickname;
   private String password;
-
 }

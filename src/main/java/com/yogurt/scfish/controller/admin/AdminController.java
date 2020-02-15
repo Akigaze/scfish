@@ -38,7 +38,7 @@ public class AdminController {
 
   @PostMapping("/modify")
   public UserDTO modify(@RequestBody @NonNull UserDTO newProfile) {
-      return this.adminService.modifyUser(newProfile);
+    return this.adminService.modifyUser(newProfile);
   }
 
   @PostMapping("/logout")

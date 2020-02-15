@@ -24,9 +24,9 @@ public class CommentController {
 
   @GetMapping
   public Page<CommentDTO> getComments(
-      @RequestParam @NonNull Integer postId,
-      @RequestParam(defaultValue = "0") int pageNum,
-      @RequestParam(defaultValue = "10") int pageSize) {
+          @RequestParam @NonNull Integer postId,
+          @RequestParam(defaultValue = "0") int pageNum,
+          @RequestParam(defaultValue = "10") int pageSize) {
     return this.commentService.getComments(postId, pageNum, pageSize);
   }
 

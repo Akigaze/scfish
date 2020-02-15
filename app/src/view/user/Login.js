@@ -6,10 +6,10 @@ export default class Login extends Component {
 
   render() {
     return (
-        <Fragment>
-          <img src={logo} className="App-logo" alt="logo"/>
-          <LoginForm/>
-        </Fragment>
+      <Fragment>
+        <img src={logo} className="App-logo" alt="logo"/>
+        <LoginForm/>
+      </Fragment>
     )
   }
 }

@@ -12,7 +12,6 @@ const MyPostList = React.lazy(() => import("../view/post/MyPostList"))
 const MyFavoriteList = React.lazy(() => import("../view/post/MyFavoriteList"))
 
 
-
 const Login = React.lazy(() => import("../view/user/Login"))
 const Register = React.lazy(() => import("../view/user/Register"))
 const ExceptionPage = React.lazy(() => import("../view/exception/404"))

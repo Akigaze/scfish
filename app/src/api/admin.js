@@ -45,9 +45,9 @@ adminApi.modify = (newProfile) => {
   return service({
     method: "post",
     url: `${baseURL}/modify`,
-    data:{
-      username:newProfile.username,
-      nickname:newProfile.nickname
+    data: {
+      username: newProfile.username,
+      nickname: newProfile.nickname
     }
   })
 }
