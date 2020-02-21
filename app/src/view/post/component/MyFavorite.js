@@ -4,7 +4,7 @@ import {connect} from "react-redux"
 import {withRouter} from "react-router-dom"
 import _ from "lodash"
 
-import {getMyFavorite, getMyPosts} from "../../../action/post.action";
+import {getMyFavorite} from "../../../action/post.action";
 import Post from "./Post";
 
 export class MyFavorite extends Component {

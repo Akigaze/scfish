@@ -38,7 +38,7 @@ export class Posts extends Component {
     window.removeEventListener("scroll", this.handleWindowScroll)
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.initPostList()
   }
 

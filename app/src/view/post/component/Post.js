@@ -101,7 +101,7 @@ export class Post extends Component {
                 </Box>
               </Box>
               <Box style={{"display": "flex", "flexDirection": "row-reverse"}} alignItems="center" my={1}>
-                <span style={{"margin-right": "10px", "font-size": "14px"}}>({this.state.likeNum})</span>
+                <span style={{"marginRight": "10px", "fontSize": "14px"}}>({this.state.likeNum})</span>
                 <IconButton style={{"padding": "4px"}} onClick={this.handleLikeClick}>
                   {this.state.isLike === true ? <ThumbUpIcon style={{"padding": "1px"}} color="primary"/> :
                     <ThumbUpOutlinedIcon/>}
