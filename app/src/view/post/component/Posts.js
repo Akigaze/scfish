@@ -7,6 +7,9 @@ import store from "../../../store";
 
 import {getPosts, search} from "../../../action/post.action";
 import Post from "./Post";
+import IconButton from "@material-ui/core/IconButton";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import {user} from "../../../action/actionType";
 
 export class Posts extends Component {
   constructor(props) {
@@ -15,38 +18,27 @@ export class Posts extends Component {
       totalPages: undefined,
       pageNum: 0,
       postList: [],
-      keyword: ''
     };
-  }
-
-  handleWindowScroll = (event) => {
-    const scrollTop = (event.target ? event.target.documentElement.scrollTop : false) || window.pageYOffset || (event.target ? event.target.body.scrollTop : 0);
-    const clientHeight = (event.target && event.target.documentElement.clientHeight) || document.body.clientHeight;
-    const scrollHeight = (event.target && event.target.documentElement.scrollHeight) || document.body.scrollHeight;
-    const height = scrollHeight - scrollTop - clientHeight;
-    if (Math.round(height) < 1) {
-      this.getNextPage()
-    }
   }
 
   componentDidMount() {
     store.subscribe(this.handleKeywordChange)
-    window.addEventListener("scroll", this.handleWindowScroll)
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("scroll", this.handleWindowScroll)
   }
 
   UNSAFE_componentWillMount() {
     this.initPostList()
   }
 
+  componentWillUnmount() {
+    store.subscribe(this.handleKeywordChange)
+    store.dispatch({type:'keyword'})
+  }
+
   initPostList() {
-    this.setState({keyword: store.getState().post.keyword, postList: [], pageNum: 0}, () => {
-      if (this.state.keyword) {
-        this.search()
-      } else {
+    this.setState({postList: [],pageNum: 0},()=>{
+      if(store.getState().post.keyword){
+        this.search(store.getState().post.keyword)
+      }else {
         this.getPageOfPost()
       }
     })
@@ -79,8 +71,8 @@ export class Posts extends Component {
     }
   }
 
-  search = () => {
-    const {keyword,pageNum} = this.state
+  search = (keyword) => {
+    const {pageNum} = this.state
     this.props.search(keyword, pageNum)
       .then(pageOfPost => {
         if (pageOfPost && !_.isEmpty(pageOfPost.content))
@@ -92,10 +84,11 @@ export class Posts extends Component {
   }
 
   handleKeywordChange = () => {
-    if(this.props.history.location.pathname!=="/post"){
-      this.props.history.push("/post")
-    }else{
-      this.initPostList()
+    if(store.getState().post.keyword){
+      if(this.props.location.path!=='/post'){
+        this.props.history.push('/post')
+      }
+      this.forceUpdate(this.initPostList)
     }
   }
 
@@ -107,6 +100,9 @@ export class Posts extends Component {
             return <Post key={"post" + post.id} {...post} />
           })
         }
+        <IconButton onClick={this.getNextPage} style={{marginBottom:"30px"}}>
+          <KeyboardArrowDownIcon />
+        </IconButton>
       </div>
     )
   }
