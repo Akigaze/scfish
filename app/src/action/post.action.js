@@ -1,4 +1,5 @@
 import postApi from "../api/post";
+import picUtils from "../utils/picUtils";
 
 export const getPosts = (pageNum, pageSize) => {
   return async (dispatch) => {
@@ -14,10 +15,10 @@ export const getPosts = (pageNum, pageSize) => {
   }
 }
 
-export const publish = (title, content) => {
+export const publish = (title, content, form) => {
   return async (dispatch) => {
     return new Promise((resolve, reject) => {
-      postApi.publish(title, content)
+      postApi.publish(title, content, form)
         .then(resp => {
           resolve(resp.data)
         })

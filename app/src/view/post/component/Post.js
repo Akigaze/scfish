@@ -14,6 +14,7 @@ import {Favorite, FavoriteBorder} from "@material-ui/icons";
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
 import IconButton from "@material-ui/core/IconButton";
+import picUtils from "../../../utils/picUtils";
 
 export class Post extends Component {
   constructor(props) {
@@ -23,7 +24,15 @@ export class Post extends Component {
       expanded: false,
       isFavorite: this.props.isFavorite,
       isLike: this.props.isLike,
-      likeNum: this.props.likeNum
+      likeNum: this.props.likeNum,
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.imgList) {
+      this.props.imgList.map((img, index) => {
+        document.getElementById(this.props.id + "-img-" + index).setAttribute("class", "img-preview")
+      })
     }
   }
 
@@ -39,11 +48,14 @@ export class Post extends Component {
         })
       this.setState({comment: ''})
     }
-
   }
 
   handleExpansionPress = (event) => {
-    this.setState({expanded: !this.state.expanded})
+    this.setState({expanded: !this.state.expanded}, () => {
+      if (this.state.expanded) {
+        this.child.refreshCommentList()
+      }
+    })
   }
 
   onRef = (ref) => {
@@ -74,20 +86,37 @@ export class Post extends Component {
     })
   }
 
+  handleImgClick = (event) => {
+    event.stopPropagation()
+    picUtils.handleImgClick(event.target.id, "img-preview", "img-amplification")
+  }
+
   render() {
     const {expanded, comment} = this.state
-    const {id, title, content, userNickname, createdTime} = this.props
+    const {id, title, content, userNickname, createdTime, imgList} = this.props
     return (
       <Box borderRadius={4} m={1} boxShadow={2} className="word">
         <ExpansionPanel expanded={Boolean(expanded)} onChange={this.handleExpansionPress}>
           <ExpansionPanelSummary>
             <Box p={2} style={{"width": "100%"}}>
-              <Box textAlign="left" fontSize="h5.fontSize" mb="4px">
+              <Box textAlign="left" fontSize="h5.fontSize" mb="20px">
                 {title}
               </Box>
               <Box textAlign="left" fontSize={16}>
                 {content}
               </Box>
+
+              <Box className="img-box">
+                {
+                  imgList ?
+                    imgList.map((img, index) => {
+                      return <img src={"data:image/*;base64," + img} alt="preview"
+                                  key={id + "-img-" + index} id={ id + "-img-" + index}
+                                  className="img-hidden" onClick={this.handleImgClick}/>
+                    }) : null
+                }
+              </Box>
+
               <Box mt="14px" display="flex" alignItems="center" justifyContent="space-between">
                 <Box fontSize={12} textAlign="left" display="flex" alignItems="center">
                   <Avatar alt={userNickname}
@@ -113,6 +142,7 @@ export class Post extends Component {
               </Box>
             </Box>
           </ExpansionPanelSummary>
+
           <ExpansionPanelDetails>
             <div style={{"width": "100%"}}>
               <Divider/>

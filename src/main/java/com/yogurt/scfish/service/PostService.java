@@ -15,7 +15,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -25,16 +27,20 @@ public class PostService {
   private PostRepository postRepository;
   private FavoriteService favoriteService;
   private LikeService likeService;
+  private ImageService imageService;
 
   public User getUser() {
     SecurityContext context = SecurityContextHolder.getContext();
     return context.getAuthorizedUser();
   }
 
-  public void addPost(PostParam postParam) {
+  public void addPost(@NonNull PostParam postParam, MultipartFile file) throws IOException {
     Post post = postParam.convertTo();
     post.setUser(getUser());
-    postRepository.save(post);
+    Post returnPost = postRepository.saveAndFlush(post);
+    if(file!=null){
+      imageService.saveImg(returnPost.getId(),0,file.getBytes());
+    }
   }
 
   public Page<PostDTO> convert(@NonNull Page<Post> pageOfPost) {
@@ -45,6 +51,7 @@ public class PostService {
       postDTO.setIsFavorite(this.favoriteService.isFavorite(getUser().getUsername(), post));
       postDTO.setIsLike(likeService.isLike(getUser().getUsername(), post.getId()));
       postDTO.setLikeNum(likeService.getLikeNum(post.getId()));
+      postDTO.setImgList(imageService.getImgs(post.getId()));
       return postDTO;
     });
   }
@@ -91,6 +98,7 @@ public class PostService {
       postDTO.setIsFavorite(true);
       postDTO.setIsLike(likeService.isLike(getUser().getUsername(), favorite.getId()));
       postDTO.setLikeNum(likeService.getLikeNum(favorite.getId()));
+      postDTO.setImgList(imageService.getImgs(favorite.getId()));
       return postDTO;
     });
   }

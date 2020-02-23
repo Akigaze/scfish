@@ -22,7 +22,6 @@ export class Comments extends Component {
   }
 
   componentDidMount() {
-    this.refreshCommentList()
     this.props.onRef(this)
   }
 

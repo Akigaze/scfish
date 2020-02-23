@@ -133,11 +133,13 @@
     justify-content: center;
 }
 
-.publish-img-box{
+.img-box{
+    margin-top: 10px;
     display: flex;
     justify-content: left;
     flex-wrap: wrap;
 }
+
 
 .img-hidden{
     display: none;
@@ -147,7 +149,9 @@
     width: 120px;
     height: 120px;
     display:flex;
-    margin: 10px 10px 10px 0;
+    margin: 5px 5px 5px 0;
+    border: solid 1px gray;
+
 }
 
 .img-amplification{
@@ -157,7 +161,7 @@
 }
 
 .add-img-button{
-    margin: 10px 5px 10px 0;
+    margin: 5px;
     display: flex;
     text-align: left;
     width: 120px;

@@ -35,7 +35,7 @@ export class MyFavorite extends Component {
     window.removeEventListener("scroll", this.handleWindowScroll)
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.initPostList()
   }
 

@@ -9,7 +9,6 @@ import {getPosts, search} from "../../../action/post.action";
 import Post from "./Post";
 import IconButton from "@material-ui/core/IconButton";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import {user} from "../../../action/actionType";
 
 export class Posts extends Component {
   constructor(props) {

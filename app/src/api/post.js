@@ -12,11 +12,13 @@ postApi.getPosts = (pageNum, pageSize) => {
   })
 }
 
-postApi.publish = (title, content) => {
+postApi.publish = (title, content, file) => {
   return service({
+    headers:{'Content-Type':'multipart/form-data'},
     method: "post",
-    url: `${baseURL}`,
-    data: {title, content}
+    url: `${baseURL}/publish`,
+    data: file,
+    params:{title, content}
   })
 }
 

@@ -2,14 +2,16 @@ package com.yogurt.scfish.controller;
 
 import com.yogurt.scfish.dto.PostDTO;
 import com.yogurt.scfish.dto.param.PostParam;
-import com.yogurt.scfish.service.FavoriteService;
 import com.yogurt.scfish.service.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.*;
 
 @RestController
 @RequestMapping("/scfish/post")
@@ -31,10 +33,9 @@ public class PostController {
     return this.postService.getPostsByUsername(pageNum, pageSize);
   }
 
-  @PostMapping
-  public ResponseEntity<String> publish(@RequestBody @NonNull PostParam postParam) {
-    this.postService.addPost(postParam);
-    return ResponseEntity.accepted().body("Publish successfully");
+  @PostMapping("/publish")
+  public void publish(@ModelAttribute PostParam postParam, @RequestParam("file") @Nullable MultipartFile file) throws IOException {
+    this.postService.addPost(postParam, file);
   }
 
   @DeleteMapping
@@ -77,6 +78,7 @@ public class PostController {
   public void removeLike(@RequestParam Integer postId) {
     this.postService.removeLike(postId);
   }
+
 
 }
 
