@@ -1,5 +1,4 @@
 import postApi from "../api/post";
-import picUtils from "../utils/picUtils";
 
 export const getPosts = (pageNum, pageSize) => {
   return async (dispatch) => {

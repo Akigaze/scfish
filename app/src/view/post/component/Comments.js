@@ -19,6 +19,8 @@ export class Comments extends Component {
       totalPages: 0,
       commentList: []
     }
+    this.preButton = React.createRef()
+    this.nextButton = React.createRef()
   }
 
   componentDidMount() {
@@ -63,21 +65,21 @@ export class Comments extends Component {
   handlePageButtonChange = () => {
     const {pageNum, totalPages} = this.state
     if (pageNum === 0) {
-      document.getElementById("upIcon" + this.props.postId).setAttribute("style", "visibility: hidden");
+      this.preButton.current.style = "visibility: hidden"
     } else {
-      document.getElementById("upIcon" + this.props.postId).setAttribute("style", "");
+      this.preButton.current.style = ""
     }
     if (pageNum + 1 === totalPages) {
-      document.getElementById("downIcon" + this.props.postId).setAttribute("style", "display:none");
+      this.nextButton.current.style=  "display:none"
     } else {
-      document.getElementById("downIcon" + this.props.postId).setAttribute("style", "");
+      this.nextButton.current.style = ""
     }
   }
 
   render() {
     return (
       <div>
-        <IconButton id={"upIcon" + this.props.postId} onClick={this.handlePrePage} style={{"visibility": "hidden"}}>
+        <IconButton ref={this.preButton} onClick={this.handlePrePage} style={{"visibility": "hidden"}}>
           <KeyboardArrowUpIcon/>
         </IconButton>
         {
@@ -85,7 +87,7 @@ export class Comments extends Component {
             return <Comment key={"comment" + comment.id} {...comment}/>
           })
         }
-        <IconButton id={"downIcon" + this.props.postId} onClick={this.handleNextPage} style={{"display": "none"}}>
+        <IconButton ref={this.nextButton} onClick={this.handleNextPage} style={{"display": "none"}}>
           <KeyboardArrowDownIcon/>
         </IconButton>
       </div>

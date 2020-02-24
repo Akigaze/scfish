@@ -34,12 +34,16 @@ public class PostService {
     return context.getAuthorizedUser();
   }
 
-  public void addPost(@NonNull PostParam postParam, MultipartFile file) throws IOException {
+  public void addPost(@NonNull PostParam postParam, MultipartFile[] files) throws IOException {
     Post post = postParam.convertTo();
     post.setUser(getUser());
     Post returnPost = postRepository.saveAndFlush(post);
-    if(file!=null){
-      imageService.saveImg(returnPost.getId(),0,file.getBytes());
+    if(files!=null){
+      int i = 0;
+      for(MultipartFile file : files){
+        imageService.saveImg(returnPost.getId(),i,file.getBytes());
+        i++;
+      }
     }
   }
 

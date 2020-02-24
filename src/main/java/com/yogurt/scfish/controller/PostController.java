@@ -34,8 +34,9 @@ public class PostController {
   }
 
   @PostMapping("/publish")
-  public void publish(@ModelAttribute PostParam postParam, @RequestParam("file") @Nullable MultipartFile file) throws IOException {
-    this.postService.addPost(postParam, file);
+  public void publish(@ModelAttribute PostParam postParam, @RequestParam("files") @Nullable MultipartFile[] files) throws IOException {
+    System.out.println(files.length);
+    this.postService.addPost(postParam, files);
   }
 
   @DeleteMapping

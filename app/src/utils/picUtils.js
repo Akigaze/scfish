@@ -1,24 +1,33 @@
 const picUtils = {}
 
-picUtils.getPictUrl = (img) => {
-  let url = null;
-  if (window.createObjectURL!==undefined) {
-    url = window.createObjectURL(img) ;
-  } else if (window.URL!==undefined) {
-    url = window.URL.createObjectURL(img) ;
-  } else if (window.webkitURL!==undefined) {
-    url = window.webkitURL.createObjectURL(img) ;
+picUtils.getPictUrls = (imgs) => {
+  let urls = []
+  for(let i = 0 ; i < imgs.length;i++){
+    if (window.createObjectURL!==undefined) {
+      urls.push(window.createObjectURL(imgs[i]))
+    } else if (window.URL!==undefined) {
+      urls.push(window.URL.createObjectURL(imgs[i]))
+    } else if (window.webkitURL!==undefined) {
+      urls.push(window.webkitURL.createObjectURL(imgs[i]))
+    }
   }
-  return url ;
+  return urls ;
 }
 
-picUtils.handleImgClick = (id,previewStyle,amplificationStyle) => {
-  const flag = document.getElementById(id).getAttribute("class")===previewStyle
-  if(flag){
-    document.getElementById(id).setAttribute("class",amplificationStyle)
-  }else {
-    document.getElementById(id).setAttribute("class",previewStyle)
+picUtils.getPicBlobs = (imgs) => {
+  let blobs = [];
+  for(let i = 0 ; i < imgs.length;i++) {
+    blobs.push(new Blob([imgs[i]],{type:"image/*"}))
   }
+  return blobs
+}
+
+picUtils.removeImg = (index, imgBlobs, imgURLs) => {
+  let newBlobs = imgBlobs
+  let newURLs = imgURLs
+  newBlobs.splice(index,1)
+  newURLs.splice(index,1)
+  return {newBlobs,newURLs}
 }
 
 export default picUtils

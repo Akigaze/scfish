@@ -14,7 +14,6 @@ import {Favorite, FavoriteBorder} from "@material-ui/icons";
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
 import IconButton from "@material-ui/core/IconButton";
-import picUtils from "../../../utils/picUtils";
 
 export class Post extends Component {
   constructor(props) {
@@ -25,15 +24,12 @@ export class Post extends Component {
       isFavorite: this.props.isFavorite,
       isLike: this.props.isLike,
       likeNum: this.props.likeNum,
+      imgId: ''
     }
+    this.imgRef = React.createRef()
   }
 
   componentDidMount() {
-    if (this.props.imgList) {
-      this.props.imgList.map((img, index) => {
-        document.getElementById(this.props.id + "-img-" + index).setAttribute("class", "img-preview")
-      })
-    }
   }
 
   onCommentChange = (event) => {
@@ -88,7 +84,14 @@ export class Post extends Component {
 
   handleImgClick = (event) => {
     event.stopPropagation()
-    picUtils.handleImgClick(event.target.id, "img-preview", "img-amplification")
+    if (this.state.imgId === event.target.id) {
+      this.imgRef.current.className = "img-hidden"
+      this.setState({imgId: ''})
+      return
+    }
+    this.imgRef.current.src = event.target.src
+    this.imgRef.current.className = "img-zoom-in"
+    this.setState({imgId: event.target.id})
   }
 
   render() {
@@ -99,25 +102,23 @@ export class Post extends Component {
         <ExpansionPanel expanded={Boolean(expanded)} onChange={this.handleExpansionPress}>
           <ExpansionPanelSummary>
             <Box p={2} style={{"width": "100%"}}>
-              <Box textAlign="left" fontSize="h5.fontSize" mb="20px">
+              <Box textAlign="left" fontSize="h6.fontSize" mb="10px">
                 {title}
               </Box>
-              <Box textAlign="left" fontSize={16}>
+              <Box textAlign="left" fontSize={14}>
                 {content}
               </Box>
-
-              <Box className="img-box">
+              <Box className="imgs-box">
                 {
-                  imgList ?
-                    imgList.map((img, index) => {
+                  imgList ? imgList.map((img, index) => {
                       return <img src={"data:image/*;base64," + img} alt="preview"
-                                  key={id + "-img-" + index} id={ id + "-img-" + index}
-                                  className="img-hidden" onClick={this.handleImgClick}/>
+                                  key={id + "imgPreview" + index} id={id + "imgPreview" + index}
+                                  className="img-preview" onClick={this.handleImgClick}/>
                     }) : null
                 }
+                <img ref={this.imgRef} id={id + "img"} className="img-hidden" alt="img"/>
               </Box>
-
-              <Box mt="14px" display="flex" alignItems="center" justifyContent="space-between">
+              <Box mt="25px" display="flex" alignItems="center" justifyContent="space-between">
                 <Box fontSize={12} textAlign="left" display="flex" alignItems="center">
                   <Avatar alt={userNickname}
                           style={{backgroundColor: '#3f51b5', width: 20, height: 20, fontSize: 12, marginRight: 4}}>

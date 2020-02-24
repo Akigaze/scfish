@@ -8,8 +8,8 @@ import {connect} from "react-redux";
 import {publish} from "../../../action/post.action";
 import picUtils from "../../../utils/picUtils";
 import AddIcon from '@material-ui/icons/Add';
-import {SatelliteOutlined} from "@material-ui/icons";
 import Box from "@material-ui/core/Box";
+import Badge from "@material-ui/core/Badge";
 
 export class Publish extends React.Component {
   constructor(props) {
@@ -17,10 +17,13 @@ export class Publish extends React.Component {
     this.state = {
       title: '',
       content: '',
-      imgURL: '',
-      testURL: '',
-      imgBlob: undefined
+      imgId: '',
+      imgURLs: [],
+      imgBlobs: []
     }
+    this.imgInputRef = React.createRef()
+    this.relImgInputRef = React.createRef()
+    this.imgRef = React.createRef()
   }
 
   handleTitleChange = (event) => {
@@ -37,7 +40,9 @@ export class Publish extends React.Component {
 
   createForm = () => {
     let formData = new FormData()
-    formData.append("file", this.state.imgBlob)
+    this.state.imgBlobs.forEach(function (file) {
+      formData.append('files', file)
+    })
     return formData
   }
 
@@ -52,19 +57,42 @@ export class Publish extends React.Component {
 
   handleUpload = (event) => {
     event.preventDefault();
-    if (event.target.files[0]) {
-      this.setState({imgURL: picUtils.getPictUrl(event.target.files[0])})
-      document.getElementById("preview").setAttribute("class", "img-preview")
+    if (event.target.files) {
+      if (this.state.imgURLs.length + event.target.files.length > 6) {
+        alert("Only 6 pictures can be uploaded")
+        return
+      }
+      this.setState({imgURLs: [...this.state.imgURLs, ...picUtils.getPictUrls(event.target.files)]})
+      if (this.state.imgURLs.length + event.target.files.length === 6) {
+        this.relImgInputRef.current.className = "img-hidden"
+      }
+      this.setState({imgBlobs: picUtils.getPicBlobs(event.target.files)})
+      this.imgInputRef.current.value = null
     }
-    this.setState({imgBlob: new Blob([event.target.files[0]], {type: "image/*"})})
+
+  }
+
+  removeImg = (index, event) => {
+    const {newBlobs,newURLs} = picUtils.removeImg(index,this.state.imgBlobs,this.state.imgURLs)
+    this.setState({imgURLs:newURLs})
+    this.setState({imgBlobs:newBlobs})
+    this.relImgInputRef.current.className = "add-img-button"
   }
 
   handleUploadClick = () => {
-    document.getElementById("input-button").click()
+    this.imgInputRef.current.click()
   }
 
   handleImgClick = (event) => {
-    picUtils.handleImgClick(event.target.id, "img-preview", "img-amplification")
+    event.preventDefault()
+    if (this.state.imgId === event.target.id) {
+      this.imgRef.current.className = "img-hidden"
+      this.setState({imgId: ''})
+      return
+    }
+    this.imgRef.current.className = "img-zoom-in"
+    this.imgRef.current.src = event.target.src
+    this.setState({imgId: event.target.id})
   }
 
   render() {
@@ -79,13 +107,23 @@ export class Publish extends React.Component {
                      label="content" rows={5} rowsMax={20} multiline
                      value={this.state.content} onChange={this.handleContentChange}/>
         </FormControl>
-        <Box className="img-box">
-          <form id="imgForm" encType="multipart/form-data"/>
-          <img id="preview" alt="preview" src={this.state.imgURL} className="img-hidden" onClick={this.handleImgClick}/>
-          <input id="input-button" type="file" onChange={this.handleUpload.bind(this)} style={{display: "none"}}/>
-          <Box onClick={this.handleUploadClick} className="add-img-button">
+        <Box className="imgs-box">
+          {
+            this.state.imgURLs.map((url, index) => {
+              return <div className="img-box" key={"preview-img" + index}>
+                <Badge color="error" onClick={() => this.removeImg(index)} badgeContent="—">
+                  <img id={"preview-img" + index} alt="preview" src={url} className="img-preview"
+                       onClick={this.handleImgClick}/>
+                </Badge>
+              </div>
+            })
+          }
+          <input ref={this.imgInputRef} type="file" multiple
+                 accept="image/*" onChange={this.handleUpload} style={{display: "none"}}/>
+          <Box ref={this.relImgInputRef} onClick={this.handleUploadClick} className="add-img-button">
             <AddIcon style={{fontSize: "40px", color: "grey", margin: "40px auto"}}/>
           </Box>
+          <img ref={this.imgRef} className="img-hidden" alt="img"/>
         </Box>
         <FormControl margin="normal" fullWidth>
           <Button variant="contained" color="primary" className="publish-btn"
