@@ -14,6 +14,7 @@ import {Favorite, FavoriteBorder} from "@material-ui/icons";
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
 import IconButton from "@material-ui/core/IconButton";
+import picUtils from "../../../utils/picUtils";
 
 export class Post extends Component {
   constructor(props) {
@@ -24,7 +25,8 @@ export class Post extends Component {
       isFavorite: this.props.isFavorite,
       isLike: this.props.isLike,
       likeNum: this.props.likeNum,
-      imgId: ''
+      imgId: undefined,
+      imgNum:0
     }
     this.imgRef = React.createRef()
   }
@@ -82,16 +84,23 @@ export class Post extends Component {
     })
   }
 
-  handleImgClick = (event) => {
+  handleImgClick = (event, index) => {
     event.stopPropagation()
-    if (this.state.imgId === event.target.id) {
+    if (this.state.imgId === index && this.imgRef.current.className !== "img-hidden") {
       this.imgRef.current.className = "img-hidden"
-      this.setState({imgId: ''})
+      this.setState({imgId: undefined})
       return
     }
     this.imgRef.current.src = event.target.src
     this.imgRef.current.className = "img-zoom-in"
-    this.setState({imgId: event.target.id})
+    this.setState({imgId: index})
+  }
+
+  handleAmplificationImgClick = (event) => {
+    event.stopPropagation()
+    this.setState({imgId: picUtils.handleImgClick(event,this.imgRef.current,this.props.id, this.state.imgId)},()=>{
+      this.imgRef.current.src = document.getElementById(this.props.id+"-"+this.state.imgId).getAttribute("src")
+    })
   }
 
   render() {
@@ -111,12 +120,14 @@ export class Post extends Component {
               <Box className="imgs-box">
                 {
                   imgList ? imgList.map((img, index) => {
-                      return <img src={"data:image/*;base64," + img} alt="preview"
-                                  key={id + "imgPreview" + index} id={id + "imgPreview" + index}
-                                  className="img-preview" onClick={this.handleImgClick}/>
-                    }) : null
+                    return <img src={"data:image/*;base64," + img} alt="preview"
+                                key={id + "-" + index} id={id + "-" + index} className="img-preview"
+                                onClick={(event) => this.handleImgClick(event, index)}/>
+                  }) : null
                 }
-                <img ref={this.imgRef} id={id + "img"} className="img-hidden" alt="img"/>
+                <img ref={this.imgRef} id={id + "img"} alt="img"
+                     onMouseMove={(event)=>picUtils.mouseMoveInImg(event,this.imgRef.current)}
+                     onClick={this.handleAmplificationImgClick} className="img-hidden"/>
               </Box>
               <Box mt="25px" display="flex" alignItems="center" justifyContent="space-between">
                 <Box fontSize={12} textAlign="left" display="flex" alignItems="center">
@@ -143,7 +154,6 @@ export class Post extends Component {
               </Box>
             </Box>
           </ExpansionPanelSummary>
-
           <ExpansionPanelDetails>
             <div style={{"width": "100%"}}>
               <Divider/>

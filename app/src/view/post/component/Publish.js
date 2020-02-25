@@ -72,7 +72,7 @@ export class Publish extends React.Component {
 
   }
 
-  removeImg = (index, event) => {
+  removeImg = (index) => {
     const {newBlobs,newURLs} = picUtils.removeImg(index,this.state.imgBlobs,this.state.imgURLs)
     this.setState({imgURLs:newURLs})
     this.setState({imgBlobs:newBlobs})
