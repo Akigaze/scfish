@@ -45,8 +45,7 @@ public class ImageService {
   }
 
   public void deleteImgs(@NonNull Integer postId){
-    Pageable pageable = PageRequest.of(0,6,new Sort(Sort.Direction.ASC,"picIndex"));
-    imageRepository.findAllByPostId(postId,pageable).map(value->{
+    imageRepository.findAllByPostId(postId,null).map(value->{
       imageRepository.delete(value);
       return null;
     });

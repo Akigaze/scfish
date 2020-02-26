@@ -26,6 +26,7 @@ public class PostService {
 
   private PostRepository postRepository;
   private FavoriteService favoriteService;
+  private CommentService commentService;
   private LikeService likeService;
   private ImageService imageService;
 
@@ -47,8 +48,7 @@ public class PostService {
     }
   }
 
-  public Page<PostDTO> convert(@NonNull Page<Post> pageOfPost) {
-    return pageOfPost.map(post -> {
+  public PostDTO convert(@NonNull Post post) {
       PostDTO postDTO = new PostDTO().convertFrom(post);
       postDTO.setUsername(post.getUser().getUsername());
       postDTO.setUserNickname(post.getUser().getNickname());
@@ -57,56 +57,49 @@ public class PostService {
       postDTO.setLikeNum(likeService.getLikeNum(post.getId()));
       postDTO.setImgList(imageService.getImgs(post.getId()));
       return postDTO;
-    });
   }
 
   public Page<PostDTO> getPosts(@NonNull int pageNum, @NonNull int pageSize) {
     Pageable pageable = PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.DESC, "updatedTime"));
     Page<Post> pageOfPost = postRepository.findAll(pageable);
-    return convert(pageOfPost);
+    return pageOfPost.map(this::convert);
   }
 
   public void deletePost(Integer postId) {
     if (postRepository.findByUserAndId(getUser(), postId) != null) {
       removeLike(postId);
       removeFavorite(postId);
-      this.imageService.deleteImgs(postId);
-      this.postRepository.deleteById(postId);
+      commentService.deleteComments(postId);
+      imageService.deleteImgs(postId);
+      postRepository.deleteById(postId);
     }
   }
 
   public Page<PostDTO> search(String keyword, @NonNull int pageNum, @NonNull int pageSize) {
     Pageable pageable = PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.DESC, "updatedTime"));
     Page<Post> pageOfPost = postRepository.findAllByTitleLikeOrContentLike(keyword, keyword, pageable);
-    return convert(pageOfPost);
+    return pageOfPost.map(this::convert);
   }
 
   public Page<PostDTO> getPostsByUsername(@NonNull int pageNum, @NonNull int pageSize) {
     Pageable pageable = PageRequest.of(pageNum, pageSize, new Sort(Sort.Direction.DESC, "updatedTime"));
     Page<Post> pageOfPost = postRepository.findAllByUser(getUser(), pageable);
-    return convert(pageOfPost);
+    return pageOfPost.map(this::convert);
   }
 
   public void addFavorite(Integer postId) {
-    Optional<Post> post = this.postRepository.findById(postId);
+    Optional<Post> post = postRepository.findById(postId);
     favoriteService.addFavorite(post.get(), getUser().getUsername());
   }
 
   public void removeFavorite(Integer postId) {
-    Optional<Post> post = this.postRepository.findById(postId);
+    Optional<Post> post = postRepository.findById(postId);
     favoriteService.removeFavorite(post.get(), getUser().getUsername());
   }
 
   public Page<PostDTO> getFavoritePosts(@NonNull Integer pageNum, @NonNull Integer pageSize) {
     return this.favoriteService.getFavoriteList(getUser().getUsername(), pageNum, pageSize).map(favorite -> {
-      PostDTO postDTO = new PostDTO().convertFrom(favorite.getPost());
-      postDTO.setUsername(favorite.getPost().getUser().getUsername());
-      postDTO.setUserNickname(favorite.getPost().getUser().getNickname());
-      postDTO.setIsFavorite(true);
-      postDTO.setIsLike(likeService.isLike(getUser().getUsername(), favorite.getId()));
-      postDTO.setLikeNum(likeService.getLikeNum(favorite.getId()));
-      postDTO.setImgList(imageService.getImgs(favorite.getId()));
-      return postDTO;
+      return convert(favorite.getPost());
     });
   }
 

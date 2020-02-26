@@ -1,5 +1,4 @@
 import service from "../utils/service";
-
 const commentApi = {}
 
 const baseURL = "/scfish/comment"
@@ -12,12 +11,19 @@ commentApi.getComments = (postId, pageNum) => {
   })
 }
 
-
 commentApi.publish = (postId, content) => {
   return service({
     method: "post",
     url: `${baseURL}`,
     data: {postId, content}
+  })
+}
+
+commentApi.deleteComment = (commentId) => {
+  return service({
+    method: "delete",
+    url: `${baseURL}`,
+    params: {commentId}
   })
 }
 

@@ -30,6 +30,7 @@ export class Post extends Component {
       imgId: undefined,
       imgNum:0
     }
+    this.postRef = React.createRef()
     this.imgRef = React.createRef()
   }
 
@@ -109,7 +110,7 @@ export class Post extends Component {
     event.stopPropagation()
     if(window.confirm("Are you sure you want to delete this post?")){
       this.props.deletePost(this.props.id).then(data=>{
-        this.props.history.go(0)
+        this.postRef.current.className = "deleted"
       })
     }
   }
@@ -118,7 +119,7 @@ export class Post extends Component {
     const {expanded, comment} = this.state
     const {id, title, content, userNickname, createdTime, imgList} = this.props
     return (
-      <Box borderRadius={4} m={1} boxShadow={2} className="word">
+      <Box ref={this.postRef} borderRadius={4} m={1} boxShadow={2} className="word">
         <ExpansionPanel expanded={Boolean(expanded)} onChange={this.handleExpansionPress}>
           <ExpansionPanelSummary>
             <Box py={2} pl={3}  style={{"width": "100%"}}>

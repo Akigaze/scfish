@@ -18,8 +18,7 @@ public class CommentController {
   private CommentService commentService;
 
   @PostMapping
-  public void publishComment(@RequestBody CommentParam commentParam) {
-    this.commentService.addComment(commentParam);
+  public void publishComment(@RequestBody CommentParam commentParam) { commentService.addComment(commentParam);
   }
 
   @GetMapping
@@ -27,7 +26,12 @@ public class CommentController {
           @RequestParam @NonNull Integer postId,
           @RequestParam(defaultValue = "0") int pageNum,
           @RequestParam(defaultValue = "10") int pageSize) {
-    return this.commentService.getComments(postId, pageNum, pageSize);
+    return commentService.getComments(postId, pageNum, pageSize);
+  }
+
+  @DeleteMapping
+  public void deleteComment(@RequestParam @NonNull Integer commentId){
+    commentService.deleteComment(commentId);
   }
 
 }

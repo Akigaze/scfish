@@ -27,3 +27,17 @@ export const publish = (postId, content) => {
     })
   }
 }
+
+export const deleteComment = (commentId) => {
+  return async (dispatch) => {
+    return new Promise((resolve, reject) => {
+      commentApi.deleteComment(commentId)
+        .then(resp => {
+          resolve(resp.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  }
+}

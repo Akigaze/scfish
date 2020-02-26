@@ -21,11 +21,14 @@ import org.springframework.stereotype.Service;
 public class CommentService {
   private CommentRepository commentRepository;
 
+  public User getUser() {
+    SecurityContext context = SecurityContextHolder.getContext();
+    return context.getAuthorizedUser();
+  }
+
   public void addComment(@NonNull CommentParam commentParam) {
     Comment comment = commentParam.convertTo();
-    SecurityContext context = SecurityContextHolder.getContext();
-    User user = context.getAuthorizedUser();
-    comment.setUser(user);
+    comment.setUser(getUser());
     this.commentRepository.save(comment);
   }
 
@@ -40,4 +43,16 @@ public class CommentService {
     });
   }
 
+  public void deleteComment(@NonNull Integer commentId){
+    commentRepository.findByUserAndId(getUser(),commentId).ifPresent(value->{
+      commentRepository.delete(value);
+    });
+  }
+
+  public void deleteComments(@NonNull Integer postId){
+    commentRepository.findAllByPostId(postId,null).map(value->{
+      commentRepository.delete(value);
+      return null;
+    });
+  }
 }

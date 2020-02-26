@@ -172,3 +172,7 @@
     border: silver 1px solid;
     border-radius: 10px;
 }
+
+.deleted{
+    display: none;
+}
