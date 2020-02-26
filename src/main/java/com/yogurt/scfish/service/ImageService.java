@@ -9,11 +9,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import sun.misc.BASE64Encoder;
 
-import java.awt.font.ImageGraphicAttribute;
 import java.util.*;
 
 @Service
@@ -36,8 +34,8 @@ public class ImageService {
       return null;
     }
     List<String> list = new ArrayList<>();
-    BASE64Encoder base64 = new BASE64Encoder();
     imgPage.map(image -> {
+      BASE64Encoder base64 = new BASE64Encoder();
       list.add(base64.encode(image.getImg()));
       return image;
     });

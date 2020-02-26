@@ -99,7 +99,7 @@ export class Posts extends Component {
             return <Post key={"post" + post.id} {...post} />
           })
         }
-        <IconButton onClick={this.getNextPage} style={{marginBottom:"30px"}}>
+        <IconButton onClick={this.getNextPage} style={{marginBottom:30}}>
           <KeyboardArrowDownIcon />
         </IconButton>
       </div>

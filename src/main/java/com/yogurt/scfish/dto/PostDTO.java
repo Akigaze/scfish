@@ -1,5 +1,6 @@
 package com.yogurt.scfish.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yogurt.scfish.dto.base.OutputConverter;
 import com.yogurt.scfish.entity.Post;
 import lombok.Data;
@@ -14,6 +15,8 @@ public class PostDTO implements OutputConverter<PostDTO, Post> {
   private String content;
   private String username;
   private String userNickname;
+  private String avatar;
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
   private LocalDateTime createdTime;
   private Boolean isFavorite;
   private Boolean isLike;

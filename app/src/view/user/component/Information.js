@@ -26,7 +26,7 @@ export class Information extends Component{
   render() {
     return(
       <div>
-        <Box borderRadius={4} mt={5} p={3} pb={2} boxShadow={2}>
+        <Box borderRadius={4} mt={5} p={3} boxShadow={2}>
           <Box className="information-format">
             <span>username: {this.state.username}</span>
             <span>nickname: {this.state.nickname}</span>

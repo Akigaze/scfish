@@ -1,6 +1,5 @@
 package com.yogurt.scfish.controller.admin;
 
-
 import com.yogurt.scfish.dto.UserDTO;
 import com.yogurt.scfish.dto.param.LoginParam;
 import com.yogurt.scfish.dto.param.RegisterParam;
@@ -37,8 +36,8 @@ public class AdminController {
   }
 
   @PostMapping("/modify")
-  public UserDTO modify(@RequestBody @NonNull UserDTO newProfile) {
-    return this.adminService.modifyUser(newProfile);
+  public void modify(@RequestBody @NonNull UserDTO newProfile) {
+    this.adminService.modifyUser(newProfile);
   }
 
   @PostMapping("/logout")

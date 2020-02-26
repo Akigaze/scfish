@@ -28,6 +28,7 @@ import store from "../store";
 import ClearIcon from '@material-ui/icons/Clear';
 import ForumIcon from '@material-ui/icons/Forum';
 import {Favorite} from "@material-ui/icons";
+import Avatar from "@material-ui/core/Avatar";
 
 export class AdminLayout extends Component {
   constructor(props) {
@@ -103,7 +104,6 @@ export class AdminLayout extends Component {
   }
 
   handleClickSettings = (event) => {
-
   }
 
   handleClickLogout = (event) => {
@@ -182,10 +182,10 @@ export class AdminLayout extends Component {
             </div>
             <div>
               <div className="search">
-                <InputBase value={this.state.keyword} onKeyPress={this.handleSearchKeyPress} style={{width: "200px"}}
+                <InputBase value={this.state.keyword} onKeyPress={this.handleSearchKeyPress} style={{width: 200}}
                            onChange={this.handleKeywordChange} placeholder="Search…" color="primary"
-                           startAdornment={<SearchIcon style={{color: "white", margin: "5px"}}/>}
-                           endAdornment={<ClearIcon style={{color: "white", margin: "5px"}}
+                           startAdornment={<SearchIcon style={{color: "white", margin: 5}}/>}
+                           endAdornment={<ClearIcon style={{color: "white", margin: 5}}
                                                     onClick={this.handleClickSearchClear}/>}/>
               </div>
               <Tooltip title="publish">
@@ -195,7 +195,8 @@ export class AdminLayout extends Component {
               </Tooltip>
               <Tooltip title={profile && profile.nickname}>
                 <IconButton edge="end" color="inherit" onClick={this.handleClickPortrait}>
-                  <AccountCircleIcon/>
+                  <Avatar src={"data:image/*;base64," + store.getState().user.profile.avatar}
+                          style={{width: 30, height: 30}}/>
                 </IconButton>
               </Tooltip>
               <Popover open={Boolean(anchorEl)}

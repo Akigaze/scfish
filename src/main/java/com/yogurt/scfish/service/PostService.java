@@ -16,8 +16,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import sun.misc.BASE64Encoder;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Optional;
 
 @Service
@@ -39,24 +41,28 @@ public class PostService {
     Post post = postParam.convertTo();
     post.setUser(getUser());
     Post returnPost = postRepository.saveAndFlush(post);
-    if(files!=null){
+    if (files != null) {
       int i = 0;
-      for(MultipartFile file : files){
-        imageService.saveImg(returnPost.getId(),i,file.getBytes());
+      for (MultipartFile file : files) {
+        imageService.saveImg(returnPost.getId(), i, file.getBytes());
         i++;
       }
     }
   }
 
   public PostDTO convert(@NonNull Post post) {
-      PostDTO postDTO = new PostDTO().convertFrom(post);
-      postDTO.setUsername(post.getUser().getUsername());
-      postDTO.setUserNickname(post.getUser().getNickname());
-      postDTO.setIsFavorite(this.favoriteService.isFavorite(getUser().getUsername(), post));
-      postDTO.setIsLike(likeService.isLike(getUser().getUsername(), post.getId()));
-      postDTO.setLikeNum(likeService.getLikeNum(post.getId()));
-      postDTO.setImgList(imageService.getImgs(post.getId()));
-      return postDTO;
+    PostDTO postDTO = new PostDTO().convertFrom(post);
+    postDTO.setUsername(post.getUser().getUsername());
+    postDTO.setUserNickname(post.getUser().getNickname());
+    postDTO.setIsFavorite(this.favoriteService.isFavorite(getUser().getUsername(), post));
+    postDTO.setIsLike(likeService.isLike(getUser().getUsername(), post.getId()));
+    postDTO.setLikeNum(likeService.getLikeNum(post.getId()));
+    postDTO.setImgList(imageService.getImgs(post.getId()));
+
+    byte[] avatar = post.getUser().getAvatar();
+    BASE64Encoder encoder = new BASE64Encoder();
+    postDTO.setAvatar(avatar!=null?encoder.encode(avatar):"");
+    return postDTO;
   }
 
   public Page<PostDTO> getPosts(@NonNull int pageNum, @NonNull int pageSize) {

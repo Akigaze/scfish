@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import sun.misc.BASE64Encoder;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -39,18 +40,22 @@ public class CommentService {
       CommentDTO commentDTO = new CommentDTO().convertFrom(comment);
       commentDTO.setUserNickname(comment.getUser().getNickname());
       commentDTO.setUsername(comment.getUser().getUsername());
+
+      byte[] avatar = comment.getUser().getAvatar();
+      BASE64Encoder encoder = new BASE64Encoder();
+      commentDTO.setAvatar(avatar!=null?encoder.encode(avatar):"");
       return commentDTO;
     });
   }
 
-  public void deleteComment(@NonNull Integer commentId){
-    commentRepository.findByUserAndId(getUser(),commentId).ifPresent(value->{
+  public void deleteComment(@NonNull Integer commentId) {
+    commentRepository.findByUserAndId(getUser(), commentId).ifPresent(value -> {
       commentRepository.delete(value);
     });
   }
 
-  public void deleteComments(@NonNull Integer postId){
-    commentRepository.findAllByPostId(postId,null).map(value->{
+  public void deleteComments(@NonNull Integer postId) {
+    commentRepository.findAllByPostId(postId, null).map(value -> {
       commentRepository.delete(value);
       return null;
     });

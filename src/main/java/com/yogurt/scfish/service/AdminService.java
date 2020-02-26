@@ -11,6 +11,7 @@ import com.yogurt.scfish.exception.DuplicatedException;
 import com.yogurt.scfish.exception.NotFoundException;
 import com.yogurt.scfish.repository.UserRepository;
 import com.yogurt.scfish.security.authorization.Authorization;
+import com.yogurt.scfish.security.context.SecurityContext;
 import com.yogurt.scfish.security.context.SecurityContextHolder;
 import com.yogurt.scfish.security.token.AuthToken;
 import com.yogurt.scfish.util.AuthUtil;
@@ -31,9 +32,7 @@ import static com.yogurt.scfish.contstant.TokenEnum.REFRESH_TOKEN;
 public class AdminService {
 
   private UserRepository userRepository;
-
   private UserService userService;
-
   private final StringCacheStore cacheStore;
 
   public void addUser(@NonNull RegisterParam registerParam) {
@@ -41,7 +40,7 @@ public class AdminService {
       throw new DuplicatedException("user id already existed").setErrorData(registerParam.getUsername());
     }
     User user = registerParam.convertTo();
-    this.userRepository.save(user);
+    userRepository.save(user);
   }
 
   public AuthToken authorize(@NonNull LoginParam loginParam) {
@@ -110,10 +109,17 @@ public class AdminService {
     return authToken;
   }
 
-  public UserDTO modifyUser(@NonNull UserDTO newProfile){
-      User oldUser = userRepository.findByUsername(newProfile.getUsername()).get();
-      oldUser.setNickname(newProfile.getNickname());
-      userRepository.save(oldUser);
-      return new UserDTO().convertFrom(userRepository.findByUsername(newProfile.getUsername()).get());
+  public void modifyUser(@NonNull UserDTO newProfile) {
+    SecurityContext context = SecurityContextHolder.getContext();
+    User user = context.getAuthorizedUser();
+    user.setNickname(newProfile.getNickname());
+    userRepository.save(user);
+  }
+
+  public void updateAvatar(@NonNull byte[] newAvatar) {
+    SecurityContext context = SecurityContextHolder.getContext();
+    User user = context.getAuthorizedUser();
+    user.setAvatar(newAvatar);
+    userRepository.save(user);
   }
 }

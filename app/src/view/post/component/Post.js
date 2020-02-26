@@ -28,7 +28,7 @@ export class Post extends Component {
       isLike: this.props.isLike,
       likeNum: this.props.likeNum,
       imgId: undefined,
-      imgNum:0
+      imgNum: 0
     }
     this.postRef = React.createRef()
     this.imgRef = React.createRef()
@@ -101,18 +101,22 @@ export class Post extends Component {
 
   handleAmplificationImgClick = (event) => {
     event.stopPropagation()
-    this.setState({imgId: picUtils.handleImgClick(event,this.imgRef.current,this.props.id, this.state.imgId)},()=>{
-      this.imgRef.current.src = document.getElementById(this.props.id+"-"+this.state.imgId).getAttribute("src")
+    this.setState({imgId: picUtils.handleImgClick(event, this.imgRef.current, this.props.id, this.state.imgId)}, () => {
+      this.imgRef.current.src = document.getElementById(this.props.id + "-" + this.state.imgId).getAttribute("src")
     })
   }
 
   handleDeleteClick = (event) => {
     event.stopPropagation()
-    if(window.confirm("Are you sure you want to delete this post?")){
-      this.props.deletePost(this.props.id).then(data=>{
+    if (window.confirm("Are you sure you want to delete this post?")) {
+      this.props.deletePost(this.props.id).then(data => {
         this.postRef.current.className = "deleted"
       })
     }
+  }
+
+  handleAvatarClick = (event) => {
+    event.stopPropagation()
   }
 
   render() {
@@ -122,14 +126,14 @@ export class Post extends Component {
       <Box ref={this.postRef} borderRadius={4} m={1} boxShadow={2} className="word">
         <ExpansionPanel expanded={Boolean(expanded)} onChange={this.handleExpansionPress}>
           <ExpansionPanelSummary>
-            <Box py={2} pl={3}  style={{"width": "100%"}}>
+            <Box py={2} pl={3} style={{width: "100%"}}>
               <Box style={{display: "flex", flexDirection: "row-reverse"}}>
-                {this.props.username===store.getState().user.profile.username?
-                  <IconButton onClick={this.handleDeleteClick} style={{padding:"3px"}}>
-                    <ClearIcon style={{fontSize:"15px"}} />
-                  </IconButton>:null}
+                {this.props.username === store.getState().user.profile.username ?
+                  <IconButton onClick={this.handleDeleteClick} style={{padding: 3}}>
+                    <ClearIcon style={{fontSize: 15}}/>
+                  </IconButton> : null}
               </Box>
-              <Box textAlign="left" fontSize="h6.fontSize" mb="10px">
+              <Box textAlign="left" fontSize="h6.fontSize" mb={1}>
                 {title}
               </Box>
               <Box textAlign="left" fontSize={14}>
@@ -144,39 +148,37 @@ export class Post extends Component {
                   }) : null
                 }
                 <img ref={this.imgRef} id={id + "img"} alt="img"
-                     onMouseMove={(event)=>picUtils.mouseMoveInImg(event,this.imgRef.current)}
+                     onMouseMove={(event) => picUtils.mouseMoveInImg(event, this.imgRef.current)}
                      onClick={this.handleAmplificationImgClick} className="img-hidden"/>
               </Box>
-              <Box mt="25px" display="flex" alignItems="center" justifyContent="space-between">
-                <Box fontSize={12} textAlign="left" display="flex" alignItems="center">
-                  <Avatar alt={userNickname}
-                          style={{backgroundColor: '#3f51b5', width: 20, height: 20, fontSize: 12, marginRight: 4}}>
-                    {userNickname[0]}
-                  </Avatar>
+              <Box mt={3} display="flex" alignItems="center" justifyContent="space-between">
+                <Box fontSize={14} textAlign="left" display="flex" alignItems="center" >
+                  <Avatar alt={userNickname} src={"data:image/*;base64," + this.props.avatar}
+                          style={{width: 30, height: 30, marginRight: 10}} onClick={this.handleAvatarClick}/>
                   <span>{userNickname}</span>
                 </Box>
                 <Box fontSize={12} textAlign="right">
-                  {createdTime.replace('T', ' ')}
+                  {createdTime}
                 </Box>
               </Box>
-              <Box style={{"display": "flex", "flexDirection": "row-reverse"}} alignItems="center" my={1}>
-                <span style={{"marginRight": "10px", "fontSize": "14px"}}>({this.state.likeNum})</span>
-                <IconButton style={{"padding": "4px"}} onClick={this.handleLikeClick}>
-                  {this.state.isLike === true ? <ThumbUpIcon style={{"padding": "1px"}} color="primary"/> :
+              <Box style={{display: "flex", flexDirection: "row-reverse"}} alignItems="center" my={1}>
+                <span style={{marginRight: 10, fontSize: 14}}>({this.state.likeNum})</span>
+                <IconButton style={{padding: 4}} onClick={this.handleLikeClick}>
+                  {this.state.isLike === true ? <ThumbUpIcon style={{padding: 1}} color="primary"/> :
                     <ThumbUpOutlinedIcon/>}
                 </IconButton>
-                <IconButton style={{"padding": "4px"}} onClick={this.handleFavoriteClick}>
-                  {this.state.isFavorite === true ? <Favorite style={{"padding": "1px"}} color="secondary"/> :
+                <IconButton style={{padding: 4}} onClick={this.handleFavoriteClick}>
+                  {this.state.isFavorite === true ? <Favorite style={{padding: 1}} color="secondary"/> :
                     <FavoriteBorder/>}
                 </IconButton>
               </Box>
             </Box>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
-            <div style={{"width": "100%"}}>
+            <div style={{width: "100%"}}>
               <Divider/>
-              <div id={"comment" + id}>
-                <TextField style={{"display": "block"}} fullWidth multiline rows={3} rowsMax={20}
+              <div id={comment + id}>
+                <TextField style={{display: "block"}} fullWidth multiline rows={3} rowsMax={20}
                            variant="outlined" label="comment" margin="normal"
                            value={comment} onChange={this.onCommentChange}/>
                 <Button color="primary" variant="outlined" onClick={this.handleSubmitClick}>submit</Button>

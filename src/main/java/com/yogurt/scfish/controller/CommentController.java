@@ -2,14 +2,12 @@ package com.yogurt.scfish.controller;
 
 import com.yogurt.scfish.dto.CommentDTO;
 import com.yogurt.scfish.dto.param.CommentParam;
-import com.yogurt.scfish.entity.Comment;
 import com.yogurt.scfish.service.CommentService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
-
 
 @RestController
 @RequestMapping("/scfish/comment")

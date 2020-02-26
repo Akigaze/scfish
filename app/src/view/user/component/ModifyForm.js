@@ -42,10 +42,10 @@ export class modifyForm extends Component {
     return (
       <div>
         <Box borderRadius={4} mt={5} pt={3} pb={1} boxShadow={2}>
-          <span style={{"fontSize": "16px"}}>nickname:</span>
-          <input style={{"marginLeft": "8px", "padding": "2px"}}
+          <span style={{fontSize: 16}}>nickname:</span>
+          <input style={{marginLeft: 8, padding: 2}}
                  onChange={this.handleNicknameChange} value={this.state.nickname}/>
-          <Button style={{"display": "block", "margin": "10px auto"}} variant="outlined"
+          <Button style={{display: "block", margin: "10px auto"}} variant="outlined"
                   onClick={this.handleUpdateClick}>update</Button>
         </Box>
       </div>

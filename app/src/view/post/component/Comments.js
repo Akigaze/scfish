@@ -79,7 +79,7 @@ export class Comments extends Component {
   render() {
     return (
       <div>
-        <IconButton ref={this.preButton} onClick={this.handlePrePage} style={{"visibility": "hidden"}}>
+        <IconButton ref={this.preButton} onClick={this.handlePrePage} style={{visibility: "hidden"}}>
           <KeyboardArrowUpIcon/>
         </IconButton>
         {
@@ -87,7 +87,7 @@ export class Comments extends Component {
             return <Comment key={"comment" + comment.id} {...comment}/>
           })
         }
-        <IconButton ref={this.nextButton} onClick={this.handleNextPage} style={{"display": "none"}}>
+        <IconButton ref={this.nextButton} onClick={this.handleNextPage} style={{display: "none"}}>
           <KeyboardArrowDownIcon/>
         </IconButton>
       </div>
