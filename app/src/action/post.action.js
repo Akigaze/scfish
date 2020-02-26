@@ -28,6 +28,20 @@ export const publish = (title, content, form) => {
   }
 }
 
+export const deletePost = (postId) => {
+  return async (dispatch) => {
+    return new Promise((resolve, reject) => {
+      postApi.deletePost(postId)
+        .then(resp => {
+          resolve(resp.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  }
+}
+
 export const search = (keyword, page) => {
   return async (dispatch) => {
     return new Promise((resolve, reject) => {

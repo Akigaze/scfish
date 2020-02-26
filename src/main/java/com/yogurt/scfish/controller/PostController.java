@@ -35,7 +35,6 @@ public class PostController {
 
   @PostMapping("/publish")
   public void publish(@ModelAttribute PostParam postParam, @RequestParam("files") @Nullable MultipartFile[] files) throws IOException {
-    System.out.println(files.length);
     this.postService.addPost(postParam, files);
   }
 
@@ -49,7 +48,6 @@ public class PostController {
           @RequestParam String keyword,
           @RequestParam(defaultValue = "0") int pageNum,
           @RequestParam(defaultValue = "10") int pageSize) {
-    System.out.println(keyword);
     return this.postService.search("%" + keyword + "%", pageNum, pageSize);
   }
 

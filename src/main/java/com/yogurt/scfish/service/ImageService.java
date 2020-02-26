@@ -9,9 +9,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import sun.misc.BASE64Encoder;
 
+import java.awt.font.ImageGraphicAttribute;
 import java.util.*;
 
 @Service
@@ -42,4 +44,11 @@ public class ImageService {
     return list;
   }
 
+  public void deleteImgs(@NonNull Integer postId){
+    Pageable pageable = PageRequest.of(0,6,new Sort(Sort.Direction.ASC,"picIndex"));
+    imageRepository.findAllByPostId(postId,pageable).map(value->{
+      imageRepository.delete(value);
+      return null;
+    });
+  }
 }

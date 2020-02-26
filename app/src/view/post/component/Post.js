@@ -9,12 +9,14 @@ import Comments from "./Comments";
 import Button from "@material-ui/core/Button";
 import {Avatar, ExpansionPanel, ExpansionPanelDetails, TextField} from "@material-ui/core";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import {addFavorite, addLike, removeFavorite, removeLike} from "../../../action/post.action";
+import {addFavorite, addLike, deletePost, removeFavorite, removeLike} from "../../../action/post.action";
 import {Favorite, FavoriteBorder} from "@material-ui/icons";
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
 import IconButton from "@material-ui/core/IconButton";
 import picUtils from "../../../utils/picUtils";
+import store from "../../../store";
+import ClearIcon from '@material-ui/icons/Clear';
 
 export class Post extends Component {
   constructor(props) {
@@ -103,6 +105,15 @@ export class Post extends Component {
     })
   }
 
+  handleDeleteClick = (event) => {
+    event.stopPropagation()
+    if(window.confirm("Are you sure you want to delete this post?")){
+      this.props.deletePost(this.props.id).then(data=>{
+        this.props.history.go(0)
+      })
+    }
+  }
+
   render() {
     const {expanded, comment} = this.state
     const {id, title, content, userNickname, createdTime, imgList} = this.props
@@ -110,7 +121,13 @@ export class Post extends Component {
       <Box borderRadius={4} m={1} boxShadow={2} className="word">
         <ExpansionPanel expanded={Boolean(expanded)} onChange={this.handleExpansionPress}>
           <ExpansionPanelSummary>
-            <Box p={2} style={{"width": "100%"}}>
+            <Box py={2} pl={3}  style={{"width": "100%"}}>
+              <Box style={{display: "flex", flexDirection: "row-reverse"}}>
+                {this.props.username===store.getState().user.profile.username?
+                  <IconButton onClick={this.handleDeleteClick} style={{padding:"3px"}}>
+                    <ClearIcon style={{fontSize:"15px"}} />
+                  </IconButton>:null}
+              </Box>
               <Box textAlign="left" fontSize="h6.fontSize" mb="10px">
                 {title}
               </Box>
@@ -180,6 +197,7 @@ function mapDispatchToProps(dispatch, props) {
   return bindActionCreators({
     publish: publish,
     addFavorite: addFavorite,
+    deletePost: deletePost,
     removeFavorite: removeFavorite,
     addLike: addLike,
     removeLike: removeLike

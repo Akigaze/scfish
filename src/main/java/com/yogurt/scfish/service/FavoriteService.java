@@ -28,7 +28,7 @@ public class FavoriteService {
 
   public void removeFavorite(@NonNull Post post, @NonNull String username) {
     Optional<Favorite> favorite = favoriteRepository.findByUsernameAndPost(username, post);
-    this.favoriteRepository.delete(favorite.get());
+    favorite.ifPresent(value -> this.favoriteRepository.delete(value));
   }
 
   public Page<Favorite> getFavoriteList(@NonNull String username, @NonNull Integer pageNum, @NonNull Integer pageSize) {

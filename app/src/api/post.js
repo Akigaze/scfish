@@ -22,6 +22,14 @@ postApi.publish = (title, content, file) => {
   })
 }
 
+postApi.deletePost = (postId) => {
+  return service({
+    method: "delete",
+    url: `${baseURL}`,
+    params: {postId}
+  })
+}
+
 postApi.search = (keyword, pageNum, pageSize) => {
   return service({
     method: "post",

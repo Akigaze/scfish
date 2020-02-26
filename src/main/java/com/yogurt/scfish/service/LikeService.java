@@ -23,7 +23,7 @@ public class LikeService {
 
   public void removeLike(@NonNull String username,@NonNull Integer postId){
     Optional<Like> like = likeRepository.findByUsernameAndPostId(username,postId);
-    likeRepository.delete(like.get());
+    like.ifPresent(value -> likeRepository.delete(value));
   }
 
   public Boolean isLike(@NonNull String username,@NonNull Integer postId){

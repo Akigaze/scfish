@@ -1,4 +1,3 @@
-import React from "react";
 import preCursor from "../asset/icon/pre_cursor.ico"
 import nextCursor from "../asset/icon/next_cursor.ico"
 

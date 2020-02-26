@@ -68,6 +68,9 @@ public class PostService {
 
   public void deletePost(Integer postId) {
     if (postRepository.findByUserAndId(getUser(), postId) != null) {
+      removeLike(postId);
+      removeFavorite(postId);
+      this.imageService.deleteImgs(postId);
       this.postRepository.deleteById(postId);
     }
   }
@@ -86,12 +89,12 @@ public class PostService {
 
   public void addFavorite(Integer postId) {
     Optional<Post> post = this.postRepository.findById(postId);
-    this.favoriteService.addFavorite(post.get(), getUser().getUsername());
+    favoriteService.addFavorite(post.get(), getUser().getUsername());
   }
 
   public void removeFavorite(Integer postId) {
     Optional<Post> post = this.postRepository.findById(postId);
-    this.favoriteService.removeFavorite(post.get(), getUser().getUsername());
+    favoriteService.removeFavorite(post.get(), getUser().getUsername());
   }
 
   public Page<PostDTO> getFavoritePosts(@NonNull Integer pageNum, @NonNull Integer pageSize) {
