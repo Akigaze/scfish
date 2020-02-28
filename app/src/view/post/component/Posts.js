@@ -18,6 +18,7 @@ export class Posts extends Component {
       pageNum: 0,
       postList: [],
     };
+    this.nextRef = React.createRef()
   }
 
   componentDidMount() {
@@ -43,14 +44,18 @@ export class Posts extends Component {
     })
   }
 
-  getPageOfPost = (pageNum = 0, pageSize = 10) => {
+  getPageOfPost = (pageNum = 0, pageSize = 3) => {
     this.props.getPosts(pageNum, pageSize)
       .then(pageOfPost => {
-        if (pageOfPost && !_.isEmpty(pageOfPost.content))
+        if(pageOfPost.number+1===pageOfPost.totalPages){
+          this.nextRef.current.style = "display:none"
+        }
+        if (pageOfPost && !_.isEmpty(pageOfPost.content)){
           this.setState({
             postList: [...this.state.postList, ...pageOfPost.content],
             totalPages: pageOfPost.totalPages
           })
+        }
       })
   }
 
@@ -100,7 +105,7 @@ export class Posts extends Component {
           })
         }
         <IconButton onClick={this.getNextPage} style={{marginBottom:30}}>
-          <KeyboardArrowDownIcon />
+          <KeyboardArrowDownIcon ref={this.nextRef}/>
         </IconButton>
       </div>
     )

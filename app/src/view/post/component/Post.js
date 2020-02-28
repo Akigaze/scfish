@@ -17,7 +17,6 @@ import IconButton from "@material-ui/core/IconButton";
 import picUtils from "../../../utils/picUtils";
 import store from "../../../store";
 import ClearIcon from '@material-ui/icons/Clear';
-import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 
 export class Post extends Component {
   constructor(props) {
@@ -28,25 +27,14 @@ export class Post extends Component {
       isFavorite: this.props.isFavorite,
       isLike: this.props.isLike,
       likeNum: this.props.likeNum,
-      imgIndex: undefined,
-      previews: [],
-      imgUrls: []
+      imgId: undefined,
+      imgNum: 0
     }
     this.postRef = React.createRef()
     this.imgRef = React.createRef()
   }
 
   componentDidMount() {
-    if (this.props.imgList) {
-      for (let url of this.props.imgList) {
-        picUtils.handleImgPreview(url, preview => {
-          this.setState({
-            previews: [...this.state.previews, preview],
-            imgUrls: [...this.state.imgUrls, "data:image/jpg;base64," + url]
-          })
-        })
-      }
-    }
   }
 
   onCommentChange = (event) => {
@@ -101,20 +89,20 @@ export class Post extends Component {
 
   handleImgClick = (event, index) => {
     event.stopPropagation()
-    if (this.state.imgIndex === index && this.imgRef.current.className !== "img-hidden") {
+    if (this.state.imgId === index && this.imgRef.current.className !== "img-hidden") {
       this.imgRef.current.className = "img-hidden"
-      this.setState({imgIndex: undefined})
+      this.setState({imgId: undefined})
       return
     }
-    this.imgRef.current.src = this.state.imgUrls[index]
+    this.imgRef.current.src = event.target.src
     this.imgRef.current.className = "img-zoom-in"
-    this.setState({imgIndex: index})
+    this.setState({imgId: index})
   }
 
   handleAmplificationImgClick = (event) => {
     event.stopPropagation()
-    this.setState({imgIndex: picUtils.handleImgClick(event, this.imgRef.current, this.props.id, this.state.imgIndex)}, () => {
-      this.imgRef.current.src = this.state.imgUrls[this.state.imgIndex]
+    this.setState({imgId: picUtils.handleImgClick(event, this.imgRef.current, this.props.id, this.state.imgId)}, () => {
+      this.imgRef.current.src = document.getElementById(this.props.id + "-" + this.state.imgId).getAttribute("src")
     })
   }
 
@@ -132,40 +120,40 @@ export class Post extends Component {
   }
 
   render() {
-    const {expanded, comment, previews, imgList} = this.state
-    const {id, title, content, userNickname, avatar, createdTime} = this.props
+    const {expanded, comment} = this.state
+    const {id, title, content, userNickname, createdTime, imgList} = this.props
     return (
       <Box ref={this.postRef} borderRadius={4} m={1} boxShadow={2} className="word">
-        <ExpansionPanel expanded={Boolean(expanded)}>
-          <ExpansionPanelSummary style={{cursor: "default"}}>
-            <Box py={1} pl={2} style={{width: "100%"}}>
+        <ExpansionPanel expanded={Boolean(expanded)} onChange={this.handleExpansionPress}>
+          <ExpansionPanelSummary>
+            <Box py={2} pl={3} style={{width: "100%"}}>
               <Box style={{display: "flex", flexDirection: "row-reverse"}}>
                 {this.props.username === store.getState().user.profile.username ?
                   <IconButton onClick={this.handleDeleteClick} style={{padding: 3}}>
                     <ClearIcon style={{fontSize: 15}}/>
-                  </IconButton> : <Box style={{height: 20}}/>}
+                  </IconButton> : null}
               </Box>
               <Box textAlign="left" fontSize="h6.fontSize" mb={1}>
-                <span>{title}</span>
+                {title}
               </Box>
               <Box textAlign="left" fontSize={14}>
-                <span>{content}</span>
+                {content}
               </Box>
               <Box className="imgs-box">
                 {
-                  previews ? previews.map((preview, index) => {
-                    return <img src={preview} alt="preview"
+                  imgList ? imgList.map((img, index) => {
+                    return <img src={"data:image/*;base64," + img} alt="preview"
                                 key={id + "-" + index} id={id + "-" + index} className="img-preview"
                                 onClick={(event) => this.handleImgClick(event, index)}/>
                   }) : null
                 }
                 <img ref={this.imgRef} id={id + "img"} alt="img"
-                     onMouseMove={(event) => picUtils.changeCursorInImage(event, this.imgRef.current)}
+                     onMouseMove={(event) => picUtils.mouseMoveInImg(event, this.imgRef.current)}
                      onClick={this.handleAmplificationImgClick} className="img-hidden"/>
               </Box>
               <Box mt={3} display="flex" alignItems="center" justifyContent="space-between">
-                <Box fontSize={14} textAlign="left" display="flex" alignItems="center">
-                  <Avatar alt={userNickname} src={"data:image/*;base64," + avatar}
+                <Box fontSize={14} textAlign="left" display="flex" alignItems="center" >
+                  <Avatar alt={userNickname} src={"data:image/*;base64," + this.props.avatar}
                           style={{width: 30, height: 30, marginRight: 10}} onClick={this.handleAvatarClick}/>
                   <span>{userNickname}</span>
                 </Box>
@@ -173,19 +161,16 @@ export class Post extends Component {
                   {createdTime}
                 </Box>
               </Box>
-              <Box style={{display: "flex", alignItems: "center", justifyContent: "flex-end"}} my={1}>
-                <IconButton style={{padding: 6}} onClick={this.handleExpansionPress}>
-                  <ChatBubbleOutlineIcon/>
-                </IconButton>
-                <IconButton style={{padding: 6}} onClick={this.handleFavoriteClick}>
-                  {this.state.isFavorite === true ? <Favorite style={{padding: 1}} color="secondary"/> :
-                    <FavoriteBorder/>}
-                </IconButton>
-                <IconButton style={{padding: 6}} onClick={this.handleLikeClick}>
+              <Box style={{display: "flex", flexDirection: "row-reverse"}} alignItems="center" my={1}>
+                <span style={{marginRight: 10, fontSize: 14}}>({this.state.likeNum})</span>
+                <IconButton style={{padding: 4}} onClick={this.handleLikeClick}>
                   {this.state.isLike === true ? <ThumbUpIcon style={{padding: 1}} color="primary"/> :
                     <ThumbUpOutlinedIcon/>}
                 </IconButton>
-                <span style={{marginRight: 10, fontSize: 14}}>({this.state.likeNum})</span>
+                <IconButton style={{padding: 4}} onClick={this.handleFavoriteClick}>
+                  {this.state.isFavorite === true ? <Favorite style={{padding: 1}} color="secondary"/> :
+                    <FavoriteBorder/>}
+                </IconButton>
               </Box>
             </Box>
           </ExpansionPanelSummary>
