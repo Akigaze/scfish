@@ -145,7 +145,7 @@ export class Post extends Component {
                     <ClearIcon style={{fontSize: 15}}/>
                   </IconButton> : <Box style={{height: 20}}/>}
               </Box>
-              <Box textAlign="left" fontSize="h6.fontSize" mb={1}>
+              <Box textAlign="left" fontSize="h6.fontSize" mb={2}>
                 <span>{title}</span>
               </Box>
               <Box textAlign="left" fontSize={14}>
