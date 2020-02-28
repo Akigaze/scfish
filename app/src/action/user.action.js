@@ -46,6 +46,7 @@ export const register = (username, nickname, password) => {
     })
 }
 
+
 export const logout = () => {
   return async (dispatch) => {
     dispatch({type: user.CLEAR_TOKEN})
@@ -66,6 +67,22 @@ export const modify = (newProfile) => {
   return async (dispatch) => {
     return new Promise((resolve, reject) =>
       adminApi.modify(newProfile)
+        .then(resp => {
+          dispatch({type: user.SET_PROFILE, profile: resp.data})
+          resolve(resp)
+        })
+        .catch(error => {
+          console.log(error);
+          reject(error)
+        })
+    )
+  }
+}
+
+export const updateAvatar = (newAvatar) => {
+  return async (dispatch) => {
+    return new Promise((resolve, reject) =>
+      adminApi.updateAvatar(newAvatar)
         .then(resp => {
           dispatch({type: user.SET_PROFILE, profile: resp.data})
           resolve(resp)

@@ -45,6 +45,7 @@ public class PostService {
       int i = 0;
       for (MultipartFile file : files) {
         imageService.saveImg(returnPost.getId(), i, file.getBytes());
+        System.out.println(i);
         i++;
       }
     }

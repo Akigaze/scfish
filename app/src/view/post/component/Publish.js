@@ -9,7 +9,8 @@ import {publish} from "../../../action/post.action";
 import picUtils from "../../../utils/picUtils";
 import AddIcon from '@material-ui/icons/Add';
 import Box from "@material-ui/core/Box";
-import Badge from "@material-ui/core/Badge";
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from "@material-ui/core/IconButton";
 
 export class Publish extends React.Component {
   constructor(props) {
@@ -19,7 +20,8 @@ export class Publish extends React.Component {
       content: '',
       imgId: '',
       imgURLs: [],
-      imgBlobs: []
+      imgBlobs: [],
+      previews: []
     }
     this.imgInputRef = React.createRef()
     this.relImgInputRef = React.createRef()
@@ -62,20 +64,34 @@ export class Publish extends React.Component {
         alert("Only 6 pictures can be uploaded")
         return
       }
-      this.setState({imgURLs: [...this.state.imgURLs, ...picUtils.getPictUrls(event.target.files)]})
+      for (let f of event.target.files) {
+        if (f.size < 1024 * 1024 * 10) {
+          picUtils.getImgUrlAndBlob(f, (imgUrl, imgBlob) => {
+            this.setState({
+              imgURLs: [...this.state.imgURLs, imgUrl],
+              imgBlobs: [...this.state.imgBlobs, imgBlob]
+            }, data => {
+              picUtils.handleImgPreview(f, preview => {
+                this.setState({previews: [...this.state.previews, preview]})
+              })
+            })
+          })
+        }
+      }
       if (this.state.imgURLs.length + event.target.files.length === 6) {
         this.relImgInputRef.current.className = "img-hidden"
       }
-      this.setState({imgBlobs: picUtils.getPicBlobs(event.target.files)})
       this.imgInputRef.current.value = null
     }
-
   }
 
-  removeImg = (index) => {
-    const {newBlobs,newURLs} = picUtils.removeImg(index,this.state.imgBlobs,this.state.imgURLs)
-    this.setState({imgURLs:newURLs})
-    this.setState({imgBlobs:newBlobs})
+  handleDeleteClick = (event, index) => {
+    const {imgId, imgURLs, imgBlobs, previews} = this.state
+    if (imgId === "preview-img" + index) {
+      this.imgRef.current.className = "img-hidden"
+    }
+    const {newBlobs, newURLs, newPreviews} = picUtils.removeImg(index, imgBlobs, imgURLs, previews)
+    this.setState({imgURLs: newURLs, imgBlobs: newBlobs, previews: newPreviews})
     this.relImgInputRef.current.className = "add-img-button"
   }
 
@@ -83,7 +99,7 @@ export class Publish extends React.Component {
     this.imgInputRef.current.click()
   }
 
-  handleImgClick = (event) => {
+  handleImgClick = (event, index) => {
     event.preventDefault()
     if (this.state.imgId === event.target.id) {
       this.imgRef.current.className = "img-hidden"
@@ -91,7 +107,7 @@ export class Publish extends React.Component {
       return
     }
     this.imgRef.current.className = "img-zoom-in"
-    this.imgRef.current.src = event.target.src
+    this.imgRef.current.src = this.state.imgURLs[index]
     this.setState({imgId: event.target.id})
   }
 
@@ -109,16 +125,18 @@ export class Publish extends React.Component {
         </FormControl>
         <Box className="imgs-box">
           {
-            this.state.imgURLs.map((url, index) => {
+            this.state.previews.map((preview, index) => {
               return <div className="img-box" key={"preview-img" + index}>
-                <Badge color="error" onClick={() => this.removeImg(index)} badgeContent="—">
-                  <img id={"preview-img" + index} alt="preview" src={url} className="img-preview"
-                       onClick={this.handleImgClick}/>
-                </Badge>
+                <IconButton onClick={(event) => this.handleDeleteClick(event, index)}
+                            style={{padding: 0}} className="delete-button">
+                  <DeleteIcon style={{color: "#ea0621"}}/>
+                </IconButton>
+                <img id={"preview-img" + index} alt="preview" src={preview} className="img-preview"
+                     onClick={event => this.handleImgClick(event, index)}/>
               </div>
             })
           }
-          <input ref={this.imgInputRef} type="file" multiple
+          <input ref={this.imgInputRef} type="file" multiple maxLength={1000}
                  accept="image/*" onChange={this.handleUpload} style={{display: "none"}}/>
           <Box ref={this.relImgInputRef} onClick={this.handleUploadClick} className="add-img-button">
             <AddIcon style={{fontSize: "40px", color: "grey", margin: "40px auto"}}/>

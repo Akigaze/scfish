@@ -109,17 +109,17 @@ public class AdminService {
     return authToken;
   }
 
-  public void modifyUser(@NonNull UserDTO newProfile) {
+  public UserDTO modifyUser(@NonNull UserDTO newProfile) {
     SecurityContext context = SecurityContextHolder.getContext();
     User user = context.getAuthorizedUser();
     user.setNickname(newProfile.getNickname());
-    userRepository.save(user);
+    return new UserDTO().convertFrom(userRepository.saveAndFlush(user));
   }
 
-  public void updateAvatar(@NonNull byte[] newAvatar) {
+  public UserDTO updateAvatar(@NonNull byte[] newAvatar) {
     SecurityContext context = SecurityContextHolder.getContext();
     User user = context.getAuthorizedUser();
     user.setAvatar(newAvatar);
-    userRepository.save(user);
+    return new UserDTO().convertFrom(userRepository.saveAndFlush(user));
   }
 }

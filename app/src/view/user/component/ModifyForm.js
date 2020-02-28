@@ -6,6 +6,7 @@ import store from "../../../store";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import {modify} from "../../../action/user.action";
+import {TextField} from "@material-ui/core";
 
 export class modifyForm extends Component {
   constructor(props) {
@@ -41,11 +42,14 @@ export class modifyForm extends Component {
   render() {
     return (
       <div>
-        <Box borderRadius={4} mt={5} pt={3} pb={1} boxShadow={2}>
-          <span style={{fontSize: 16}}>nickname:</span>
-          <input style={{marginLeft: 8, padding: 2}}
-                 onChange={this.handleNicknameChange} value={this.state.nickname}/>
-          <Button style={{display: "block", margin: "10px auto"}} variant="outlined"
+        <Box borderRadius={4} mt={5} pt={3}
+             pb={1} boxShadow={2}>
+          <Box style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+            <span style={{fontSize: 16}}>nickname:</span>
+            <TextField style={{marginLeft: 10}} size="small" variant="outlined"
+                       onChange={this.handleNicknameChange} value={this.state.nickname}/>
+          </Box>
+          <Button style={{display: "block", margin: "10px auto"}} variant="outlined" color="secondary"
                   onClick={this.handleUpdateClick}>update</Button>
         </Box>
       </div>

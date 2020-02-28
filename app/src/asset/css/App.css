@@ -124,29 +124,29 @@
     word-break: break-word;
 }
 
-.information-format{
-    margin: 15px auto;
-}
-
 .information-format>span{
     display: flex;
     justify-content: center;
 }
 
 .imgs-box{
-    margin-top: 20px;
     display: flex;
     justify-content: left;
     flex-wrap: wrap;
 }
-
 
 .img-hidden{
     display: none;
 }
 
 .img-box{
-    margin: 5px 12px 0 0 ;
+    margin: 5px 10px 0 0 ;
+}
+
+.delete-button{
+    position : relative;
+    left: 58px;
+    top: 15px;
 }
 
 .img-preview{
@@ -154,6 +154,8 @@
     height: 120px;
     display:flex;
     border: solid 1px gray;
+    border-radius: 2px;
+    margin: 2px 2px 0 0;
 }
 
 .img-zoom-in{
@@ -164,7 +166,7 @@
 }
 
 .add-img-button{
-    margin: 5px 10px 0 0;
+    margin: 38px 10px 0 0;
     display: flex;
     text-align: left;
     width: 120px;

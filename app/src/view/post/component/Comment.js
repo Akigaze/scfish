@@ -21,7 +21,7 @@ export class Comment extends Component {
   }
 
   render() {
-    const {userNickname, content, createdTime} = this.props
+    const {userNickname, avatar, content, createdTime} = this.props
     return (
       <Box ref={this.commentRef} my={2} ml={2}>
         <Box style={{display: "flex", flexDirection: "row-reverse"}}>
@@ -32,7 +32,7 @@ export class Comment extends Component {
         </Box>
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Box fontSize={14} textAlign="left" display="flex" alignItems="center">
-            <Avatar src={"data:image/*;base64," + this.props.avatar}
+            <Avatar src={"data:image/*;base64," + avatar}
                     style={{width: 25, height: 25, marginRight: 10}}/>
             <span>{userNickname} :</span>
           </Box>

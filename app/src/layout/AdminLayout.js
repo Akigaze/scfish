@@ -36,7 +36,7 @@ export class AdminLayout extends Component {
     this.state = {
       anchorEl: null,
       menuOpen: null,
-      keyword: ''
+      keyword: '',
     }
   }
 
@@ -80,8 +80,10 @@ export class AdminLayout extends Component {
     ]
   }
 
+  componentDidMount() {
+  }
+
   handleClickMenu = (event) => {
-    console.log(this.props.children)
     this.setState({menuOpen: event.target})
   }
 
@@ -195,7 +197,7 @@ export class AdminLayout extends Component {
               </Tooltip>
               <Tooltip title={profile && profile.nickname}>
                 <IconButton edge="end" color="inherit" onClick={this.handleClickPortrait}>
-                  <Avatar src={"data:image/*;base64," + store.getState().user.profile.avatar}
+                  <Avatar src={profile && "data:image/*;base64,"+ profile.avatar}
                           style={{width: 30, height: 30}}/>
                 </IconButton>
               </Tooltip>

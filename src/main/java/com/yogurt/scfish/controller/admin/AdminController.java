@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/scfish/admin")
@@ -36,8 +39,13 @@ public class AdminController {
   }
 
   @PostMapping("/modify")
-  public void modify(@RequestBody @NonNull UserDTO newProfile) {
-    this.adminService.modifyUser(newProfile);
+  public UserDTO modify(@RequestBody @NonNull UserDTO newProfile) {
+    return adminService.modifyUser(newProfile);
+  }
+
+  @PostMapping("/updateAvatar")
+  public UserDTO updateAvatar(@RequestParam("avatar")MultipartFile avatar) throws IOException {
+    return this.adminService.updateAvatar(avatar.getBytes());
   }
 
   @PostMapping("/logout")

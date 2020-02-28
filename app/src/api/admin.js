@@ -52,4 +52,13 @@ adminApi.modify = (newProfile) => {
   })
 }
 
+adminApi.updateAvatar = (newAvatar) => {
+  return service({
+    headers:{'Content-Type':'multipart/form-data'},
+    method: "post",
+    url: `${baseURL}/updateAvatar`,
+    data: newAvatar
+  })
+}
+
 export default adminApi
