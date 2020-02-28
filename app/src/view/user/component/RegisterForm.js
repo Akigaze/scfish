@@ -33,7 +33,6 @@ export class RegisterForm extends Component {
 
   verify = () => {
     const {username, nickname, password} = this.state;
-    console.log(username,nickname,password)
     const EnglishReg = /^[A-Za-z0-9_]{8,40}$/
     const ChineseReg = /^[A-Za-z0-9_\u4e00-\u9fa5]{4,40}$/
     return username && EnglishReg.test(username) &&

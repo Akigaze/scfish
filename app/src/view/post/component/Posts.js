@@ -44,7 +44,7 @@ export class Posts extends Component {
     })
   }
 
-  getPageOfPost = (pageNum = 0, pageSize = 3) => {
+  getPageOfPost = (pageNum = 0, pageSize = 10) => {
     this.props.getPosts(pageNum, pageSize)
       .then(pageOfPost => {
         if(pageOfPost.number+1===pageOfPost.totalPages){

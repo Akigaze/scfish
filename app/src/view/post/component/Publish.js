@@ -28,6 +28,11 @@ export class Publish extends React.Component {
     this.imgRef = React.createRef()
   }
 
+  componentDidMount() {
+    this.relImgInputRef.current.style.height = this.relImgInputRef.current.clientWidth+"px"
+    this.relImgInputRef.current.children[0].style.margin = ( this.relImgInputRef.current.clientWidth-40)/2 + "px"
+  }
+
   handleTitleChange = (event) => {
     this.setState({title: event.target.value})
   }
@@ -126,20 +131,23 @@ export class Publish extends React.Component {
         <Box className="imgs-box">
           {
             this.state.previews.map((preview, index) => {
-              return <div className="img-box" key={"preview-img" + index}>
+              return <Box className="img-box" key={"preview-img" + index}>
                 <IconButton onClick={(event) => this.handleDeleteClick(event, index)}
                             style={{padding: 0}} className="delete-button">
                   <DeleteIcon style={{color: "#ea0621"}}/>
                 </IconButton>
                 <img id={"preview-img" + index} alt="preview" src={preview} className="img-preview"
                      onClick={event => this.handleImgClick(event, index)}/>
-              </div>
+              </Box>
             })
           }
           <input ref={this.imgInputRef} type="file" multiple maxLength={1000}
                  accept="image/*" onChange={this.handleUpload} style={{display: "none"}}/>
-          <Box ref={this.relImgInputRef} onClick={this.handleUploadClick} className="add-img-button">
-            <AddIcon style={{fontSize: "40px", color: "grey", margin: "40px auto"}}/>
+          <Box className="img-box">
+            <Box ref={this.relImgInputRef} onClick={this.handleUploadClick}
+                 className="add-img-button" >
+              <AddIcon style={{fontSize: "40px", color: "grey"}}/>
+            </Box>
           </Box>
           <img ref={this.imgRef} className="img-hidden" alt="img"/>
         </Box>
