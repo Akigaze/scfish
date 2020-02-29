@@ -9,7 +9,7 @@ import Comments from "./Comments";
 import Button from "@material-ui/core/Button";
 import {Avatar, ExpansionPanel, ExpansionPanelDetails, TextField} from "@material-ui/core";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import {addFavorite, addLike, deletePost, removeFavorite, removeLike} from "../../../action/post.action";
+import {addFavorite, addLike, deletePost, loadImg, removeFavorite, removeLike} from "../../../action/post.action";
 import {Favorite, FavoriteBorder} from "@material-ui/icons";
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbUpOutlinedIcon from '@material-ui/icons/ThumbUpOutlined';
@@ -29,8 +29,8 @@ export class Post extends Component {
       isLike: this.props.isLike,
       likeNum: this.props.likeNum,
       imgIndex: undefined,
-      previews: [],
-      imgUrls: []
+      thumbnails: [],
+      images: []
     }
     this.postRef = React.createRef()
     this.imgRef = React.createRef()
@@ -39,10 +39,9 @@ export class Post extends Component {
   componentDidMount() {
     if (this.props.imgList) {
       for (let url of this.props.imgList) {
-        picUtils.handleImgPreview(url, preview => {
+        picUtils.getImgThumbnail(url, thumbnail => {
           this.setState({
-            previews: [...this.state.previews, preview],
-            imgUrls: [...this.state.imgUrls, "data:image/jpg;base64," + url]
+            thumbnails: [...this.state.thumbnails, thumbnail]
           })
         })
       }
@@ -76,7 +75,6 @@ export class Post extends Component {
   }
 
   handleFavoriteClick = (event) => {
-    event.stopPropagation()
     this.setState({isFavorite: !this.state.isFavorite}, () => {
       if (this.state.isFavorite) {
         this.props.addFavorite(this.props.id)
@@ -87,7 +85,6 @@ export class Post extends Component {
   }
 
   handleLikeClick = (event) => {
-    event.stopPropagation()
     this.setState({isLike: !this.state.isLike}, () => {
       if (this.state.isLike) {
         this.setState({likeNum: this.state.likeNum + 1})
@@ -100,39 +97,46 @@ export class Post extends Component {
   }
 
   handleImgClick = (event, index) => {
-    event.stopPropagation()
+    let {images} = this.state
     if (this.state.imgIndex === index && this.imgRef.current.className !== "img-hidden") {
       this.imgRef.current.className = "img-hidden"
-      this.setState({imgIndex: undefined})
+      this.setState({imgIndex: 0})
       return
     }
-    this.imgRef.current.src = this.state.imgUrls[index]
+    if (!this.state.images[index]) {
+      this.props.loadImg(this.props.id, index).then(async (data) => {
+        images[this.state.imgIndex] = "data:image/jpg;base64," + await data
+        this.setState({images: images})
+      })
+    }
     this.imgRef.current.className = "img-zoom-in"
     this.setState({imgIndex: index})
   }
 
   handleAmplificationImgClick = (event) => {
-    event.stopPropagation()
+    let {images} = this.state
     this.setState({imgIndex: picUtils.handleImgClick(event, this.imgRef.current, this.props.id, this.state.imgIndex)}, () => {
-      this.imgRef.current.src = this.state.imgUrls[this.state.imgIndex]
+      if (!images[this.state.imgIndex]) {
+        this.props.loadImg(this.props.id, this.state.imgIndex).then(async (data) => {
+          images[this.state.imgIndex] = "data:image/jpg;base64," + await data
+          this.setState({images: images})
+        })
+      }
     })
   }
 
   handleDeleteClick = (event) => {
-    event.stopPropagation()
     if (window.confirm("Are you sure you want to delete this post?")) {
-      this.props.deletePost(this.props.id).then(data => {
-        this.postRef.current.className = "deleted"
-      })
+      this.postRef.current.className = "deleted"
+      this.props.deletePost(this.props.id)
     }
   }
 
   handleAvatarClick = (event) => {
-    event.stopPropagation()
   }
 
   render() {
-    const {expanded, comment, previews} = this.state
+    const {expanded, comment, thumbnails} = this.state
     const {id, title, content, userNickname, avatar, createdTime} = this.props
     return (
       <Box ref={this.postRef} borderRadius={4} m={1} boxShadow={2} className="word">
@@ -153,14 +157,14 @@ export class Post extends Component {
               </Box>
               <Box className="imgs-box">
                 {
-                  previews ? previews.map((preview, index) => {
+                  thumbnails ? thumbnails.map((thumbnail, index) => {
                     return <div key={id + "-" + index} className="img-box">
-                      <img src={preview} alt="preview" id={id + "-" + index} className="img-preview"
+                      <img src={thumbnail} alt="preview" id={id + "-" + index} className="img-preview"
                            onClick={(event) => this.handleImgClick(event, index)}/>
                     </div>
                   }) : null
                 }
-                <img ref={this.imgRef} id={id + "img"} alt="img"
+                <img ref={this.imgRef} id={id + "img"} alt="img" src={this.state.images[this.state.imgIndex]}
                      onMouseMove={(event) => picUtils.changeCursorInImage(event, this.imgRef.current)}
                      onClick={this.handleAmplificationImgClick} className="img-hidden"/>
               </Box>
@@ -219,7 +223,8 @@ function mapDispatchToProps(dispatch, props) {
     deletePost: deletePost,
     removeFavorite: removeFavorite,
     addLike: addLike,
-    removeLike: removeLike
+    removeLike: removeLike,
+    loadImg: loadImg
   }, dispatch)
 }
 

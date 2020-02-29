@@ -94,3 +94,18 @@ export const updateAvatar = (newAvatar) => {
     )
   }
 }
+
+export const loadAvatar = () => {
+  return async (dispatch) => {
+    return new Promise((resolve, reject) =>
+      adminApi.loadAvatar()
+        .then(resp => {
+          resolve(resp.data)
+        })
+        .catch(error => {
+          console.log(error);
+          reject(error)
+        })
+    )
+  }
+}

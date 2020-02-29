@@ -24,6 +24,10 @@ public class Image extends BaseEntity{
   private Integer id;
   @Lob
   @Basic(fetch = FetchType.LAZY)
+  @Column(name="thumbnail", columnDefinition="Blob", nullable=true)
+  private byte[] thumbnail;
+  @Lob
+  @Basic(fetch = FetchType.LAZY)
   @Column(name="img", columnDefinition="MediumBlob", nullable=true)
   private byte[] img;
   private int picIndex;

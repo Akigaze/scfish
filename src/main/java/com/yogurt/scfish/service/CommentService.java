@@ -41,7 +41,7 @@ public class CommentService {
       commentDTO.setUserNickname(comment.getUser().getNickname());
       commentDTO.setUsername(comment.getUser().getUsername());
 
-      byte[] avatar = comment.getUser().getAvatar();
+      byte[] avatar = comment.getUser().getAvatarThumbnail();
       BASE64Encoder encoder = new BASE64Encoder();
       commentDTO.setAvatar(avatar!=null?encoder.encode(avatar):"");
       return commentDTO;

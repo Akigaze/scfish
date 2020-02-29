@@ -197,7 +197,7 @@ export class AdminLayout extends Component {
               </Tooltip>
               <Tooltip title={profile && profile.nickname}>
                 <IconButton edge="end" color="inherit" onClick={this.handleClickPortrait}>
-                  <Avatar src={profile && "data:image/*;base64,"+ profile.avatar}
+                  <Avatar src={profile && "data:image/*;base64,"+ profile.avatarThumbnail}
                           style={{width: 30, height: 30}}/>
                 </IconButton>
               </Tooltip>

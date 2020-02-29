@@ -61,4 +61,11 @@ adminApi.updateAvatar = (newAvatar) => {
   })
 }
 
+adminApi.loadAvatar = () => {
+  return service({
+    method: "get",
+    url: `${baseURL}/loadAvatar`,
+  })
+}
+
 export default adminApi

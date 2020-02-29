@@ -4,6 +4,7 @@ import com.yogurt.scfish.cache.StringCacheStore;
 import com.yogurt.scfish.cache.util.CacheStoreUtil;
 import com.yogurt.scfish.dto.UserDTO;
 import com.yogurt.scfish.dto.param.LoginParam;
+import com.yogurt.scfish.dto.param.ModifyParam;
 import com.yogurt.scfish.dto.param.RegisterParam;
 import com.yogurt.scfish.entity.User;
 import com.yogurt.scfish.exception.BadRequestException;
@@ -20,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import sun.misc.BASE64Encoder;
 
 import java.util.Optional;
 
@@ -109,17 +111,26 @@ public class AdminService {
     return authToken;
   }
 
-  public UserDTO modifyUser(@NonNull UserDTO newProfile) {
+  public UserDTO modifyUser(@NonNull ModifyParam newProfile) {
     SecurityContext context = SecurityContextHolder.getContext();
     User user = context.getAuthorizedUser();
     user.setNickname(newProfile.getNickname());
     return new UserDTO().convertFrom(userRepository.saveAndFlush(user));
   }
 
-  public UserDTO updateAvatar(@NonNull byte[] newAvatar) {
+  public UserDTO updateAvatar(@NonNull byte[] newAvatar,@NonNull byte[] avatarThumbnail) {
     SecurityContext context = SecurityContextHolder.getContext();
     User user = context.getAuthorizedUser();
     user.setAvatar(newAvatar);
+    user.setAvatarThumbnail(avatarThumbnail);
     return new UserDTO().convertFrom(userRepository.saveAndFlush(user));
+  }
+
+  public String loadAvatar(){
+    SecurityContext context = SecurityContextHolder.getContext();
+    User user = context.getAuthorizedUser();
+    BASE64Encoder encoder = new BASE64Encoder();
+    byte[] avatar = userRepository.findByUsername(user.getUsername()).get().getAvatar();
+    return encoder.encode(avatar);
   }
 }

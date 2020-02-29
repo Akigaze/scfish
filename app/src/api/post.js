@@ -86,6 +86,14 @@ postApi.removeLike = (postId) => {
   })
 }
 
+postApi.loadImg = (postId,index) => {
+  return service({
+    method: "get",
+    url: `${baseURL}/loadImg`,
+    params: {postId,index}
+  })
+}
+
 export default postApi
 
 

@@ -13,10 +13,10 @@ import sun.misc.BASE64Encoder;
 public class UserDTO implements OutputConverter<UserDTO, User> {
   private String username;
   private String nickname;
-  private String avatar;
+  private String avatarThumbnail;
 
-  public void setAvatar(byte[] avatar) {
+  public void setAvatarThumbnail(byte[] avatarThumbnail) {
     BASE64Encoder encoder = new BASE64Encoder();
-    this.avatar = avatar != null ? encoder.encode(avatar) : "";
+    this.avatarThumbnail = avatarThumbnail != null ? encoder.encode(avatarThumbnail) : "";
   }
 }

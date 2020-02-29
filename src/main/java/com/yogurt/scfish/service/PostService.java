@@ -1,6 +1,7 @@
 package com.yogurt.scfish.service;
 
 import com.yogurt.scfish.dto.PostDTO;
+import com.yogurt.scfish.dto.param.ImageParam;
 import com.yogurt.scfish.dto.param.PostParam;
 import com.yogurt.scfish.entity.Post;
 import com.yogurt.scfish.entity.User;
@@ -19,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import sun.misc.BASE64Encoder;
 
 import java.io.IOException;
-import java.util.Base64;
 import java.util.Optional;
 
 @Service
@@ -37,16 +37,13 @@ public class PostService {
     return context.getAuthorizedUser();
   }
 
-  public void addPost(@NonNull PostParam postParam, MultipartFile[] files) throws IOException {
+  public void addPost(@NonNull PostParam postParam, MultipartFile[] files, MultipartFile[] thumbnails) throws IOException {
     Post post = postParam.convertTo();
     post.setUser(getUser());
     Post returnPost = postRepository.saveAndFlush(post);
     if (files != null) {
-      int i = 0;
-      for (MultipartFile file : files) {
-        imageService.saveImg(returnPost.getId(), i, file.getBytes());
-        System.out.println(i);
-        i++;
+      for (int i = 0; i < files.length; i++) {
+        imageService.saveImg(returnPost.getId(), i, files[i].getBytes(), thumbnails[i].getBytes());
       }
     }
   }
@@ -58,11 +55,11 @@ public class PostService {
     postDTO.setIsFavorite(this.favoriteService.isFavorite(getUser().getUsername(), post));
     postDTO.setIsLike(likeService.isLike(getUser().getUsername(), post.getId()));
     postDTO.setLikeNum(likeService.getLikeNum(post.getId()));
-    postDTO.setImgList(imageService.getImgs(post.getId()));
+    postDTO.setImgList(imageService.getThumbnails(post.getId()));
 
-    byte[] avatar = post.getUser().getAvatar();
+    byte[] avatar = post.getUser().getAvatarThumbnail();
     BASE64Encoder encoder = new BASE64Encoder();
-    postDTO.setAvatar(avatar!=null?encoder.encode(avatar):"");
+    postDTO.setAvatar(avatar != null ? encoder.encode(avatar) : "");
     return postDTO;
   }
 
@@ -105,9 +102,7 @@ public class PostService {
   }
 
   public Page<PostDTO> getFavoritePosts(@NonNull Integer pageNum, @NonNull Integer pageSize) {
-    return this.favoriteService.getFavoriteList(getUser().getUsername(), pageNum, pageSize).map(favorite -> {
-      return convert(favorite.getPost());
-    });
+    return this.favoriteService.getFavoriteList(getUser().getUsername(), pageNum, pageSize).map(favorite -> convert(favorite.getPost()));
   }
 
   public void addLike(@NonNull Integer postId) {
@@ -118,4 +113,5 @@ public class PostService {
     likeService.removeLike(getUser().getUsername(), postId);
   }
 
+  public String getImage(@NonNull ImageParam imageParam){return imageService.getImage(imageParam);}
 }

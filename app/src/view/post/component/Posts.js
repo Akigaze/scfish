@@ -4,7 +4,6 @@ import {connect} from "react-redux"
 import {withRouter} from "react-router-dom"
 import _ from "lodash"
 import store from "../../../store";
-
 import {getPosts, search} from "../../../action/post.action";
 import Post from "./Post";
 import IconButton from "@material-ui/core/IconButton";

@@ -22,10 +22,14 @@ public class User extends BaseEntity {
   private String username;
   private String nickname;
   private String password;
-  private boolean deleted;
+  @Lob
+  @Basic(fetch = FetchType.LAZY)
+  @Column(name="avatar_thumbnail", columnDefinition="Blob", nullable=true)
+  private byte[] avatarThumbnail;
   @Lob
   @Basic(fetch = FetchType.LAZY)
   @Column(name="avatar", columnDefinition="MediumBlob", nullable=true)
   private byte[] avatar;
+  private boolean deleted;
 
 }

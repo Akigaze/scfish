@@ -138,3 +138,17 @@ export const removeLike = (postId) => {
     })
   }
 }
+
+export const loadImg = (postId,index) => {
+  return async (dispatch) => {
+    return new Promise((resolve, reject) => {
+      postApi.loadImg(postId,index)
+        .then(resp => {
+          resolve(resp.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  }
+}

@@ -2,6 +2,7 @@ package com.yogurt.scfish.controller.admin;
 
 import com.yogurt.scfish.dto.UserDTO;
 import com.yogurt.scfish.dto.param.LoginParam;
+import com.yogurt.scfish.dto.param.ModifyParam;
 import com.yogurt.scfish.dto.param.RegisterParam;
 import com.yogurt.scfish.security.token.AuthToken;
 import com.yogurt.scfish.service.AdminService;
@@ -39,13 +40,19 @@ public class AdminController {
   }
 
   @PostMapping("/modify")
-  public UserDTO modify(@RequestBody @NonNull UserDTO newProfile) {
+  public UserDTO modify(@RequestBody @NonNull ModifyParam newProfile) {
     return adminService.modifyUser(newProfile);
   }
 
   @PostMapping("/updateAvatar")
-  public UserDTO updateAvatar(@RequestParam("avatar")MultipartFile avatar) throws IOException {
-    return this.adminService.updateAvatar(avatar.getBytes());
+  public UserDTO updateAvatar(@RequestParam("avatar")MultipartFile avatar,
+                              @RequestParam("thumbnail")MultipartFile thumbnail) throws IOException {
+    return this.adminService.updateAvatar(avatar.getBytes(),thumbnail.getBytes());
+  }
+
+  @GetMapping("/loadAvatar")
+  public String loadAvatar(){
+    return this.adminService.loadAvatar();
   }
 
   @PostMapping("/logout")
