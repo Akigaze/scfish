@@ -3,7 +3,7 @@ import nextCursor from "../asset/icon/next_cursor.ico"
 
 const picUtils = {}
 
-picUtils.getPictUrl = (img) => {
+picUtils.getImgUrl = (img) => {
   let url = undefined
   if (window.createObjectURL !== undefined) {
     url = window.createObjectURL(img)
@@ -15,20 +15,85 @@ picUtils.getPictUrl = (img) => {
   return url
 }
 
-picUtils.getImgUrlAndBlob = (img, callback) => {
-  picUtils.compress(img, (imgUrl, imgBlob) => {
-    callback(imgUrl, imgBlob)
-  })
+picUtils.getImgThumbnail = (img, callback) => {
+  let preview = new Image()
+  if (img instanceof File) {
+    preview.src = picUtils.getImgUrl(img)
+  } else {
+    preview.src = "data:image/*;base64," + img
+  }
+  preview.onload = function () {
+    const scale = preview.width / preview.height
+    let canvas = document.createElement("canvas")
+    const ctx = canvas.getContext("2d")
+    canvas.width = 100
+    canvas.height = 100
+    if (scale >= 1) {
+      ctx.drawImage(preview, 0, 50 - 50 / scale, 100, 100 / scale)
+      let thumbnailUrl = canvas.toDataURL("image/jpg")
+      canvas.toBlob(blob => callback(thumbnailUrl, blob))
+    } else {
+      ctx.drawImage(preview, 50 - 50 * scale, 0, 100 * scale, 100)
+      let thumbnailUrl = canvas.toDataURL("image/jpg")
+      canvas.toBlob(blob => callback(thumbnailUrl, blob))
+    }
+  }
 }
 
-picUtils.removeImg = (index, imgBlobs, imgURLs, previews) => {
+picUtils.compress = (img, callback) => {
+  const size = img.size / (1024 * 1024)
+  let newImg = new Image()
+  if (img instanceof File) {
+    newImg.src = picUtils.getImgUrl(img)
+  } else {
+    newImg.src = "data:image/*;base64," + img
+  }
+  newImg.onload = function () {
+    let canvas = document.createElement("canvas")
+    const ctx = canvas.getContext("2d")
+    if (size > 2) {
+      canvas.width = newImg.width / 3
+      canvas.height = newImg.height / 3
+      ctx.drawImage(newImg, 0, 0, newImg.width / 3, newImg.height / 3)
+    } else {
+      canvas.width = newImg.width
+      canvas.height = newImg.height
+      ctx.drawImage(newImg, 0, 0, newImg.width, newImg.height)
+    }
+    const imgUrl = canvas.toDataURL("image/jpg")
+    canvas.toBlob(blob => {
+      callback(imgUrl, blob)
+    }, "image/jpg")
+  }
+}
+
+picUtils.handleAvatar = (file, size, callback) => {
+  let avatar = new Image()
+  avatar.src = picUtils.getImgUrl(file)
+  avatar.onload = function () {
+    const scale = avatar.width / avatar.height
+    let canvas = document.createElement("canvas")
+    const ctx = canvas.getContext("2d")
+    canvas.width = size
+    canvas.height = size
+    if (scale <= 1) {
+      ctx.drawImage(avatar, 0, 0, size, size / scale)
+    } else {
+      ctx.drawImage(avatar, 0, 0, size * scale, size)
+    }
+    let url = canvas.toDataURL("image/jpg")
+    canvas.toBlob(blob => callback(url, blob), "image/jpg")
+  }
+}
+
+picUtils.removeImg = (index, imgBlobs, imgURLs, thumbnailUrls) => {
   let newBlobs = imgBlobs
   let newURLs = imgURLs
-  let newPreviews = previews
+  let newThumbnailUrls = thumbnailUrls
   newBlobs.splice(index, 1)
   newURLs.splice(index, 1)
-  newPreviews.splice(index, 1)
-  return {newBlobs, newURLs, newPreviews}
+  newThumbnailUrls.splice(index, 1)
+  return {newBlobs, newURLs, newThumbnailUrls}
 }
 
 picUtils.changeCursorInImage = (event, img) => {
@@ -60,51 +125,5 @@ picUtils.handleImgClick = (event, img, currentPostId, currentIndex) => {
   return currentIndex
 }
 
-picUtils.handleImgPreview = (img, callback) => {
-  let preview = new Image()
-  if(img instanceof File){
-    preview.src = picUtils.getPictUrl(img)
-  }else{
-    preview.src = "data:image/png;base64,"+img
-  }
-  preview.onload = function () {
-    const scale = preview.width / preview.height
-    let canvas = document.createElement("canvas")
-    const ctx = canvas.getContext("2d")
-    canvas.width = 120
-    canvas.height = 120
-    if (scale >= 1) {
-      ctx.drawImage(preview, 0, 60 - 60 / scale, 120, 120 / scale)
-      callback(canvas.toDataURL("image/jpg"))
-    } else {
-      ctx.drawImage(preview, 60 - 60 * scale, 0, 120 * scale, 120)
-      callback(canvas.toDataURL("image/jpg"))
-    }
-  }
-}
-
-
-picUtils.compress = (img, callback) => {
-  const size = img.size / (1024 * 1024)
-  let newImg = new Image()
-  newImg.src = picUtils.getPictUrl(img)
-  newImg.onload = function () {
-    let canvas = document.createElement("canvas")
-    const ctx = canvas.getContext("2d")
-    if (size > 2) {
-      canvas.width = newImg.width / 2
-      canvas.height = newImg.height / 2
-      ctx.drawImage(newImg, 0, 0, newImg.width / 2, newImg.height / 2)
-    } else {
-      canvas.width = newImg.width
-      canvas.height = newImg.height
-      ctx.drawImage(newImg, 0, 0, newImg.width, newImg.height)
-    }
-    const imgUrl = canvas.toDataURL("image/jpg")
-    canvas.toBlob(blob => {
-      callback(imgUrl, blob)
-    }, "image/jpg")
-  }
-}
 
 export default picUtils

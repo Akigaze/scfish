@@ -19,9 +19,10 @@ export class Publish extends React.Component {
       title: '',
       content: '',
       imgId: '',
+      blobs: [],
       imgURLs: [],
-      imgBlobs: [],
-      previews: []
+      thumbnailUrls: [],
+      imgNum: 0
     }
     this.imgInputRef = React.createRef()
     this.relImgInputRef = React.createRef()
@@ -29,8 +30,8 @@ export class Publish extends React.Component {
   }
 
   componentDidMount() {
-    this.relImgInputRef.current.style.height = this.relImgInputRef.current.clientWidth+"px"
-    this.relImgInputRef.current.children[0].style.margin = ( this.relImgInputRef.current.clientWidth-40)/2 + "px"
+    this.relImgInputRef.current.style.height = this.relImgInputRef.current.clientWidth + "px"
+    this.relImgInputRef.current.children[0].style.margin = (this.relImgInputRef.current.clientWidth - 40) / 2 + "px"
   }
 
   handleTitleChange = (event) => {
@@ -47,9 +48,13 @@ export class Publish extends React.Component {
 
   createForm = () => {
     let formData = new FormData()
-    this.state.imgBlobs.forEach(function (file) {
-      formData.append('files', file)
-    })
+    let {blobs} = this.state
+    for (let i = 0; i < this.state.blobs.length; i++) {
+      if (blobs[i]) {
+        formData.append('files', blobs[i].img)
+        formData.append('thumbnails', blobs[i].thumbnail)
+      }
+    }
     return formData
   }
 
@@ -64,21 +69,30 @@ export class Publish extends React.Component {
 
   handleUpload = (event) => {
     event.preventDefault();
+    let {blobs, imgURLs, thumbnailUrls, imgNum} = this.state
+    let files = event.target.files
+    if (imgNum + files.length > 6) {
+      alert("can only upload 6 picture")
+      return
+    }
     if (event.target.files) {
-      if (this.state.imgURLs.length + event.target.files.length > 6) {
-        alert("Only 6 pictures can be uploaded")
-        return
-      }
-      for (let f of event.target.files) {
-        if (f.size < 1024 * 1024 * 10) {
-          picUtils.getImgUrlAndBlob(f, (imgUrl, imgBlob) => {
+      for (let i in event.target.files) {
+        if (files[i].size < 1024 * 1024 * 10) {
+          let index = imgNum + parseInt(i)
+          let imgBlob = {img: undefined, thumbnail: undefined}
+          picUtils.compress(files[i], (url, blob) => {
+            imgBlob.img = blob
+            imgURLs[index] = url
+            this.setState({imgURLs: imgURLs})
+          })
+          picUtils.getImgThumbnail(files[i], (url, blob) => {
+            imgBlob.thumbnail = blob
+            blobs[index] = imgBlob
+            thumbnailUrls[index] = url
             this.setState({
-              imgURLs: [...this.state.imgURLs, imgUrl],
-              imgBlobs: [...this.state.imgBlobs, imgBlob]
-            }, data => {
-              picUtils.handleImgPreview(f, preview => {
-                this.setState({previews: [...this.state.previews, preview]})
-              })
+              thumbnailUrls: thumbnailUrls,
+              blobs: blobs,
+              imgNum: this.state.imgNum + 1
             })
           })
         }
@@ -86,17 +100,18 @@ export class Publish extends React.Component {
       if (this.state.imgURLs.length + event.target.files.length === 6) {
         this.relImgInputRef.current.className = "img-hidden"
       }
-      this.imgInputRef.current.value = null
     }
+    console.log(this.state)
+    this.imgInputRef.current.value = null
   }
 
   handleDeleteClick = (event, index) => {
-    const {imgId, imgURLs, imgBlobs, previews} = this.state
+    const {imgId, imgURLs, blobs, thumbnailUrls} = this.state
     if (imgId === "preview-img" + index) {
       this.imgRef.current.className = "img-hidden"
     }
-    const {newBlobs, newURLs, newPreviews} = picUtils.removeImg(index, imgBlobs, imgURLs, previews)
-    this.setState({imgURLs: newURLs, imgBlobs: newBlobs, previews: newPreviews})
+    const {newBlobs, newURLs, newThumbnailUrls} = picUtils.removeImg(index, blobs, imgURLs, thumbnailUrls)
+    this.setState({imgURLs: newURLs, Blobs: newBlobs, thumbnailUrls: newThumbnailUrls, imgNum: this.state.imgNum - 1})
     this.relImgInputRef.current.className = "add-img-button"
   }
 
@@ -130,31 +145,34 @@ export class Publish extends React.Component {
         </FormControl>
         <Box className="imgs-box">
           {
-            this.state.previews.map((preview, index) => {
-              return <Box className="img-box" key={"preview-img" + index}>
-                <IconButton onClick={(event) => this.handleDeleteClick(event, index)}
-                            style={{padding: 0}} className="delete-button">
-                  <DeleteIcon style={{color: "#ea0621"}}/>
-                </IconButton>
-                <img id={"preview-img" + index} alt="preview" src={preview} className="img-preview"
-                     onClick={event => this.handleImgClick(event, index)}/>
-              </Box>
+            this.state.thumbnailUrls.map((preview, index) => {
+              if (preview) {
+                return <Box className="img-box" key={"preview-img" + index}>
+                  <IconButton onClick={(event) => this.handleDeleteClick(event, index)}
+                              style={{padding: 0}} className="delete-button">
+                    <DeleteIcon style={{color: "#ea0621"}}/>
+                  </IconButton>
+                  <img id={"preview-img" + index} alt="preview" src={preview} className="img-preview"
+                       onClick={event => this.handleImgClick(event, index)}/>
+                </Box>
+              }
+
             })
           }
           <input ref={this.imgInputRef} type="file" multiple maxLength={1000}
                  accept="image/*" onChange={this.handleUpload} style={{display: "none"}}/>
           <Box className="img-box">
             <Box ref={this.relImgInputRef} onClick={this.handleUploadClick}
-                 className="add-img-button" >
+                 className="add-img-button">
               <AddIcon style={{fontSize: "40px", color: "grey"}}/>
             </Box>
           </Box>
           <img ref={this.imgRef} className="img-hidden" alt="img"/>
+          <FormControl margin="normal" fullWidth>
+            <Button variant="contained" color="primary" className="publish-btn"
+                    onClick={this.handlePublishClick}>publish</Button>
+          </FormControl>
         </Box>
-        <FormControl margin="normal" fullWidth>
-          <Button variant="contained" color="primary" className="publish-btn"
-                  onClick={this.handlePublishClick}>publish</Button>
-        </FormControl>
       </Box>
     )
   }

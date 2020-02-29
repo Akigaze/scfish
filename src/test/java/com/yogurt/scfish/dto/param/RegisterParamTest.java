@@ -22,7 +22,7 @@ public class RegisterParamTest {
   @Test
   public void should_update_properties_of_User_entity() {
     RegisterParam userParam = new RegisterParam("test_user", "Test User", "password1!");
-    User user = new User("test_user", "Real User", "helloWorld", true);
+    User user = new User();
 
     userParam.update(user);
 
