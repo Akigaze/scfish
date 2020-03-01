@@ -38,11 +38,11 @@ export class Post extends Component {
 
   componentDidMount() {
     if (this.props.imgList) {
-      for (let url of this.props.imgList) {
-        picUtils.getImgThumbnail(url, thumbnail => {
-          this.setState({
-            thumbnails: [...this.state.thumbnails, thumbnail]
-          })
+      let thumbnails = []
+      for (let i in this.props.imgList) {
+        picUtils.getImgThumbnail(this.props.imgList[i], thumbnail => {
+          thumbnails[i] = thumbnail
+          this.setState({thumbnails:thumbnails})
         })
       }
     }

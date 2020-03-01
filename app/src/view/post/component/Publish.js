@@ -69,6 +69,7 @@ export class Publish extends React.Component {
 
   handleUpload = (event) => {
     event.preventDefault();
+    console.log(this.imgInputRef.current.files)
     let {blobs, imgURLs, thumbnailUrls, imgNum} = this.state
     let files = event.target.files
     if (imgNum + files.length > 6) {
@@ -101,7 +102,6 @@ export class Publish extends React.Component {
         this.relImgInputRef.current.className = "img-hidden"
       }
     }
-    console.log(this.state)
     this.imgInputRef.current.value = null
   }
 
