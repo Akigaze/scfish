@@ -1,6 +1,7 @@
 package com.yogurt.scfish.controller;
 
 import com.yogurt.scfish.dto.PostDTO;
+import com.yogurt.scfish.dto.param.ImageParam;
 import com.yogurt.scfish.dto.param.PostParam;
 import com.yogurt.scfish.service.PostService;
 import lombok.AllArgsConstructor;
@@ -33,9 +34,16 @@ public class PostController {
     return this.postService.getPostsByUsername(pageNum, pageSize);
   }
 
+  @GetMapping("/loadImg")
+  public String loadImg(@ModelAttribute ImageParam imageParam){
+    return this.postService.getImage(imageParam);
+  }
+
   @PostMapping("/publish")
-  public void publish(@ModelAttribute PostParam postParam, @RequestParam("files") @Nullable MultipartFile[] files) throws IOException {
-    this.postService.addPost(postParam, files);
+  public void publish(@ModelAttribute PostParam postParam,
+                      @RequestParam("files") @Nullable MultipartFile[] files,
+                      @RequestParam("thumbnails") @Nullable MultipartFile[] thumbnails) throws IOException {
+    this.postService.addPost(postParam, files, thumbnails);
   }
 
   @DeleteMapping
