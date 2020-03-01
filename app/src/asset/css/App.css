@@ -175,3 +175,22 @@
 .deleted{
     display: none;
 }
+
+.modify-profile-box {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 100px;
+  align-items: stretch;
+}
+
+.modify-profile-box > * {
+  margin: 10px 0;
+}
+
+.modify-profile-input-box,
+.modify-profile-actions-box {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}

@@ -17,10 +17,15 @@ export class modifyForm extends Component {
   }
 
   componentDidMount() {
-    const profile = store.getState().user.profile
     this.setState({
-      nickname: profile.nickname
+      nickname: this.props.nickname
     })
+  }
+
+  nicknameChanged() {
+    const {nickname} = this.state
+    const updatedNickname = nickname && nickname.trim()
+    return Boolean(updatedNickname && updatedNickname !== this.props.nickname)
   }
 
   handleNicknameChange = (event) => {
@@ -39,26 +44,34 @@ export class modifyForm extends Component {
     })
   }
 
+  handleCancelClick = () => {
+    this.props.history.push("/information")
+  }
+
   render() {
+    const {nickname} = this.state
+    const isNicknameChanged = this.nicknameChanged()
     return (
       <div>
-        <Box borderRadius={4} mt={5} pt={3}
-             pb={1} boxShadow={2}>
-          <Box style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
-            <span style={{fontSize: 16}}>nickname:</span>
-            <TextField style={{marginLeft: 10}} size="small" variant="outlined"
-                       onChange={this.handleNicknameChange} value={this.state.nickname}/>
+        <Box className="modify-profile-box" borderRadius={4} boxShadow={2}>
+          <Box className="modify-profile-input-box">
+            <span>nickname:</span>
+            <TextField size="small" variant="outlined" onChange={this.handleNicknameChange} value={nickname}/>
           </Box>
-          <Button style={{display: "block", margin: "10px auto"}} variant="outlined" color="secondary"
-                  onClick={this.handleUpdateClick}>update</Button>
+          <Box className="modify-profile-actions-box">
+            <Button variant="contained" color="secondary" disabled={!isNicknameChanged} onClick={this.handleUpdateClick}>update</Button>
+            <Button variant="outlined" color="secondary" onClick={this.handleCancelClick}>cancel</Button>
+          </Box>
         </Box>
       </div>
     )
   }
 }
 
-function mapStateToProps() {
-  return {}
+function mapStateToProps(state) {
+  return {
+    nickname: state.user.profile.nickname
+  }
 }
 
 function mapDispatchToProps(dispatch, props) {

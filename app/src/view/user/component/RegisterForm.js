@@ -8,6 +8,9 @@ import FormControl from "@material-ui/core/FormControl";
 import {TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 
+const USERNAME_PATTERN = /^[A-Za-z0-9_]{4,40}$/
+const PASSWORD_PATTERN = /^.{8,40}$/
+const NICKNAME_PATTERN = /^[A-Za-z0-9_ \u4e00-\u9fa5]{4,40}$/
 
 export class RegisterForm extends Component {
   constructor(props) {
@@ -33,11 +36,8 @@ export class RegisterForm extends Component {
 
   verify = () => {
     const {username, nickname, password} = this.state;
-    const EnglishReg = /^[A-Za-z0-9_]{8,40}$/
-    const ChineseReg = /^[A-Za-z0-9_\u4e00-\u9fa5]{4,40}$/
-    return username && EnglishReg.test(username) &&
-      password && EnglishReg.test(this.state.password) &&
-      nickname && ChineseReg.test(this.state.nickname)
+    return username && password && nickname && username !== password
+      && USERNAME_PATTERN.test(username) && PASSWORD_PATTERN.test(password) && NICKNAME_PATTERN.test(nickname)
   }
 
   clickRegister = () => {

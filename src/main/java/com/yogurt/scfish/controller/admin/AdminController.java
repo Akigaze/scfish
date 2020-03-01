@@ -44,13 +44,13 @@ public class AdminController {
     return adminService.modifyUser(newProfile);
   }
 
-  @PostMapping("/updateAvatar")
-  public UserDTO updateAvatar(@RequestParam("avatar")MultipartFile avatar,
-                              @RequestParam("thumbnail")MultipartFile thumbnail) throws IOException {
-    return this.adminService.updateAvatar(avatar.getBytes(),thumbnail.getBytes());
+  @PostMapping("/avatar")
+  public UserDTO updateAvatar(
+    @RequestParam("avatar") MultipartFile avatar, @RequestParam("thumbnail") MultipartFile thumbnail) {
+    return this.adminService.updateAvatar(avatar, thumbnail);
   }
 
-  @GetMapping("/loadAvatar")
+  @GetMapping("/avatar")
   public String loadAvatar(){
     return this.adminService.loadAvatar();
   }

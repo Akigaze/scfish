@@ -56,7 +56,7 @@ adminApi.updateAvatar = (newAvatar) => {
   return service({
     headers:{'Content-Type':'multipart/form-data'},
     method: "post",
-    url: `${baseURL}/updateAvatar`,
+    url: `${baseURL}/avatar`,
     data: newAvatar
   })
 }
@@ -64,7 +64,7 @@ adminApi.updateAvatar = (newAvatar) => {
 adminApi.loadAvatar = () => {
   return service({
     method: "get",
-    url: `${baseURL}/loadAvatar`,
+    url: `${baseURL}/avatar`,
   })
 }
 

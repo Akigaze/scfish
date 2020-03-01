@@ -7,9 +7,7 @@ import com.yogurt.scfish.dto.param.LoginParam;
 import com.yogurt.scfish.dto.param.ModifyParam;
 import com.yogurt.scfish.dto.param.RegisterParam;
 import com.yogurt.scfish.entity.User;
-import com.yogurt.scfish.exception.BadRequestException;
-import com.yogurt.scfish.exception.DuplicatedException;
-import com.yogurt.scfish.exception.NotFoundException;
+import com.yogurt.scfish.exception.*;
 import com.yogurt.scfish.repository.UserRepository;
 import com.yogurt.scfish.security.authorization.Authorization;
 import com.yogurt.scfish.security.context.SecurityContext;
@@ -21,9 +19,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import sun.misc.BASE64Encoder;
 
-import java.util.Optional;
+import java.io.IOException;
 
 import static com.yogurt.scfish.contstant.TokenEnum.ACCESS_TOKEN;
 import static com.yogurt.scfish.contstant.TokenEnum.REFRESH_TOKEN;
@@ -118,19 +117,26 @@ public class AdminService {
     return new UserDTO().convertFrom(userRepository.saveAndFlush(user));
   }
 
-  public UserDTO updateAvatar(@NonNull byte[] newAvatar,@NonNull byte[] avatarThumbnail) {
+  public UserDTO updateAvatar(@NonNull MultipartFile avatar, @NonNull MultipartFile thumbnail) {
     SecurityContext context = SecurityContextHolder.getContext();
     User user = context.getAuthorizedUser();
-    user.setAvatar(newAvatar);
-    user.setAvatarThumbnail(avatarThumbnail);
+    try {
+      user.setAvatar(avatar.getBytes());
+      user.setAvatarThumbnail(thumbnail.getBytes());
+    } catch (IOException e) {
+      throw new AvatarException(e.getMessage(), e).setErrorData(user.getUsername());
+    }
     return new UserDTO().convertFrom(userRepository.saveAndFlush(user));
   }
 
-  public String loadAvatar(){
+  public String loadAvatar() {
     SecurityContext context = SecurityContextHolder.getContext();
     User user = context.getAuthorizedUser();
+    byte[] avatar = user.getAvatar();
+    if (avatar == null) {
+      throw new AvatarNoSettingException("avatar could not found").setErrorData(user.getUsername());
+    }
     BASE64Encoder encoder = new BASE64Encoder();
-    byte[] avatar = userRepository.findByUsername(user.getUsername()).get().getAvatar();
     return encoder.encode(avatar);
   }
 }
