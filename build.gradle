@@ -34,7 +34,6 @@ dependencies {
 	}
 	testImplementation 'com.h2database:h2'
 	testImplementation 'org.springframework.security:spring-security-test'
-    implementation 'junit:junit:4.12'
 }
 
 test {
