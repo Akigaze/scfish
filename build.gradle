@@ -15,7 +15,7 @@ configurations {
 }
 
 repositories {
-	maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+	maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
 	mavenCentral()
 }
 
@@ -26,6 +26,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.flywaydb:flyway-maven-plugin:6.2.0'
+	compileOnly 'io.springfox:springfox-swagger2:2.9.2'
+	compileOnly 'io.springfox:springfox-swagger-ui:2.9.2'
+
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'mysql:mysql-connector-java:8.0.15'
 	annotationProcessor 'org.projectlombok:lombok'
