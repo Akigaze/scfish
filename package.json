@@ -1,5 +1,5 @@
 {
-  "name": "react-app-temp",
+  "name": "scfish-app",
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:8088",

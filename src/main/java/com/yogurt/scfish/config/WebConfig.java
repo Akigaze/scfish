@@ -13,15 +13,14 @@ public class WebConfig implements WebMvcConfigurer {
   @Value("${scfish.mvc.exclude-path-patterns}")
   private String[] excludePathPatterns;
 
+  public final String[] viewPaths = {"/", "/login", "/post", "modify", "/publish", "/information"};
+
   // 跳转的映射配置
   @Override
   public void addViewControllers(ViewControllerRegistry registry) {
-    registry.addViewController("/").setViewName("index");
-    registry.addViewController("/index").setViewName("index");
-    registry.addViewController("/login").setViewName("login");
-    registry.addViewController("/register").setViewName("register");
-    registry.addViewController("/publish").setViewName("publish");
-    registry.addViewController("/postContent").setViewName("postContent");
+    for (String path : viewPaths) {
+      registry.addViewController(path).setViewName("forward:/index.html");
+    }
   }
 
   // 配置资源文件的映射路径
