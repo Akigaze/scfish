@@ -22,9 +22,6 @@ export class Posts extends Component {
 
   componentDidMount() {
     store.subscribe(this.handleKeywordChange)
-  }
-
-  UNSAFE_componentWillMount() {
     this.initPostList()
   }
 
@@ -46,8 +43,8 @@ export class Posts extends Component {
   getPageOfPost = (pageNum = 0, pageSize = 10) => {
     this.props.getPosts(pageNum, pageSize)
       .then(pageOfPost => {
-        if(pageOfPost.number+1===pageOfPost.totalPages){
-          this.nextRef.current.style = "display:none"
+        if(pageOfPost.number+1!==pageOfPost.totalPages){
+          this.nextRef.current.style = "marginBottom:30"
         }
         if (pageOfPost && !_.isEmpty(pageOfPost.content)){
           this.setState({
@@ -103,7 +100,7 @@ export class Posts extends Component {
             return <Post key={"post" + post.id} {...post} />
           })
         }
-        <IconButton onClick={this.getNextPage} style={{marginBottom:30}}>
+        <IconButton onClick={this.getNextPage} style={{display:"none"}}>
           <KeyboardArrowDownIcon ref={this.nextRef}/>
         </IconButton>
       </div>

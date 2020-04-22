@@ -2,7 +2,7 @@ import React, {Component, Fragment} from "react"
 import MyPosts from "./component/MyPosts";
 import Typography from "@material-ui/core/Typography";
 
-export default  class PostList extends Component {
+export default class PostList extends Component {
 
   render() {
     return (

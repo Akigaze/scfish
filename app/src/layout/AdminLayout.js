@@ -29,6 +29,8 @@ import ClearIcon from '@material-ui/icons/Clear';
 import ForumIcon from '@material-ui/icons/Forum';
 import {Favorite} from "@material-ui/icons";
 import Avatar from "@material-ui/core/Avatar";
+import PersonIcon from '@material-ui/icons/Person';
+import Box from "@material-ui/core/Box";
 
 export class AdminLayout extends Component {
   constructor(props) {
@@ -37,6 +39,7 @@ export class AdminLayout extends Component {
       anchorEl: null,
       menuOpen: null,
       keyword: '',
+      isManager: false
     }
   }
 
@@ -78,9 +81,6 @@ export class AdminLayout extends Component {
         onclick: this.handleClickLogout
       }
     ]
-  }
-
-  componentDidMount() {
   }
 
   handleClickMenu = (event) => {
@@ -137,6 +137,7 @@ export class AdminLayout extends Component {
   }
 
   handleClickHome = () => {
+    store.dispatch({type: "keyword"})
     if (this.props.location.pathname !== "/post") {
       this.props.history.push("/post")
     }
@@ -154,24 +155,35 @@ export class AdminLayout extends Component {
     }
   }
 
+  handleManagerClick = () => {
+    if (this.props.location.pathname !== "/management") {
+      this.props.history.push("/management")
+    }
+  }
+
   render() {
     const {profile} = this.props
     const {anchorEl} = this.state
     const {menuOpen} = this.state
     return (
-      <div className="App">
+      <Box className="App">
         <AppBar position="static">
           <Toolbar className="admin-toolbar">
-            <div>
+            <Box>
               <IconButton edge="start" color="inherit" aria-label="menu" onClick={this.handleClickMenu}>
                 <MenuIcon/>
               </IconButton>
               <Drawer open={Boolean(menuOpen)} onClose={this.handleCloseMenu}>
-                <div>
-                  <IconButton onClick={this.handleCloseMenu}>
+                <Box style={{display: "flex", justifyContent: "space-between"}}>
+                  <IconButton onClick={this.handleCloseMenu} style={{}}>
                     <ChevronLeftIcon/>
                   </IconButton>
-                </div>
+                  {
+                    store.getState().manager.isManager?<IconButton color="secondary" onClick={this.handleManagerClick} style={{}}>
+                      <PersonIcon/>
+                    </IconButton>:null
+                  }
+                </Box>
                 <MenuList>
                   {this.drawerMenus().map(item => {
                     return <ProfileMenuItem key={item.id} {...item}/>
@@ -181,15 +193,15 @@ export class AdminLayout extends Component {
               <IconButton color="inherit" onClick={this.handleClickHome}>
                 <HomeIcon/>
               </IconButton>
-            </div>
-            <div>
-              <div className="search">
+            </Box>
+            <Box>
+              <Box className="search">
                 <InputBase value={this.state.keyword} onKeyPress={this.handleSearchKeyPress} style={{width: 200}}
                            onChange={this.handleKeywordChange} placeholder="Search…" color="primary"
                            startAdornment={<SearchIcon style={{color: "white", margin: 5}}/>}
                            endAdornment={<ClearIcon style={{color: "white", margin: 5}}
                                                     onClick={this.handleClickSearchClear}/>}/>
-              </div>
+              </Box>
               <Tooltip title="publish">
                 <IconButton edge="end" color="inherit" onClick={this.handleClickPublish}>
                   <CreateIcon/>
@@ -197,7 +209,7 @@ export class AdminLayout extends Component {
               </Tooltip>
               <Tooltip title={(profile && profile.nickname) || ""}>
                 <IconButton edge="end" color="inherit" onClick={this.handleClickPortrait}>
-                  <Avatar src={profile && "data:image/*;base64,"+ profile.avatarThumbnail}
+                  <Avatar src={profile && "data:image/*;base64," + profile.avatarThumbnail}
                           style={{width: 30, height: 30}}/>
                 </IconButton>
               </Tooltip>
@@ -218,15 +230,15 @@ export class AdminLayout extends Component {
                   })}
                 </MenuList>
               </Popover>
-            </div>
+            </Box>
           </Toolbar>
         </AppBar>
-        <div>
+        <Box>
           <Container maxWidth="sm">
             {this.props.children}
           </Container>
-        </div>
-      </div>
+        </Box>
+      </Box>
     )
   }
 }

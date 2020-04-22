@@ -5,8 +5,9 @@ import app from "./module/app";
 import post from "./module/post"
 import getters from "./getters";
 import {actionLogger} from "../utils/middlewares";
+import manager from "./module/manager";
 
-const reducers = combineReducers({user, app, post});
+const reducers = combineReducers({user, app, post,manager});
 const middleWares = [thunk, actionLogger]
 const store = createStore(reducers, applyMiddleware(...middleWares))
 

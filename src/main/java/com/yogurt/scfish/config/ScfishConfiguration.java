@@ -5,9 +5,13 @@ import com.yogurt.scfish.cache.StringCacheStore;
 import com.yogurt.scfish.config.filter.AdminAuthorizationFilter;
 import com.yogurt.scfish.config.filter.CorsFilter;
 import com.yogurt.scfish.config.filter.LoginFilter;
+import com.yogurt.scfish.config.filter.ManagerFilter;
 import com.yogurt.scfish.config.handler.AuthorizationFailureHandler;
 import com.yogurt.scfish.config.handler.DefaultAuthorizationFailureHandler;
+import com.yogurt.scfish.service.ManagerService;
 import com.yogurt.scfish.service.UserService;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +19,7 @@ import org.springframework.core.Ordered;
 
 
 @Configuration
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class ScfishConfiguration {
 
   @Bean
@@ -65,4 +70,12 @@ public class ScfishConfiguration {
     return registrationBean;
   }
 
+  @Bean
+  public FilterRegistrationBean<ManagerFilter> managerFilter(ManagerService managerService){
+    FilterRegistrationBean<ManagerFilter> managerFilter = new FilterRegistrationBean<>();
+    managerFilter.setOrder(Ordered.LOWEST_PRECEDENCE);
+    managerFilter.setFilter(new ManagerFilter(managerService));
+    managerFilter.addUrlPatterns("/scfish/manager/*");
+    return managerFilter;
+  }
 }

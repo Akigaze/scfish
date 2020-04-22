@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button"
 import TextField from "@material-ui/core/TextField"
 import FormControl from "@material-ui/core/FormControl"
 import {getProfile, login} from "../../../action/user.action";
+import {isManager} from "../../../action/manager.action";
 
 export class LoginForm extends Component {
   constructor(props) {
@@ -18,6 +19,7 @@ export class LoginForm extends Component {
 
   loginSuccess() {
     this.props.getProfile()
+    this.props.isManager()
     this.props.history.push("/post")
   }
 
@@ -75,7 +77,7 @@ function mapDispatchToProps(dispatch, props) {
   return bindActionCreators({
     login: login,
     getProfile: getProfile,
-
+    isManager:isManager
   }, dispatch)
 }
 

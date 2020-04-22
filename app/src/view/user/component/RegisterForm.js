@@ -10,7 +10,7 @@ import Button from "@material-ui/core/Button";
 
 const USERNAME_PATTERN = /^[A-Za-z0-9_]{4,40}$/
 const PASSWORD_PATTERN = /^.{8,40}$/
-const NICKNAME_PATTERN = /^[A-Za-z0-9_ \u4e00-\u9fa5]{4,40}$/
+const NICKNAME_PATTERN = /^[A-Za-z0-9_\u4e00-\u9fa5]{4,40}$/
 
 export class RegisterForm extends Component {
   constructor(props) {

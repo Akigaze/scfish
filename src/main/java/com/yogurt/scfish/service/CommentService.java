@@ -43,7 +43,7 @@ public class CommentService {
 
       byte[] avatar = comment.getUser().getAvatarThumbnail();
       BASE64Encoder encoder = new BASE64Encoder();
-      commentDTO.setAvatar(avatar!=null?encoder.encode(avatar):"");
+      commentDTO.setAvatar(avatar != null ? encoder.encode(avatar) : "");
       return commentDTO;
     });
   }

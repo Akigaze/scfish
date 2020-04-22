@@ -156,7 +156,7 @@ export class Publish extends React.Component {
                        onClick={event => this.handleImgClick(event, index)}/>
                 </Box>
               }
-
+              return null
             })
           }
           <input ref={this.imgInputRef} type="file" multiple maxLength={1000}

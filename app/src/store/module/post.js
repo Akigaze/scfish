@@ -3,11 +3,10 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case 'keyword':
-      return {...state, keyword: action.keyword}
-    default:
-      return state
+  if (action.type === 'keyword') {
+    return {...state, keyword: action.keyword}
+  } else {
+    return state
   }
 }
 
