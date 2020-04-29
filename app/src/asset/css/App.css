@@ -194,3 +194,13 @@
   justify-content: space-around;
   align-items: center;
 }
+
+.forbidden-table th {
+    text-align: center;
+    padding: 10px;
+}
+.forbidden-table td{
+    text-align: center;
+    font-size: 12px;
+    padding: 10px 3px;
+}

@@ -16,7 +16,7 @@ public class PostDTO implements OutputConverter<PostDTO, Post> {
   private String username;
   private String userNickname;
   private String avatar;
-  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm",timezone = "GMT+8")
   private LocalDateTime createdTime;
   private Boolean isFavorite;
   private Boolean isLike;

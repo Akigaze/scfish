@@ -8,6 +8,7 @@ import {getPosts, search} from "../../../action/post.action";
 import Post from "./Post";
 import IconButton from "@material-ui/core/IconButton";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import Box from "@material-ui/core/Box";
 
 export class Posts extends Component {
   constructor(props) {
@@ -43,14 +44,14 @@ export class Posts extends Component {
   getPageOfPost = (pageNum = 0, pageSize = 10) => {
     this.props.getPosts(pageNum, pageSize)
       .then(pageOfPost => {
-        if(pageOfPost.number+1!==pageOfPost.totalPages){
-          this.nextRef.current.style = "marginBottom:30"
-        }
         if (pageOfPost && !_.isEmpty(pageOfPost.content)){
           this.setState({
             postList: [...this.state.postList, ...pageOfPost.content],
             totalPages: pageOfPost.totalPages
           })
+        }
+        if(pageOfPost.totalPages>1&&pageOfPost.number+1!==pageOfPost.totalPages){
+          this.nextRef.current.style = "marginBottom:30"
         }
       })
   }
@@ -94,7 +95,7 @@ export class Posts extends Component {
 
   render() {
     return (
-      <div id="post-list">
+      <Box id="post-list">
         {
           this.state.postList.map(post => {
             return <Post key={"post" + post.id} {...post} />
@@ -103,7 +104,7 @@ export class Posts extends Component {
         <IconButton onClick={this.getNextPage} style={{display:"none"}}>
           <KeyboardArrowDownIcon ref={this.nextRef}/>
         </IconButton>
-      </div>
+      </Box>
     )
   }
 }

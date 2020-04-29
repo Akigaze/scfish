@@ -32,6 +32,8 @@ import Avatar from "@material-ui/core/Avatar";
 import PersonIcon from '@material-ui/icons/Person';
 import Box from "@material-ui/core/Box";
 
+const mdSizeContainerMap = ["/management"]
+
 export class AdminLayout extends Component {
   constructor(props) {
     super(props);
@@ -234,7 +236,7 @@ export class AdminLayout extends Component {
           </Toolbar>
         </AppBar>
         <Box>
-          <Container maxWidth="sm">
+          <Container maxWidth={mdSizeContainerMap.includes(this.props.location.pathname)?"md":"sm"}>
             {this.props.children}
           </Container>
         </Box>

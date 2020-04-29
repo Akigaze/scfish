@@ -14,6 +14,7 @@ export class Comment extends Component {
     super(props);
     this.commentRef = React.createRef()
   }
+
   handleDeleteClick = (event) => {
     this.props.deleteComment(this.props.id).then(data=>{
       this.commentRef.current.className = "deleted"

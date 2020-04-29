@@ -2,7 +2,6 @@ import React from "react"
 
 import BasicLayout from "../layout/BasicLayout";
 import AdminLayout from "../layout/AdminLayout";
-import Management from "../view/manager/Management";
 
 
 const PostList = React.lazy(() => import("../view/post/PostList"))
@@ -16,7 +15,7 @@ const MyFavoriteList = React.lazy(() => import("../view/post/MyFavoriteList"))
 const Login = React.lazy(() => import("../view/user/Login"))
 const Register = React.lazy(() => import("../view/user/Register"))
 const ExceptionPage = React.lazy(() => import("../view/exception/404"))
-const ManagerPage = React.lazy(() => import("../view/manager/Management"))
+const Management = React.lazy(() => import("../view/manager/Management"))
 
 
 export const adminRouterConfig = [
@@ -66,6 +65,7 @@ export const managerRouterConfig = [
     component: Management
   }
 ]
+
 export const publicRouterConfig = [
   {
     path: "/login",
